@@ -1,0 +1,307 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Overpass:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=SUSE+Mono:ital,wght@0,100..800;1,100..800&display=swap');:root{
+    --main_color: #A05AC8;
+    --black : black;
+    --white : white;
+}
+.login{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+}
+.login .box{
+    display: flex;
+    justify-content: space-between;
+    width: 100vw;
+    padding: 0 10px;
+}
+.login .gradient {
+    position: absolute;    
+    width: 160vmin;  
+    height: 160vmin;
+    border-radius: 50%;
+    left: -60vmin; 
+    top: -30vmin;  
+    background: linear-gradient(
+        to right,
+        rgba(160, 90, 200, 1) 0%,   /* center color, fully opaque */
+        rgba(160, 90, 200, 0.5) 50%, /* middle fade */
+        rgba(160, 90, 200, 0) 100%   /* edge fully transparent */
+    );
+    z-index: -1;
+    filter: blur(10px); 
+}
+.login .box .rightside{
+    height: 100vh;
+    width: 50vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.login .box .leftside{
+    height: 100vh;
+    width: 50vw;
+    padding: 10px;
+    margin-left: 1%;
+}
+
+.login .box .leftside .data{
+    padding: 2vw;
+}
+
+.login .box .leftside  .upperside  .img img{
+    width: 8vw;
+}
+.login .box .leftside .middleside .data .upper_one .sign_up_p .sign_up{
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--black);
+}
+.login .box .leftside .middleside .data .upper_one .sign_up_logo p .learn{
+    color: var(--main_color);
+}
+.login .box .leftside .middleside .data .upper_one .sign_up_logo p{
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--black);
+}
+.login .box .leftside .middleside .data .last_p .last_p_p{
+    font-size: 1rem;
+    color: var(--black);
+    margin-top: 10px;
+}
+
+.login .box .leftside .middleside .data .last_p .last_p_p p .rest{
+    margin-left: 25px;
+}
+.login .box .leftside .middleside .data .last_p .last_p_p p .bold,
+.login .box .leftside .middleside .data .last_p .last_p_p p .why{
+    font-weight: 600;
+}
+.login .box .leftside .middleside .data .last_p .last_p_p p .list li{
+    margin-bottom: 5px;
+}
+.login .box .leftside .middleside .data .last_p .last_p_p p .list{
+    margin-left: 6%;
+}
+.login .box .leftside .middleside .data .buttons {
+    margin-top: 30px;
+}
+.login .box .leftside .middleside .data .buttons .student_login .student{
+    background-color: var(--main_color);
+    color: var(--white);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-right: 10px;
+}
+.login .box .rightside  .login_form .img {
+    display: flex;
+    justify-content: center;
+}
+.login .box .rightside  .login_form .img img{
+    width: 18vw;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    transform: translateY(40%);
+}
+.login .box .rightside .login_form .form{
+    border: 1px solid  rgba(0,0,0,0.3);
+    width: 400px;
+    height: 600px;
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+    background: rgba(255, 255, 255, 0.5);
+}
+.login .box .rightside .login_form .form{
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+.login .box .rightside .login_form .form .whole_box{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+.login .box .rightside .login_form .whole_box .lower_part .buttons{
+    display: flex;
+    justify-content: space-between;
+}
+.login .box .rightside .login_form .whole_box .lower_part .buttons .previous button{
+    background: none;
+    color: var(--black);
+    border: 1px solid rgba(0,0,0,0.3);
+}
+.login .box .rightside .login_form .whole_box .lower_part .buttons button:active{
+    transform: scale(0.98);
+}
+.login .box .rightside .login_form .whole_box .lower_part .buttons button .icon{
+    display: flex;
+    margin-top: 2px;
+}
+.login .box .rightside .login_form .whole_box .lower_part .buttons button:hover{
+    opacity: 0.9;
+    transition: 0.3s;
+}
+.login .box .rightside .login_form .whole_box .lower_part .buttons button{
+    width: 3cm;
+    cursor: pointer;
+    border-radius: 10px;
+    border: none;
+    background: var(--main_color);
+    color: white;
+    gap: 10px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    height: auto;
+    padding: 10px;
+}
+.login .box .rightside .login_form .whole_box .first_part .action{
+    margin-bottom: 10px;
+}
+.login .box .rightside .login_form .whole_box .first_part .des{
+    margin-bottom: 20px;
+}
+.login .box .rightside .login_form .whole_box  .upper span{
+    font-size: 1.5rem;
+    font-weight: 800;
+    
+}
+.login .box .rightside .login_form .whole_box .upper{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+.login .box .rightside .login_form .whole_box .first_part{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.login .box .rightside .login_form .whole_box .first_part .text_area .icon{
+    font-size: 1.2rem;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+.login .box .rightside .login_form .whole_box .first_part .text_area{
+    display: flex;
+    align-items: center;
+    border: 1px solid rgba(0,0,0,0.3);
+    padding:10px 5px;
+    border-radius: 10px;
+    margin: 10px 0;
+}
+.login .box .rightside .login_form .whole_box .first_part .inputs {
+    width: 100%;
+}
+.login .box .rightside .login_form .whole_box .first_part .inputs .text_area input{
+    width: 100%;
+    /* height: 1cm; */
+    background: none;
+    border: none;
+    transition: 0.3s;
+    font-size: 0.9rem;
+    outline: none;
+    padding: 0 10px;
+    border-left: 1px solid rgba(0,0,0,0.3);
+}
+.login .box .rightside .login_form .form .whole_box .action_center .first_part{
+    width: 100%;
+}
+.login .box .rightside .login_form .form .whole_box .action_center{
+    display: flex;
+}
+.login .code-input {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.login .code-input input {
+  width: 30px;
+  height: 50px;
+  font-size: 24px;
+  text-align: center;
+  border-radius: 8px;
+  outline: none;
+  border: 1px solid rgba(0,0,0,0.3);
+  transition: border-color 0.3s;
+  background: transparent;
+}
+
+.login .code-input input:focus {
+  border-color: var(--main_color);
+  border: 2px solid var(--main_color);
+}
+.login .text_area_for_code p{
+    margin-bottom: 10px;
+}
+.login .text_area_for_code p span{
+    font-weight: 600;
+}
+.login .resend .button button{
+    background: none;
+    padding: 5px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+.login .pic .demo_pic{
+    width: 200px;
+    height: 200px;
+    opacity:1;
+
+}
+.login .add_or_skip{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}  
+.login .add_or_skip button .icon:nth-child(2){
+    font-size: 15px;
+    margin-top: 4px;
+}
+.login .add_or_skip button{
+    background: transparent;
+    border: none;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 15px;
+    cursor: pointer;
+}
+.login .first_part {
+  opacity: 0;
+  transform: translateX(50px); /* start position */
+  transition: transform 0.3s ease;
+}
+
+.login .first_part.active {
+  opacity: 1;
+  transform: translateX(0); /* final position */
+}
+.login .error-input {
+  border: 1px solid red;
+}
+
+.login .error-text {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}

@@ -1,0 +1,10 @@
+import React from 'react'
+import { Login } from '../../components/login/login'
+
+export const Login_page = () => {
+  return (
+    <div className='login_page'>
+        <Login />
+    </div>
+  )
+}

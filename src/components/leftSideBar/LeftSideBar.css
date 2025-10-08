@@ -1,0 +1,132 @@
+.leftSideBar{
+    width: 20vw;
+    border-right: 1px solid rgba(0,0,0,0.1);
+    height: 100vh;
+    position: fixed;
+}
+.leftSideBar .box .upperSection .upper{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.leftSideBar .box .upperSection .upper img{
+    width: 40px;
+    height: 40px;
+    margin: 10px;
+}
+.leftSideBar .box .upperSection{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+.leftSideBar .box .upperSection .lower .links{
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    /* gap: 20px; */
+}
+.leftSideBar .box .upperSection .lower .links .link:hover{
+    background: rgba(0,0,0,0.05);
+}
+.leftSideBar .box .upperSection .lower .links .link.active .icon{
+    color: rgba(0,0,0,0.7);
+}
+.leftSideBar .box .upperSection .lower .links .link.active{
+    border-left: 3px solid var(--main_color);
+    font-weight: 600;
+}
+.leftSideBar .box .upperSection .lower .links .link:active{
+    transform: scale(0.98);
+}
+.leftSideBar .box .upperSection .lower .links .link{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 0 10px 10px 0;
+    transition: 0.3s ease;
+}
+.leftSideBar .box .upperSection .lower .links .link .icon{
+    font-size: 1.2rem;
+    color: rgba(0,0,0,0.4);
+}
+
+.leftSideBar .box .lowerSection {
+    padding: 10px;
+}
+.leftSideBar .box .lowerSection .profile{
+    display: flex;
+    align-items: center;
+}
+.leftSideBar .box .lowerSection .profile .img{
+    width: 100px;
+    height:auto;
+    border-radius: 50%;
+    margin: 10px;
+    overflow: hidden;
+}
+.leftSideBar .box .lowerSection .profile .img img{
+    width: 100px;
+}
+.leftSideBar .box .lowerSection .contact .all .icon{
+    font-size: 1.1rem;
+    color: rgba(0,0,0,0.4);
+    cursor: pointer;
+}
+.leftSideBar .box .lowerSection .contact .all{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.leftSideBar .box .lowerSection .contact a{
+    color: inherit;
+    text-decoration: none;
+}
+.leftSideBar .box .lowerSection .contact{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    text-align: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.leftSideBar .box .lowerSection .lower{
+    border-top: 1px solid rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-around;
+}
+.leftSideBar .box .lowerSection .lower button .icon{
+    font-size: 14px;
+}
+.leftSideBar .box .lowerSection .lower .separator{
+    width: 1px;
+    height: 40px;
+    background: rgba(0,0,0,0.2);
+}
+.leftSideBar .box .lowerSection .lower .prof button{
+  border-radius:0 0 0 10px;
+}
+.leftSideBar .box .lowerSection .lower .logout button{
+  border-radius:0 0 10px 0;
+}
+.leftSideBar .box .lowerSection .lower button{
+    color: var(--black);
+    padding: 10px 20px;
+    background: transparent;
+    cursor: pointer;
+    transition: 0.3s ease;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    border: none;
+    width: 100;
+    opacity: 0.7;
+}
+
+
+    .leftSideBar .box .lowerSection .lower button:hover{
+        opacity: 1;
+        transition: 0.3s ease;
+    }
