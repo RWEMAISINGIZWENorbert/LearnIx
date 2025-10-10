@@ -6,8 +6,8 @@ import { Features } from './pages/features/features_page';
 import { Login_page } from './pages/Login/login_page';
 import ClickSpark from './components/animations/ClickSpark';
 import { Admin } from './pages/admin/admin';
-
-
+import { Dashboard } from './components/dashboard_page/dashboard';
+import { Not_found } from './pages/Not_Found/Not_found';
 
 function App() {
   return (
@@ -22,10 +22,17 @@ function App() {
       <Router>
     <div className="app">
       <Routes>
+        {/* Public page routes */}
         <Route path='/' element={<Home/>}/>
         <Route path='/features' element={<Features/>}/>
         <Route path='/signup' element={<Login_page/>}/>
-        <Route path='/admin' element={<Admin/>}/>
+
+        {/* Admin page routes */}
+        <Route path='/admin' element={<Admin/>}>
+            <Route path='dashboard' element={<Dashboard/>}/>
+        </Route>
+          {/* Not Found Route */}
+        <Route path='*' element={<Not_found/>}/>
       </Routes>
     </div>
     </Router>

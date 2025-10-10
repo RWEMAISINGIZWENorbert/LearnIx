@@ -10,6 +10,7 @@ import { LuNotebookPen } from "react-icons/lu";
 import { FaRegBell , FaRegUser } from "react-icons/fa";
 import { HiOutlineMail } from "react-icons/hi";
 import { CiGlobe } from "react-icons/ci";
+import { NavLink } from 'react-router-dom';
 
 export const LeftSideBar = () => {
   return (
@@ -17,27 +18,27 @@ export const LeftSideBar = () => {
         <div className="box">
             <div className="upperSection">
                 <div className="upper">
-                    <img src='src/assets/LearnIx.png' alt="LearnIx logo" />
+                    <img src={`${import.meta.env.BASE_URL}assets/LearnIx.png`} alt="LearnIX logo" />
                     <h1 className="logo">LearnIx</h1>
                 </div>
                 <div className="lower">
                     <div className="links">
-                        <div className="link active"><RxDashboard  className="icon" /><span>Dashboard</span></div>
-                        <div className="link"><MdOutlineManageAccounts className="icon" /><span>User Management</span></div>
-                        <div className="link"><LuNotebookPen className="icon" /><span>Admissions & Registration</span></div>
-                        <div className="link"><HiOutlineAcademicCap className="icon" /><span>Academic Setup</span></div>
-                        <div className="link"><LuChartColumnIncreasing className="icon" /><span>Performance & Attendance</span></div>
-                        <div className="link"><GrResources className="icon" /><span>Resources</span></div>
-                        <div className="link"><GrAnnounce className="icon" /><span>Announce</span></div>
-                        <div className="link"><FaRegBell className="icon" /><span>Notifications</span></div>
-                        <div className="link"><IoSettingsOutline className="icon" /><span>Settings</span></div>
+                        <NavLink className={({ isActive }) => isActive ? 'left-item when_active' : 'left-item'} to='/admin/'><div className="link active"><RxDashboard  className="icon" /><span>Dashboard</span></div></NavLink>
+                        <NavLink className={({ isActive }) => isActive ? 'left-item when_active' : 'left-item'} to='/admin/user_management'><div className="link"><MdOutlineManageAccounts className="icon" /><span>User Management</span></div></NavLink>
+                        <NavLink className={({ isActive }) => isActive ? 'left-item when_active' : 'left-item'} to='/admin/admissions'><div className="link"><LuNotebookPen className="icon" /><span>Admissions & Registration</span></div></NavLink>
+                        <NavLink className={({ isActive }) => isActive ? 'left-item when_active' : 'left-item'} to='/admin/academic_setup'><div className="link"><HiOutlineAcademicCap className="icon" /><span>Academic Setup</span></div></NavLink>
+                        <NavLink className={({ isActive }) => isActive ? 'left-item when_active' : 'left-item'} to='/admin/performance'><div className="link"><LuChartColumnIncreasing className="icon" /><span>Performance & Attendance</span></div></NavLink>
+                        <NavLink className={({ isActive }) => isActive ? 'left-item when_active' : 'left-item'} to='/admin/resources'><div className="link"><GrResources className="icon" /><span>Resources</span></div></NavLink>
+                        <NavLink className={({ isActive }) => isActive ? 'left-item when_active' : 'left-item'} to='/admin/communications'><div className="link"><GrAnnounce className="icon" /><span>Communications</span></div></NavLink>
+                       <NavLink className={({ isActive }) => isActive ? 'left-item when_active' : 'left-item'} to='/admin/notifications'> <div className="link"><FaRegBell className="icon" /><span>Notifications</span></div></NavLink>
+                       <NavLink className={({ isActive }) => isActive ? 'left-item when_active' : 'left-item'} to='/admin/settings'> <div className="link"><IoSettingsOutline className="icon" /><span>Settings</span></div></NavLink>
                     </div>
                 </div>
             </div>
             <div className="lowerSection">
                 <div className="profile">
                     <div className="img">
-                        <img src="src/assets/download.png" alt="profile" />
+                        <img src={`${import.meta.env.BASE_URL}assets/greenhills.png`} alt="LearnIX logo" />
                     </div>
                     <div className="info">
                         <h3 className="name">Green Hills Academy</h3>

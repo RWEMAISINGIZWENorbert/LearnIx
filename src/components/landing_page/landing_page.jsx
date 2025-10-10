@@ -188,7 +188,7 @@ export const Landing_page = () => {
             <div className="text">
               <div className="text_p">
                 <div className="img">
-                  <img src="src/assets/LearnIx.png" alt="LearnIx logo" />
+                  <img src={`${import.meta.env.BASE_URL}assets/LearnIx.png`} alt="LearnIx logo" />
                 </div>
               </div>
             </div>

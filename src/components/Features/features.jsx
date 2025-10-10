@@ -153,7 +153,7 @@ export const Features_component = () => {
                 </div>
               </div>
               <div className="rightside">
-                <img src="src/assets/student_in_library.png" alt="Student in Library" />
+                <img src={`${import.meta.env.BASE_URL}assets/student_in_library.png`} alt="Student in Library" />
               </div>
             </div>
             
@@ -295,7 +295,7 @@ export const Features_component = () => {
                 </div>
               </div>
               <div className="rightside">
-                <img src="src/assets/student_past_papers.png" alt="Student viewing her past papers" />
+                <img src={`${import.meta.env.BASE_URL}assets/student_past_papers.png`} alt="Student viewing her past papers" />
               </div>
             </div>
            
@@ -437,7 +437,7 @@ export const Features_component = () => {
                 </div>
               </div>
               <div className="rightside">
-                <img src="src/assets/student_applying.png" alt="Student applying" />
+                <img src={`${import.meta.env.BASE_URL}assets/student_applying.png`} alt="Student applying" />
               </div>
             </div>
           
