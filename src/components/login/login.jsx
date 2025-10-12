@@ -128,7 +128,7 @@ export const Login = () => {
           <div className="upperside">
             <div className="img">
               <Link className='all-links' to='/'>
-                <img src="src/assets/LearnIx.png" alt="LearnIx logo" />
+                <img src={`${import.meta.env.BASE_URL}assets/LearnIx.png`} alt="LearnIx logo" />
               </Link>
             </div>
           </div>
@@ -174,7 +174,7 @@ export const Login = () => {
         <div className="rightside">
           <div className="login_form">
             <div className="img">
-              <img src="src/assets/LearnIx.png" alt="LearnIx logo" />
+              <img src={`${import.meta.env.BASE_URL}assets/LearnIx.png`} alt="LearnIx logo" />
             </div>
             <div className="form">
               <div className="form1">
@@ -299,7 +299,7 @@ export const Login = () => {
                             </div>
                             <div className="inputs">
                               <div className="pic">
-                                <img src={logo} className='demo_pic' alt="School Logo" />
+                                <img src={`${import.meta.env.BASE_URL}assets/profile_pic_blank.png`} className='demo_pic' alt="School Logo" />
                               </div>
                               <div className="add_or_skip">
                                 <input required

@@ -23,7 +23,7 @@ export const LeftSideBar = () => {
                 </div>
                 <div className="lower">
                     <div className="links">
-                        <NavLink className={({ isActive }) => isActive ? 'left-item when_active' : 'left-item'} to='/admin/'><div className="link active"><RxDashboard  className="icon" /><span>Dashboard</span></div></NavLink>
+                        <NavLink className={({ isActive }) => isActive ? 'left-item when_active' : 'left-item'} to='/admin/dashboard'><div className="link active"><RxDashboard  className="icon" /><span>Dashboard</span></div></NavLink>
                         <NavLink className={({ isActive }) => isActive ? 'left-item when_active' : 'left-item'} to='/admin/user_management'><div className="link"><MdOutlineManageAccounts className="icon" /><span>User Management</span></div></NavLink>
                         <NavLink className={({ isActive }) => isActive ? 'left-item when_active' : 'left-item'} to='/admin/admissions'><div className="link"><LuNotebookPen className="icon" /><span>Admissions & Registration</span></div></NavLink>
                         <NavLink className={({ isActive }) => isActive ? 'left-item when_active' : 'left-item'} to='/admin/academic_setup'><div className="link"><HiOutlineAcademicCap className="icon" /><span>Academic Setup</span></div></NavLink>

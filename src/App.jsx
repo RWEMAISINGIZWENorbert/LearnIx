@@ -5,9 +5,9 @@ import { Home } from './pages/home/Home_page';
 import { Features } from './pages/features/features_page';
 import { Login_page } from './pages/Login/login_page';
 import ClickSpark from './components/animations/ClickSpark';
-import { Admin } from './pages/admin/admin';
-import { Dashboard } from './components/dashboard_page/dashboard';
 import { Not_found } from './pages/Not_Found/Not_found';
+import { Admin_dashboard } from './pages/admin/admin_dashboard/admin_dashboard';
+import { Admin_settings } from './pages/admin/admin_settings/admin_settings';
 
 function App() {
   return (
@@ -28,8 +28,10 @@ function App() {
         <Route path='/signup' element={<Login_page/>}/>
 
         {/* Admin page routes */}
-        <Route path='/admin' element={<Admin/>}>
-            <Route path='dashboard' element={<Dashboard/>}/>
+        <Route path='/admin'>
+            <Route path='' element={<Admin_dashboard/>}/>
+            <Route path='dashboard' element={<Admin_dashboard/>}/>
+            <Route path='settings' element={<Admin_settings/>}/>
         </Route>
           {/* Not Found Route */}
         <Route path='*' element={<Not_found/>}/>

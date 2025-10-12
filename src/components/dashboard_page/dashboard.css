@@ -22,22 +22,23 @@
     gap: 20px;
 }
 .dash .box .mid_upper .divisions .div2  .icon{
-    background: #a474c0;
+    background: #e8c1ff;
+    color: #a474c0;
 
 }
 .dash .box .mid_upper .divisions .div3 .icon{
-    background: #7c3aed;
+    background: #d5bcff; 
+    color: #7c3aed; 
 
 }
 .dash .box .mid_upper .divisions .div1 .icon{
-    background: #06b6d4;
-
+    background: #a0f1ff;
+    color: #06b6d4;
 }
 .dash .box .mid_upper .divisions .all .icon{
     font-size: 1.5rem;
     padding: 10px;
     border-radius: 10px;
-    color: var(--white);
 }
 .dash .box .mid_upper .divisions .all .left p{
     font-size: 14px;

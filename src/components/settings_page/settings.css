@@ -1,0 +1,150 @@
+:root {
+  --main_color: #A05AC8;
+  --black: black;
+  --white: white;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+.settings_page{
+  transform: translateX(20vw);
+  padding: 20px;
+}
+.settings_page .settings .upper p{
+  font-size: 14px;
+  opacity: 0.7;
+  margin-bottom: 20px;
+}
+.settings_page .settings .down{
+  margin-top: 20px;
+}
+.settings_page .settings .down .divs{
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.settings_page .settings .down .divs .all{
+  width: 25vw;
+  box-shadow: var(--shadow);
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.settings_page .settings .down .divs .all .up{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.settings_page .settings .down .divs .all .i {
+  margin-right: 20px;
+}
+.settings_page .settings .down .divs .all .i .icon{
+  /* background:#e0abff ; */
+  font-size: 20px;
+  padding: 5px;
+  border-radius: 5px;
+  /* color: var(--main_color); */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.settings_page .settings .down .divs .all .mid{
+  font-size: 14px;
+  opacity: 0.7;
+  margin-bottom: 10px;
+}
+.settings_page .settings .down .divs .div1 button{
+  color: var(--main_color);
+}
+.settings_page .settings .down .divs .div1 .i .icon{
+  background: #e4b5ff;
+  color: var(--main_color);
+}
+.settings_page .settings .down .divs .div2 button{
+  color: rgb(0, 209, 209);
+}
+.settings_page .settings .down .divs .div2 .i .icon{
+  color: rgb(0, 209, 209);
+  background: rgb(192, 255, 255);
+}
+.settings_page .settings .down .divs .div3 button{
+  color: blue;
+}
+.settings_page .settings .down .divs .div3 .i .icon{
+  background: rgb(188, 188, 255);
+  color: blue;
+}
+.settings_page .settings .down .divs .div4 button{
+  color: brown;
+}
+.settings_page .settings .down .divs .div4 .i .icon{
+  background: rgb(230, 172, 172);
+  color: brown;
+}
+.settings_page .settings .down .divs .div5 button{
+  color: rgb(211, 122, 137);
+}
+.settings_page .settings .down .divs .div5 .i .icon{
+  background: rgb(255, 192, 203);
+  color: rgb(211, 122, 137);
+}
+.settings_page .settings .down .divs .div6 button{
+  color: green;
+}
+.settings_page .settings .down .divs .div6 .i .icon{
+  background: rgb(165, 255, 165);
+  color: green;
+}
+.settings_page .settings .down .divs .div7 button{
+  color: rgb(202, 202, 0);
+}
+.settings_page .settings .down .divs .div7 .i .icon{
+  background: rgb(255, 255, 183);
+  color: rgb(202, 202, 0);
+}
+.settings_page .settings .down .divs .div8 button{
+  color: orange;
+}
+.settings_page .settings .down .divs .div8 .i .icon{
+  background: rgb(255, 229, 180);
+  color: orange;
+}
+.settings_page .settings .down .divs .div9 button{
+  color: red;
+}
+.settings_page .settings .down .divs .div9 .i .icon{
+  background: #ffabab;
+  color: red;
+}
+.settings_page .settings .down .divs .div10 button{
+  color: gray;
+}
+.settings_page .settings .down .divs .div10 .i .icon{
+  background: rgb(206, 206, 206);
+  color: gray;
+}
+.settings_page .settings .down .divs .div11 button{
+  color: goldenrod;
+}
+.settings_page .settings .down .divs .div11 .i .icon{
+  background: rgb(255, 230, 168);
+  color: goldenrod;
+}
+.settings_page .settings .down .divs .all .down button{
+  border: none;
+  background: none;
+  /* color: var(--main_color); */
+  padding: 8px 0;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.settings_page .settings .down .divs .all:hover{
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12);
+  transform: translateY(-5px);
+}

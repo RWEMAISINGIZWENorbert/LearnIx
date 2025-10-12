@@ -13,12 +13,9 @@ import { FaRegBell } from 'react-icons/fa';
 export const Dashboard = () => {
   return (
     <div className='dashboard'>
-      {/* START: Left sidebar */}
-      <LeftSideBar/>
-      {/* END: Left sidebar */}
 
       {/* START: Main dashboard container */}
-      <div className='whole_box dash'>
+      <div className='dash'>
 
         {/* START: Top box */}
         <div className="box">
