@@ -131,6 +131,9 @@
   background: rgb(255, 230, 168);
   color: goldenrod;
 }
+.settings_page .settings .down .divs .all .down button .icon{
+  margin-top: 3px;
+}
 .settings_page .settings .down .divs .all .down button{
   border: none;
   background: none;

@@ -8,6 +8,7 @@ import ClickSpark from './components/animations/ClickSpark';
 import { Not_found } from './pages/Not_Found/Not_found';
 import { Admin_dashboard } from './pages/admin/admin_dashboard/admin_dashboard';
 import { Admin_settings } from './pages/admin/admin_settings/admin_settings';
+import { Developers } from './pages/Developers/Developers';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path='/' element={<Home/>}/>
         <Route path='/features' element={<Features/>}/>
         <Route path='/signup' element={<Login_page/>}/>
+        <Route path='/dev_team' element={<Developers/>}/>
 
         {/* Admin page routes */}
         <Route path='/admin'>
