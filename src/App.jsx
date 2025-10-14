@@ -10,6 +10,7 @@ import { Admin_dashboard } from './pages/admin/admin_dashboard/admin_dashboard';
 import { Admin_settings } from './pages/admin/admin_settings/admin_settings';
 import { Developers } from './pages/Developers/Developers';
 import { Admin_notifications } from './pages/admin/Admin_notifications/admin_notifications';
+import { Admin_user_management } from './pages/admin/admin_user_management/admin_user_management';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
             <Route path='dashboard' element={<Admin_dashboard/>}/>
             <Route path='settings' element={<Admin_settings/>}/>
             <Route path='notifications' element={<Admin_notifications/>}/>
+            <Route path='user_management' element={<Admin_user_management/>}/>
         </Route>
           {/* Not Found Route */}
         <Route path='*' element={<Not_found/>}/>

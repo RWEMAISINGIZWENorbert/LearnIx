@@ -1,0 +1,130 @@
+:root {
+  --main_color: #A05AC8;
+  --black: black;
+  --white: white;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+.user_management{
+    display: flex;
+    transform: translateX(20vw);
+    padding: 20px;
+}
+.user_management .box .upper .up p{
+    font-size: 14px;
+    opacity: 0.7;
+    margin-bottom: 20px;
+}
+.user_management .box .mini_up{
+    display: flex;
+    gap: 20px;
+}
+.user_management .box .mini_up .divs{
+    background: none;
+    border-radius: 10px;
+    border: none;
+    box-shadow: var(--shadow);
+    padding: 10px;
+    width: 18vw;
+}
+.user_management .box .mini_up .divs .up{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.user_management .box .mini_up .divs.div4 .up .left .icon{
+    background: #e4b5ff;
+    color: var(--main_color);
+}
+.user_management .box .mini_up .divs.div3 .up .left .icon{
+    background: rgb(165, 255, 165);
+    color: green;
+}
+.user_management .box .mini_up .divs.div2 .up .left .icon{
+    background: rgb(206, 206, 206);
+    color: gray;
+}
+.user_management .box .mini_up .divs.div1 .up .left .icon{
+    background: rgb(188, 188, 255);
+    color: blue;
+}
+
+.user_management .box .mini_up .divs .up .left .icon{
+    border: none;
+    padding: 10px;
+    font-size: 1.2rem;
+    border-radius: 5px;
+}
+.user_management .box .mini_up .divs .up .right p{
+    font-size: 14px;
+    opacity: 0.7;
+}
+.user_management .box .mini_up .divs .down .increasing p{
+    font-size: 14px;
+}
+
+.user_management .box .mini_up .divs .down{
+    margin-top: 10px;
+    display: flex;
+    color: rgb(2, 190, 2);
+    gap: 10px;
+    align-items: center;
+}
+.user_management .box .mini_up .divs .down.decreasing{
+    color: red;
+}
+.user_management .box .mini_up .divs .down .icon{
+    font-size: 1.2rem;
+}
+.user_management .box .middle{
+    padding: 10px;
+    background: none;
+    box-shadow: var(--shadow);
+    margin-top: 20px;
+    width: 56.5vw;
+    border-radius: 10px;
+}
+.user_management .box .middle .up .icon{
+    font-size: 1.2rem;
+}
+.user_management .box .middle .up{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.user_management .box .middle .down .divs.div4{
+    background: #f3e2fc;
+    color: var(--main_color);
+}
+.user_management .box .middle .down .divs.div3{
+    background: rgb(215, 250, 215);
+    color: green;
+}
+.user_management .box .middle .down .divs.div2{
+    background: rgb(245, 244, 244);
+    color: gray;
+}
+.user_management .box .middle .down .divs.div1{
+    background: rgb(223, 223, 250);
+    color: blue;
+}
+.user_management .box .middle .down{
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+.user_management .box .middle .down .divs:active{
+    transform: scale(0.9);
+    transition: 0.3s;
+}
+.user_management .box .middle .down .divs{
+    width: 100%;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 10px;
+
+}
