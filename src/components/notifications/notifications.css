@@ -1,0 +1,282 @@
+:root {
+  --main_color: #A05AC8;
+  --black: black;
+  --white: white;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+.notifications{
+    display: flex;
+    transform: translateX(20vw);
+    padding: 20px;
+}
+.notifications .box .up p{
+    font-size: 14px;
+    opacity: 0.7;
+    margin-bottom: 20px;
+}
+.notifications .box .mid{
+    display: flex;
+}
+.notifications .box .mid .left{
+    background: none;
+    box-shadow: var(--shadow);
+    width: 20vw;
+    height: 86vh;
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 10px;
+}
+.notifications .box .mid .left .up .divs.div1 .icon{
+    background: #e4b5ff;
+    color: var(--main_color);
+}
+.notifications .box .mid .left .up .divs.div2 .icon{
+    background: rgb(255, 229, 180);
+    color: orange;
+}
+.notifications .box .mid .left .up .divs.div3 .icon{
+    background: rgb(255, 197, 197);
+    color: red;
+}
+.notifications .box .mid .left .up .divs.div4 .icon{
+    background: rgb(188, 188, 255);
+    color: blue;
+}
+.notifications .box .mid .left .up .divs.div5 .icon{
+    background: rgb(165, 255, 165);
+    color: green;
+}
+
+.notifications .box .mid .left .up .divs .icon{
+    font-size: 17px;
+    border: none;
+    outline: none;
+    font-weight: 600;
+    padding: 5px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+.notifications .box .mid .left .up .divs{
+    padding: 5px 10px;
+    display: flex;
+    gap: 20px;
+}
+.notifications .box .mid .left .down {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+}
+.notifications .box .mid .left .down .mark button{
+    color: blue;
+}
+.notifications .box .mid .left .down .del button{
+    color: red;
+}
+.notifications .box .mid .left .down .mark,
+.notifications .box .mid .left .down .del{
+    width: 100%;
+}
+.notifications .box .mid .left .down  button .icon{
+    font-size: 16px;
+}
+.notifications .box .mid .left .down  button:active{
+    transform: scale(0.98);
+    transition: 0.3s;
+}
+.notifications .box .mid .left .down  button:hover{
+    opacity: 0.8;
+    transition: 0.3s;
+}
+.notifications .box .mid .left .down  button{
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 14px;
+    background: none;
+}
+.notifications .box .mid .left .up .divs .des p .separator{
+    width: 5px;
+    height: 5px;
+    background: rgba(0, 0, 0, 0.6);
+    margin: 0px 5px;
+    border-radius: 50%;
+}
+.notifications .box .mid .left .up .divs .des p{
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    opacity: 0.5;
+}
+.notifications .box .mid .right{
+    background: none;
+    box-shadow: var(--shadow);
+    width: 55vw;
+    height: 86vh;
+    margin-left: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+.notifications .box .mid .right .mini_up{
+    display: flex;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+.notifications .box .mid .right .mini_up .search_box .search,
+.notifications .box .mid .right .mini_up .search_box{
+    display: flex;
+    width: 100%;
+    gap: 10px;
+    align-items: center;
+}
+.notifications .box .mid .right .mini_up .search_box .search input{
+    width: 100%;
+    outline: none;
+    background: none;
+    border: none;
+}
+.notifications .box .mid .right .mini_up .search_box .search .icon{
+    font-size: 1.2rem;
+    margin-top: 5px;
+}
+.notifications .box .mid .right .mini_up .search_box{
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding:10px 10px;
+}
+.notifications .box .mid .right .mini_up .search_box .button button{
+    background: none;
+    color:var(--main_color);
+    font-weight: 600;
+    font-size: 15px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+.notifications .box .mid .right .middle{
+    width: 100%;
+    overflow-y: scroll;
+}
+.notifications .box .mid .right .middle .notification{
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+    margin-right: 10px;
+}
+.notifications .box .mid .right .middle .notification .upper .leftside p .separator{
+    width: 5px;
+    height: 5px;
+    background: rgba(0, 0, 0, 0.6);
+    margin: 0px 5px;
+    border-radius: 50%;
+}
+.notifications .box .mid .right .middle .notification.message .upper .leftside .noti_type{
+    background: rgb(188, 188, 255);
+    color: blue;
+}
+.notifications .box .mid .right .middle .notification.academic_update .upper .leftside .noti_type{
+    background: rgb(165, 255, 165);
+    color: green;
+}
+.notifications .box .mid .right .middle .notification.security .upper .leftside .noti_type{
+    color: red;
+    background: rgb(255, 197, 197);
+}
+.notifications .box .mid .right .middle .notification .upper .leftside .noti_type{
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+}
+.notifications .box .mid .right .middle .notification .upper p{
+    font-size: 14px;
+    opacity: 0.7;
+}
+.notifications .box .mid .right .middle .notification .upper .leftside p{
+    display: flex;
+    align-items: center;
+}
+.notifications .box .mid .right .middle .notification .upper{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+.notifications .box .mid .right .middle .notification .lower{
+    display: flex;
+    justify-content: space-between;
+    width: 98%;
+    align-items: center;
+}
+.notifications .box .mid .right .middle .notification .lower .l{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    width: 100%;
+}
+.notifications .box .mid .right .middle .notification .lower .l p{
+    font-size: 13px;
+    opacity: 0.8;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.notifications .box .mid .right .middle .notification .lower .r {
+    margin-right: 10px;
+}
+/* .notifications .box .mid .right .middle .notification .lower .r .not_read{
+    width: 8px;
+    height: 8px;
+    margin: 0px 5px;
+    border-radius: 50%;
+    display: flex;
+    right: 0;
+} */
+.notifications .box .mid .right .middle .notification .more{
+    margin-top: 5px;
+}
+.notifications .box .mid .right .middle .notification.message .more button{
+    color: blue;
+}
+.notifications .box .mid .right .middle .notification.message .lower .r .not_read{
+    background: blue;
+}
+.notifications .box .mid .right .middle .notification.notification.academic_update .lower .r .not_read{
+    background: green;
+}
+.notifications .box .mid .right .middle .notification.security .lower .r .not_read{
+    background: red;
+}
+.notifications .box .mid .right .middle .notification.notification.academic_update .more button{
+    color: green;
+}
+.notifications .box .mid .right .middle .notification.security .more button{
+    color: red;
+}
+.notifications .box .mid .right .middle .notification .more button .icon{
+    margin-top: 2.5px;
+}
+.notifications .box .mid .right .middle .notification .more button{
+    background: none;
+    gap: 10px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
