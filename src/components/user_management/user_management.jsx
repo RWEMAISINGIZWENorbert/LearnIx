@@ -4,10 +4,12 @@ import { IoMdTrendingUp, IoMdTrendingDown } from "react-icons/io";
 import { FiUsers } from "react-icons/fi";
 import { LuUserRoundCheck,LuUserPlus, LuChartColumnIncreasing } from "react-icons/lu";
 import { CiCalendar } from "react-icons/ci";
-import { MdBolt , MdOutlineManageAccounts } from "react-icons/md";
-import { PiBook } from "react-icons/pi";
+import { MdBolt, MdOutlineEventRepeat   , MdOutlineManageAccounts } from "react-icons/md";
 import { FiBarChart2 } from "react-icons/fi";
 import Chart from 'chart.js/auto';
+import { FaChartLine } from "react-icons/fa6";
+import { SlNotebook } from "react-icons/sl";
+
 
 
 
@@ -132,38 +134,94 @@ export const User_management = () => {
                 </div>
             </div>
             <div className="middle">
-                <div className="buttons">
-                    <div className="up"><h3>Quick actions</h3><MdBolt className='icon'/></div>
-                    <div className="down">
-                        <div className="divs div1">
-                            <div className="icon"><LuUserPlus/></div>
-                            <div className="des">Manage students</div>
-                        </div>
-                        <div className="divs div2">
-                            <div className="icon"><MdOutlineManageAccounts /></div>
-                            <div className="des">Manage teachers</div>
-                        </div>
-                        <div className="divs div3">
-                            <div className="icon"><PiBook/></div>
-                            <div className="des">Create classes</div>
-                        </div>
-                        <div className="divs div4">
-                            <div className="icon"><FiBarChart2/></div>
-                            <div className="des">Generate report</div>
-                        </div>
-                    </div>  
-                </div>
-                <div className="stats">
-                    <div className="des">
-                        <h4>Average performance of students in this year</h4>
+                <div className="LeftSider">
+                    <div className="buttons">
+                        <div className="up"><MdBolt className='icon'/><h4>Quick actions</h4></div>
+                        <div className="down">
+                            <div className="divs div1">
+                                <div className="icon"><LuUserPlus/></div>
+                                <div className="des">Manage students</div>
+                            </div>
+                            <div className="divs div2">
+                                <div className="icon"><MdOutlineManageAccounts /></div>
+                                <div className="des">Manage teachers</div>
+                            </div>
+                            <div className="divs div3">
+                                <div className="icon"><SlNotebook/></div>
+                                <div className="des">Create classes</div>
+                            </div>
+                            <div className="divs div4">
+                                <div className="icon"><FiBarChart2/></div>
+                                <div className="des">Generate report</div>
+                            </div>  
+                        </div>  
                     </div>
-                    <div className="chart">
-                        <canvas ref={performanceChart}></canvas>
+                    <div className="stats">
+                        <div className="des">
+                            <h4> <FaChartLine className='icon'/> <span>Average performance of students in this year</span></h4>
+                        </div>
+                        <div className="chart">
+                            <canvas ref={performanceChart}></canvas>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className="rightSider">
-               
+                <div className="rightSider">
+                    <div className="div1">
+                        <div className="up">
+                            <h4><MdOutlineEventRepeat  className='icon'/><span>Recent activities</span></h4>
+                        </div>
+                        <div className="boxes">
+                            <div className="box1 all type_about_class">
+                                <div className="des_and_counter"><h5>New class enrolled</h5><span className="counter">2 hours ago</span></div>
+                                <p className='activity_message'>L3 SOD A was added successfully</p>
+                            </div>
+                            <div className="box2 all type_about_teachers">
+                                <div className="des_and_counter"><h5>Teacher revoked permissions</h5><span className="counter">2 hours ago</span></div>
+                                <p className='activity_message'>Teacher Nelly Valentin was revoked permission to enter marks</p>
+                            </div>
+                            <div className="box3 all type_about_students">
+                                <div className="des_and_counter"><h5>New student enrolled</h5><span className="counter">5 hours ago</span></div>
+                                <p className='activity_message'>A new comer student was inserted in L4 SOD C successfully.</p>
+                            </div>
+                            <div className="box4 all type_about_report">
+                                <div className="des_and_counter"><h5>New generated report</h5><span className="counter">1 hour ago</span></div>
+                                <p className='activity_message'>You have been generated a new report about students</p>
+                            </div>
+                            <div className="box5 all type_about_class">
+                                <div className="des_and_counter"><h5>New class enrolled</h5><span className="counter">2 hours ago</span></div>
+                                <p className='activity_message'>L3 SOD A was added successfully</p>
+                            </div>
+                            <div className="box6 all type_about_teachers">
+                                <div className="des_and_counter"><h5>Teacher revoked permissions</h5><span className="counter">2 hours ago</span></div>
+                                <p className='activity_message'>Teacher Nelly Valentin was revoked permission to enter marks</p>
+                            </div>
+                            <div className="box7 all type_about_students">
+                                <div className="des_and_counter"><h5>New student enrolled</h5><span className="counter">5 hours ago</span></div>
+                                <p className='activity_message'>A new comer student was inserted in L4 SOD C successfully.</p>
+                            </div>
+                            <div className="box8 all type_about_report">
+                                <div className="des_and_counter"><h5>New generated report</h5><span className="counter">1 hour ago</span></div>
+                                <p className='activity_message'>You have been generated a new report about students</p>
+                            </div>
+                            <div className="box9 all type_about_class">
+                                <div className="des_and_counter"><h5>New class enrolled</h5><span className="counter">2 hours ago</span></div>
+                                <p className='activity_message'>L3 SOD A was added successfully</p>
+                            </div>
+                            <div className="box10 all type_about_teachers">
+                                <div className="des_and_counter"><h5>Teacher revoked permissions</h5><span className="counter">2 hours ago</span></div>
+                                <p className='activity_message'>Teacher Nelly Valentin was revoked permission to enter marks</p>
+                            </div>
+                            <div className="box11 all type_about_students">
+                                <div className="des_and_counter"><h5>New student enrolled</h5><span className="counter">5 hours ago</span></div>
+                                <p className='activity_message'>A new comer student was inserted in L4 SOD C successfully.</p>
+                            </div>
+                            <div className="box12 all type_about_report">
+                                <div className="des_and_counter"><h5>New generated report</h5><span className="counter">1 hour ago</span></div>
+                                <p className='activity_message'>You have been generated a new report about students</p>
+                            </div>
+                        </div>
+                    </div>
+               </div>
             </div>
         </div>
     </div>
