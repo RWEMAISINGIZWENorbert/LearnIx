@@ -1,14 +1,15 @@
 import React from 'react';
 import './dashboard.css';
-import { LeftSideBar } from '../leftSideBar/LeftSideBar';
 import { GiTeacher } from 'react-icons/gi';
-import { PiStudentBold } from "react-icons/pi";
+import { PiStudent  } from "react-icons/pi";
 import { SlPeople } from "react-icons/sl";
 import { IoMdArrowDropright } from "react-icons/io";
 import { RiUserForbidLine } from "react-icons/ri";
 import { GrAnnounce } from 'react-icons/gr';
 import { IoChatbubblesOutline } from "react-icons/io5";
 import { FaRegBell } from 'react-icons/fa';
+import { CiCalendar } from "react-icons/ci";
+
 
 export const Dashboard = () => {
   return (
@@ -36,7 +37,7 @@ export const Dashboard = () => {
                   <p>Students</p>
                 </div>
                 <div className="rigth">
-                  <div className="icon"><PiStudentBold/></div>
+                  <div className="icon"><PiStudent /></div>
                 </div>
               </div>
 
@@ -58,7 +59,7 @@ export const Dashboard = () => {
                   <p>Active classes</p>
                 </div>
                 <div className="rigth">
-                  <div className="icon"><GiTeacher/></div>
+                  <div className="icon"><CiCalendar/></div>
                 </div>
               </div>
             </div>
@@ -230,7 +231,7 @@ export const Dashboard = () => {
               </div>
 
               <div className="it students">
-                <div className="icon"><PiStudentBold/></div>
+                <div className="icon"><PiStudent/></div>
                 <div className="des">Students</div>
               </div>
 

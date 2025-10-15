@@ -8,6 +8,10 @@
     display: flex;
     transform: translateX(20vw);
     padding: 20px;
+    height: 100vh;
+}
+.user_management .box{
+    height: 100%;
 }
 .user_management .box .upper .up p{
     font-size: 14px;
@@ -41,8 +45,8 @@
     color: green;
 }
 .user_management .box .mini_up .divs.div2 .up .left .icon{
-    background: rgb(206, 206, 206);
-    color: gray;
+    background: rgb(255, 255, 183);
+    color: rgb(202, 202, 0);
 }
 .user_management .box .mini_up .divs.div1 .up .left .icon{
     background: rgb(188, 188, 255);
@@ -76,13 +80,18 @@
 .user_management .box .mini_up .divs .down .icon{
     font-size: 1.2rem;
 }
-.user_management .box .middle{
-    padding: 10px;
-    background: none;
+.user_management .box .middle .buttons,
+.user_management .box .middle .stats{
     box-shadow: var(--shadow);
+    padding: 10px;
+    border-radius: 10px;
+    background: none;
+
+}
+.user_management .box .middle{
     margin-top: 20px;
     width: 56.5vw;
-    border-radius: 10px;
+    height: 52vh;
 }
 .user_management .box .middle .up .icon{
     font-size: 1.2rem;
@@ -101,8 +110,8 @@
     color: green;
 }
 .user_management .box .middle .down .divs.div2{
-    background: rgb(245, 244, 244);
-    color: gray;
+   background: rgb(255, 255, 183);
+    color: rgb(202, 202, 0);
 }
 .user_management .box .middle .down .divs.div1{
     background: rgb(223, 223, 250);
@@ -111,7 +120,7 @@
 .user_management .box .middle .down{
     margin-top: 10px;
     display: flex;
-    gap: 10px;
+    gap: 20px;
 }
 .user_management .box .middle .down .divs:active{
     transform: scale(0.9);
@@ -126,5 +135,25 @@
     justify-content: center;
     align-items: center;
     padding: 20px 10px;
-
+    
+}
+.user_management .box .middle .down .divs .icon{
+    font-size: 25px;
+}
+.user_management .box .middle .down .divs .des{
+    font-size: 12px;
+}
+.user_management .box .stats {
+    width: 100%;
+    height: 100%;
+    background: none;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    margin-top: 20px;
+    
+}
+.user_management .box .stats .chart{
+    width: 100%;
+    height: 90%;
+    margin-top: 20px;
 }

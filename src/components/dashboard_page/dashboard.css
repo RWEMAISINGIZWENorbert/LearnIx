@@ -22,18 +22,18 @@
     gap: 20px;
 }
 .dash .box .mid_upper .divisions .div2  .icon{
-    background: #e8c1ff;
-    color: #a474c0;
+   background: rgb(255, 255, 183);
+    color: rgb(202, 202, 0);
 
 }
 .dash .box .mid_upper .divisions .div3 .icon{
-    background: #d5bcff; 
-    color: #7c3aed; 
+    background: rgb(165, 255, 165);
+    color: green;
 
 }
 .dash .box .mid_upper .divisions .div1 .icon{
-    background: #a0f1ff;
-    color: #06b6d4;
+     background: rgb(188, 188, 255);
+    color: blue;
 }
 .dash .box .mid_upper .divisions .all .icon{
     font-size: 1.5rem;
