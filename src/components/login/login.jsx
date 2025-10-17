@@ -36,7 +36,7 @@ export const Login = () => {
 
     // Redirect when last step is done
     if (currentStep === steps.length - 1) {
-      navigate('/admin');
+      navigate( '/admin/dashboard');
       return;
     }
 

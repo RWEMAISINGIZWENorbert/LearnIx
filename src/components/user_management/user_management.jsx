@@ -9,6 +9,7 @@ import { FiBarChart2 } from "react-icons/fi";
 import Chart from 'chart.js/auto';
 import { FaChartLine } from "react-icons/fa6";
 import { SlNotebook } from "react-icons/sl";
+import { Link } from 'react-router-dom';
 
 
 
@@ -138,22 +139,30 @@ export const User_management = () => {
                     <div className="buttons">
                         <div className="up"><MdBolt className='icon'/><h4>Quick actions</h4></div>
                         <div className="down">
+                            <Link to='students' style={{color:'inherit', textDecoration:'none', width: '100%'}}>
                             <div className="divs div1">
                                 <div className="icon"><LuUserPlus/></div>
                                 <div className="des">Manage students</div>
                             </div>
+                            </Link>
+                             <Link to='teachers' style={{color:'inherit', textDecoration:'none', width: '100%'}}>
                             <div className="divs div2">
                                 <div className="icon"><MdOutlineManageAccounts /></div>
                                 <div className="des">Manage teachers</div>
                             </div>
+                            </Link>
+                             <Link to='classes' style={{color:'inherit', textDecoration:'none', width: '100%'}}>
                             <div className="divs div3">
                                 <div className="icon"><SlNotebook/></div>
                                 <div className="des">Create classes</div>
                             </div>
+                            </Link>
+                             <Link to='reports' style={{color:'inherit', textDecoration:'none', width: '100%'}}>
                             <div className="divs div4">
                                 <div className="icon"><FiBarChart2/></div>
                                 <div className="des">Generate report</div>
                             </div>  
+                            </Link>
                         </div>  
                     </div>
                     <div className="stats">

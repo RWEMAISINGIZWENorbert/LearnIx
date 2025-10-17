@@ -2,7 +2,6 @@
     --box-shadow: 0 8px 26px rgba(0,0,0,0.06);
 }
 .dashboard{
-    background:radial-gradient(1200px 400px at 10% 10%, #00f 0%, rgba(123,126,255,0.12) 18%, transparent 48%), linear-gradient(180deg,#fff,#f7fbff 120%);
     height: 100vh;
 }
 .dash{
