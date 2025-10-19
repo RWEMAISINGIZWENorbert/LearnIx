@@ -177,7 +177,6 @@
     border-radius: 10px;
     padding: 10px 20px;
     margin-bottom: 10px;
-    box-shadow: var(--shadow);
     margin-right: 10px;
 }
 .notifications .box .mid .right .middle .notification .upper .leftside p .separator{

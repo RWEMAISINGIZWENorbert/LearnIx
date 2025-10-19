@@ -12,6 +12,7 @@ import { Developers } from './pages/Developers/Developers';
 import { Admin_notifications } from './pages/admin/Admin_notifications/admin_notifications';
 import { Admin_user_management } from './pages/admin/admin_user_management/admin_user_management';
 import { Admin_student_management } from './pages/admin/admin_student_management/admin_student_management';
+import { Admin_classes_management } from './pages/admin/admin_classes_management/admin_classes_management';
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
             <Route path='user_management' element={<Admin_user_management/>}/>
             <Route path='user_management' >
                 <Route path='students' element={<Admin_student_management/>}/>
+                <Route path='classes' element={<Admin_classes_management/>}/>
             </Route>
         </Route>
           {/* Not Found Route */}

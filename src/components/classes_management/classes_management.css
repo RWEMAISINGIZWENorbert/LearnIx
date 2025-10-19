@@ -1,0 +1,181 @@
+:root {
+  --main_color: #A05AC8;
+  --black: black;
+  --white: white;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+.classes_management{
+    transform: translateX(20vw);
+    padding: 20px;
+}
+.classes_management .up {
+    margin-bottom: 20px;
+}
+.classes_management .up  .button button{
+    background: none;
+    outline: none;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 30px;
+    padding:5px 10px;
+    gap: 10px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    cursor: pointer;
+}
+.classes_management .upper p{
+    opacity: 0.7;
+    font-size: 14px;
+}
+.classes_management{
+    width: 80vw;
+}
+.classes_management .box .whole_up .mini_up{
+    margin-top: 20px;
+    display: flex;
+    gap:10px
+}
+.classes_management .box .whole_up .mini_up .search_box .search,
+.classes_management .box .whole_up .mini_up .search_box{
+    display: flex;
+    width: 100%;
+    gap: 10px;
+    align-items: center;
+}
+.classes_management .box .whole_up .mini_up .search_box .search input{
+    width: 100%;
+    outline: none;
+    background: none;
+    border: none;
+}
+.classes_management .box .whole_up .mini_up .search_box .search .icon{
+    font-size: 1.2rem;
+    margin-top: 5px;
+}
+.classes_management .box .whole_up .mini_up .search_box{
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding:10px 10px; 
+}
+.classes_management .box .whole_up .mini_up .search_box .button button{
+    background: none;
+    color:var(--main_color);
+    font-weight: 600;
+    font-size: 15px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+.classes_management .box .middle{
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    gap: 20px;
+}
+.classes_management .box .middle .class{
+    box-shadow: var(--shadow);
+    padding: 10px;
+    border-radius: 10px;
+    background: none;
+    width: 25vw;
+}
+.classes_management .box .middle .class .up h4{
+    text-transform: uppercase;
+}
+.classes_management .box .middle .class .up{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.classes_management .box .middle .class .up .active_status.inactive{
+  background: rgb(255, 192, 203);
+  color: rgb(216, 81, 103);
+}
+.classes_management .box .middle .class .up .active_status.active{
+    background: rgb(165, 255, 165);
+    color: green;
+}
+.classes_management .box .middle .class .up .active_status{
+    padding:3px 5px;
+    border-radius: 10px;
+    font-size: 12px;
+}
+.classes_management .box .middle .class .details p .icon{
+    font-size: 16px;
+}
+.classes_management .box .middle .class .details p{
+    display: flex;
+    opacity: 0.7;
+    font-size: 14px;
+    gap: 10px;
+    margin-bottom: 5px;
+    align-items: center;
+}
+
+.classes_management .box .middle .class .down{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+.classes_management .box .middle .class .down button .icon{
+    font-size: 16px;
+    display: flex;
+    margin-top: 3px;
+}
+.classes_management .box .middle .class .down button{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 13px;
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+.classes_management .box .middle .class .down .more{
+    color: blue;
+}
+.classes_management .box .middle .class .down .archive{
+    color: red;
+}
+.classes_management .box .mini_up .new:hover{
+    background: rgba(0, 0, 0, 0.06);
+    transition: 0.3s;
+}
+.classes_management .box .mini_up .new:active{
+    transform: scale(0.98);
+    transition: 0.3s ease-in-out;
+}
+.classes_management .box .mini_up .new {
+    display: flex;
+    background:none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    align-items: center;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+.classes_management .box .mini_up .new .left {
+    margin-right: 10px;
+}
+.classes_management .box .mini_up .new .left .icon{
+    font-size: 1.5rem;
+    background: rgb(188, 188, 255);
+    color: blue;
+    padding: 5px;
+    border-radius: 5px;
+    display: flex;
+}
+.classes_management .box .mini_up .new .right span,
+.classes_management .box .mini_up .new .right p{
+    text-wrap: nowrap;
+}
+.classes_management .box .mini_up .new .right span{
+    font-weight: 500;
+    font-size: 14px;
+}
+.classes_management .box .mini_up .new .right p{
+    font-size: 12px;
+    opacity: 0.6;
+}
