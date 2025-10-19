@@ -154,7 +154,7 @@ export const User_management = () => {
                              <Link to='classes' style={{color:'inherit', textDecoration:'none', width: '100%'}}>
                             <div className="divs div3">
                                 <div className="icon"><SlNotebook/></div>
-                                <div className="des">Create classes</div>
+                                <div className="des">Manage classes</div>
                             </div>
                             </Link>
                              <Link to='reports' style={{color:'inherit', textDecoration:'none', width: '100%'}}>
