@@ -14,6 +14,7 @@ import { Admin_user_management } from './pages/admin/admin_user_management/admin
 import { Admin_student_management } from './pages/admin/admin_student_management/admin_student_management';
 import { Admin_classes_management } from './pages/admin/admin_classes_management/admin_classes_management';
 import { Admin_teachers_management } from './pages/admin/admin_teachers_management/admin_teachers_management';
+import { Admin_admissions_management } from './pages/admin/admin_admissions_management/admin_admissions_management';
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
                 <Route path='classes' element={<Admin_classes_management/>}/>
                 <Route path='teachers' element={<Admin_teachers_management/>}/>
             </Route>
+            <Route path='admissions' element={<Admin_admissions_management/>}/>
         </Route>
           {/* Not Found Route */}
         <Route path='*' element={<Not_found/>}/>

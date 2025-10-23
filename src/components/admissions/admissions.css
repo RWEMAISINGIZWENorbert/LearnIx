@@ -1,0 +1,308 @@
+:root {
+  --main_color: #A05AC8;
+  --black: black;
+  --white: white;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+.admissions_management{
+    transform: translateX(20vw);
+    padding: 20px;
+}
+.admissions_management .up {
+    margin-bottom: 20px;
+}
+.admissions_management .up  .button button{
+    background: none;
+    outline: none;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 30px;
+    padding:5px 10px;
+    gap: 10px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    cursor: pointer;
+}
+.admissions_management .upper p{
+    opacity: 0.7;
+    font-size: 14px;
+}
+.admissions_management{
+    width: 80vw;
+}
+.admissions_management .box .whole_up .mini_up{
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.admissions_management .box .whole_up .mini_up .search_box .search,
+.admissions_management .box .whole_up .mini_up .search_box{
+    display: flex;
+    width: 100%;
+    gap: 10px;
+    align-items: center;
+}
+.admissions_management .box .whole_up .mini_up .search_box .search input{
+    width: 100%;
+    outline: none;
+    background: none;
+    border: none;
+}
+.admissions_management .box .whole_up .mini_up .search_box .search .icon{
+    font-size: 1.2rem;
+    margin-top: 5px;
+}
+.admissions_management .box .whole_up .mini_up .search_box{
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding:10px 10px; 
+    flex: 1;
+}
+.admissions_management .box .whole_up .mini_up .search_box .button button{
+    background: none;
+    color:var(--main_color);
+    font-weight: 600;
+    font-size: 15px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+.admissions_management .filters {
+    flex: 1;
+}
+.admissions_management .filter_buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.admissions_management .filter_buttons .all.active{
+    background: rgb(229, 229, 255);
+  color: blue;
+  border: none;
+}
+.admissions_management .filter_buttons .approved.active{
+    background: rgb(214, 250, 214);
+    color: green;
+    border: none;
+}
+.admissions_management .filter_buttons .pending.active{
+    background: rgb(253, 253, 210);
+    color: rgb(202, 202, 0);
+    border: none;
+}
+.admissions_management .filter_buttons .rejected.active{
+    background: #fcd5d5;
+    color: red;
+    border: none;
+}
+.admissions_management .filter_buttons button {
+    padding: 8px 16px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    background: none;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+.admissions_management .filter_buttons button:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+.admissions_management .filter_buttons button.active {
+    background: var(--main_color);
+    color: white;
+    border-color: var(--main_color);
+}
+.admissions_management .box .mini_up .new:hover{
+    background: rgba(0, 0, 0, 0.06);
+    transition: 0.3s;
+}
+.admissions_management .box .mini_up .new:active{
+    transform: scale(0.98);
+    transition: 0.3s ease-in-out;
+}
+.admissions_management .box .mini_up .new {
+    display: flex;
+    background:none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    align-items: center;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+.admissions_management .box .mini_up .new .left {
+    margin-right: 10px;
+}
+.admissions_management .box .mini_up .new .left .icon{
+    font-size: 1.5rem;
+    background: rgb(188, 188, 255);
+    color: blue;
+    padding: 5px;
+    border-radius: 5px;
+    display: flex;
+}
+.admissions_management .box .mini_up .new .right span,
+.admissions_management .box .mini_up .new .right p{
+    text-wrap: nowrap;
+}
+.admissions_management .box .mini_up .new .right span{
+    font-weight: 500;
+    font-size: 14px;
+}
+.admissions_management .box .mini_up .new .right p{
+    font-size: 12px;
+    opacity: 0.6;
+}
+
+.admissions_management .box .middle{
+    margin-top: 20px;
+}
+.admissions_management .applications_list {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+.admissions_management .application{
+    box-shadow: var(--shadow);
+    padding: 20px;
+    border-radius: 10px;
+    background: none;
+    /* border: 1px solid rgba(0, 0, 0, 0.1); */
+    border: none;
+    width: 49.1%;
+}
+.admissions_management .application .up{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.admissions_management .application .profile {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.admissions_management .application .profile .img img{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.admissions_management .application .profile .data .name{
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+.admissions_management .application .profile .data .email{
+    font-size: 14px;
+    opacity: 0.7;
+    margin-bottom: 3px;
+}
+.admissions_management .application .profile .data .class{
+    font-size: 14px;
+    color: var(--main_color);
+    font-weight: 500;
+}
+
+.admissions_management .status_badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+}
+.admissions_management .status_badge.approved {
+    background: rgb(165, 255, 165);
+    color: green;
+}
+.admissions_management .status_badge.rejected {
+    background: rgb(255, 197, 197);
+    color: red;
+}
+.admissions_management .status_badge.pending {
+    background: rgb(255, 229, 180);
+    color: orange;
+}
+
+.admissions_management .application .details {
+    margin-bottom: 15px;
+}
+.admissions_management .application .contact_info {
+    display: flex;
+    gap: 3px;
+    margin-bottom: 15px;
+    flex-direction: column;
+    /* flex-wrap: wrap; */
+}
+.admissions_management .application .contact_info p {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    opacity: 0.8;
+}
+.admissions_management .application .contact_info .icon {
+    font-size: 16px;
+    opacity: 0.5;
+}
+
+.admissions_management .application .documents h5 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    margin-bottom: 10px;
+    color: var(--main_color);
+}
+.admissions_management .application .documents_list {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.admissions_management .application .document_tag {
+    background: rgba(160, 90, 200, 0.1);
+    color: var(--main_color);
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.admissions_management .application .actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+.admissions_management .application .actions button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+.admissions_management .application .actions .view {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+}
+.admissions_management .application .actions .edit {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+}
+.admissions_management .application .actions .delete {
+    color: #ef4444;
+    background: #fde4e4;
+}
+.admissions_management .application .actions button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
