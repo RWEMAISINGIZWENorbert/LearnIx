@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import GradientText from '../animations/GradientText';
+import GradientText from '../../for_an_admin/animations/GradientText';
 import { FaArrowRightLong, FaArrowLeftLong } from "react-icons/fa6";
 import { LuLetterText } from "react-icons/lu";
 import { MdEmail, MdPhone, MdOutlineLock } from "react-icons/md";

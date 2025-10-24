@@ -1,6 +1,6 @@
 import React from 'react'
-import { LeftSideBar } from '../../../components/leftSideBar/LeftSideBar'
-import { Teachers_management } from '../../../components/teachers_management/teachers_management'
+import { LeftSideBar } from '../../../components/for_an_admin/leftSideBar/LeftSideBar'
+import { Teachers_management } from '../../../components/for_an_admin/teachers_management/teachers_management'
 
 export const Admin_teachers_management = () => {
   return (

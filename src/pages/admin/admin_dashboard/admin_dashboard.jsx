@@ -1,6 +1,6 @@
 import React from 'react'
-import { LeftSideBar } from '../../../components/leftSideBar/LeftSideBar'
-import { Dashboard } from '../../../components/dashboard_page/dashboard'
+import { LeftSideBar } from '../../../components/for_an_admin/leftSideBar/LeftSideBar'
+import { Dashboard } from '../../../components/for_an_admin/dashboard_page/dashboard'
 
 export const Admin_dashboard = () => {
   return (

@@ -1,12 +1,12 @@
 import React from 'react'
+import { Resources_management } from '../../../components/for_an_admin/resources_management/resources_management'
 import { LeftSideBar } from '../../../components/for_an_admin/leftSideBar/LeftSideBar'
-import { Classes_management } from '../../../components/for_an_admin/classes_management/classes_management'
 
-export const Admin_classes_management = () => {
+export const Admin_resources_management = () => {
   return (
     <div className='admin_classes_management'>
         <LeftSideBar/>
-        <Classes_management/>
+        <Resources_management/>
     </div>
   )
 }

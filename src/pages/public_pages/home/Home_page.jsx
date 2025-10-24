@@ -1,6 +1,6 @@
 import React from 'react'
-import { Navbar } from '../../components/navbar/navbar'
-import { Landing_page } from '../../components/landing_page/landing_page'
+import { Navbar } from '../../../components/public_components/navbar/navbar'
+import { Landing_page } from '../../../components/for_an_admin/landing_page/landing_page'
 
 export const Home = () => {
   return (

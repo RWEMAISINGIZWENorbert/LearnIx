@@ -1,6 +1,6 @@
 import React from 'react'
-import { LeftSideBar } from '../../../components/leftSideBar/LeftSideBar'
-import { Notifications } from '../../../components/notifications/Notifications'
+import { LeftSideBar } from '../../../components/for_an_admin/leftSideBar/LeftSideBar'
+import { Notifications } from '../../../components/for_an_admin/notifications/Notifications'
 
 export const Admin_notifications = () => {
   return (

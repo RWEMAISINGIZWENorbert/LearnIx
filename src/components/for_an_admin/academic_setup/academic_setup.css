@@ -1,0 +1,1063 @@
+:root {
+  --main_color: #A05AC8;
+  --black: black;
+  --white: white;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+.academic_setup{
+    transform: translateX(20vw);
+    padding: 20px;
+}
+.academic_setup .up {
+    margin-bottom: 20px;
+}
+.academic_setup .up  .button button{
+    background: none;
+    outline: none;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 30px;
+    padding:5px 10px;
+    gap: 10px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    cursor: pointer;
+}
+.academic_setup .upper p{
+    opacity: 0.7;
+    font-size: 14px;
+}
+.academic_setup{
+    width: 80vw;
+}
+
+.academic_setup .middle {
+    margin-top: 30px;
+}
+
+.academic_setup .tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 10px;
+}
+
+.academic_setup .tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border: none;
+    background: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.6);
+    transition: all 0.3s ease;
+}
+
+.academic_setup .tab:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--main_color);
+}
+
+.academic_setup .tab.active {
+    background: var(--main_color);
+    color: white;
+}
+
+.academic_setup .content {
+    background: none;
+    border-radius: 10px;
+}
+
+.academic_setup .content_section {
+    background: none;
+}
+
+.academic_setup .section_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.academic_setup .section_header h3 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.academic_setup .add_button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: var(--main_color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.academic_setup .add_button:hover {
+    background: #8a4fb8;
+    transform: translateY(-2px);
+}
+
+/* Subjects List */
+.academic_setup .subjects_list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.academic_setup .subject_card {
+    background: white;
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.academic_setup .subject_card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12);
+}
+
+.academic_setup .subject_info {
+    margin-bottom: 15px;
+}
+
+.academic_setup .subject_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.academic_setup .subject_header h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.academic_setup .subject_header .code {
+    background: rgba(160, 90, 200, 0.1);
+    color: var(--main_color);
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.academic_setup .subject_details p {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    margin-bottom: 5px;
+    opacity: 0.8;
+}
+
+.academic_setup .subject_details .icon {
+    font-size: 16px;
+    color: var(--main_color);
+}
+
+.academic_setup .subject_actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.academic_setup .subject_actions button {
+    padding: 8px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.academic_setup .subject_actions .edit {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+}
+
+.academic_setup .subject_actions .delete {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.academic_setup .subject_actions button:hover {
+    transform: scale(1.1);
+}
+
+/* Years List */
+.academic_setup .years_list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.academic_setup .year_card {
+    background: white;
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.academic_setup .year_card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12);
+}
+
+.academic_setup .year_info {
+    margin-bottom: 15px;
+}
+
+.academic_setup .year_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.academic_setup .year_header h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.academic_setup .status {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.academic_setup .status.active {
+    background: rgb(165, 255, 165);
+    color: green;
+}
+
+.academic_setup .status.completed {
+    background: rgb(192, 255, 255);
+    color: #00d1d1;
+}
+
+.academic_setup .status.archived {
+    background: rgb(206, 206, 206);
+    color: gray;
+}
+
+.academic_setup .year_details p {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    margin-bottom: 5px;
+    opacity: 0.8;
+}
+
+.academic_setup .year_details .icon {
+    font-size: 16px;
+    color: var(--main_color);
+}
+
+.academic_setup .year_actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.academic_setup .year_actions button {
+    padding: 8px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.academic_setup .year_actions .edit {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+}
+
+.academic_setup .year_actions .delete {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.academic_setup .year_actions button:hover {
+    transform: scale(1.1);
+}
+
+/* Terms List */
+.academic_setup .terms_list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.academic_setup .term_card {
+    background: white;
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.academic_setup .term_card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12);
+}
+
+.academic_setup .term_info {
+    margin-bottom: 15px;
+}
+
+.academic_setup .term_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.academic_setup .term_header h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.academic_setup .term_header .year {
+    background: rgba(160, 90, 200, 0.1);
+    color: var(--main_color);
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.academic_setup .term_details p {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    margin-bottom: 5px;
+    opacity: 0.8;
+}
+
+.academic_setup .term_details .icon {
+    font-size: 16px;
+    color: var(--main_color);
+}
+
+.academic_setup .term_actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.academic_setup .term_actions button {
+    padding: 8px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.academic_setup .term_actions .edit {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+}
+
+.academic_setup .term_actions .delete {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.academic_setup .term_actions button:hover {
+    transform: scale(1.1);
+}
+
+/* Header Actions */
+.academic_setup .header_actions {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.academic_setup .search_box {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.academic_setup .search_box input {
+    padding: 10px 15px 10px 40px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    font-size: 14px;
+    width: 250px;
+    background: white;
+    transition: all 0.3s ease;
+}
+
+.academic_setup .search_box input:focus {
+    outline: none;
+    border-color: var(--main_color);
+    box-shadow: 0 0 0 3px rgba(160, 90, 200, 0.1);
+}
+
+.academic_setup .search_icon {
+    position: absolute;
+    left: 12px;
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+}
+
+/* Enhanced Card Styles */
+.academic_setup .subject_badges {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.academic_setup .subject_badges .type {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.academic_setup .subject_badges .type.core {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+}
+
+.academic_setup .subject_badges .type.elective {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+}
+
+.academic_setup .subject_badges .type.optional {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+.academic_setup .term_badges {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.academic_setup .term_badges .status.upcoming {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+/* Classes List */
+.academic_setup .classes_list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+}
+
+.academic_setup .class_card {
+    background: white;
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.academic_setup .class_card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12);
+}
+
+.academic_setup .class_info {
+    margin-bottom: 15px;
+}
+
+.academic_setup .class_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.academic_setup .class_header h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.academic_setup .class_header .level {
+    background: rgba(160, 90, 200, 0.1);
+    color: var(--main_color);
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.academic_setup .class_details p {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    margin-bottom: 5px;
+    opacity: 0.8;
+}
+
+.academic_setup .class_details .icon {
+    font-size: 16px;
+    color: var(--main_color);
+}
+
+.academic_setup .subjects_list {
+    margin-top: 10px;
+}
+
+.academic_setup .subjects_list p {
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.academic_setup .subject_tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.academic_setup .subject_tag {
+    background: rgba(160, 90, 200, 0.1);
+    color: var(--main_color);
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.academic_setup .class_actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.academic_setup .class_actions button {
+    padding: 8px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.academic_setup .class_actions .edit {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+}
+
+.academic_setup .class_actions .delete {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.academic_setup .class_actions button:hover {
+    transform: scale(1.1);
+}
+
+/* Schedule Table */
+.academic_setup .schedule_table {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.academic_setup .schedule_table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.academic_setup .schedule_table th {
+    background: var(--main_color);
+    color: white;
+    padding: 15px 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.academic_setup .schedule_table td {
+    padding: 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    font-size: 14px;
+}
+
+.academic_setup .schedule_table tr:hover {
+    background: rgba(160, 90, 200, 0.05);
+}
+
+.academic_setup .schedule_table .type {
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.academic_setup .schedule_table .type.lecture {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+}
+
+.academic_setup .schedule_table .type.practical {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+}
+
+.academic_setup .schedule_table .type.tutorial {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+.academic_setup .schedule_table .type.lab {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.academic_setup .table_actions {
+    display: flex;
+    gap: 8px;
+}
+
+.academic_setup .table_actions button {
+    padding: 6px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.academic_setup .table_actions .edit {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+}
+
+.academic_setup .table_actions .delete {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.academic_setup .table_actions button:hover {
+    transform: scale(1.1);
+}
+
+/* Grading System */
+.academic_setup .grading_list {
+    display: flex;
+    gap: 20px;
+}
+
+.academic_setup .grading_card {
+    background: white;
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.academic_setup .grading_card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12);
+}
+
+.academic_setup .grading_info {
+    margin-bottom: 15px;
+}
+
+.academic_setup .grading_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.academic_setup .grading_header h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.academic_setup .grading_header .scale {
+    background: rgba(160, 90, 200, 0.1);
+    color: var(--main_color);
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.academic_setup .grade_row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.academic_setup .grade_row:last-child {
+    border-bottom: none;
+}
+
+.academic_setup .grade_label {
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.academic_setup .grade_value {
+    font-weight: 600;
+    color: var(--main_color);
+}
+
+.academic_setup .grading_actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.academic_setup .grading_actions button {
+    padding: 8px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.academic_setup .grading_actions .edit {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+}
+
+.academic_setup .grading_actions .delete {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.academic_setup .grading_actions button:hover {
+    transform: scale(1.1);
+}
+
+/* Curriculum Management */
+.academic_setup .curriculum_list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.academic_setup .curriculum_card {
+    background: white;
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.academic_setup .curriculum_card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12);
+}
+
+.academic_setup .curriculum_info {
+    margin-bottom: 15px;
+}
+
+.academic_setup .curriculum_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.academic_setup .curriculum_header h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.academic_setup .curriculum_details p {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    margin-bottom: 5px;
+    opacity: 0.8;
+}
+
+.academic_setup .curriculum_details .icon {
+    font-size: 16px;
+    color: var(--main_color);
+}
+
+.academic_setup .curriculum_actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.academic_setup .curriculum_actions button {
+    padding: 8px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.academic_setup .curriculum_actions .edit {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+}
+
+.academic_setup .curriculum_actions .delete {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.academic_setup .curriculum_actions button:hover {
+    transform: scale(1.1);
+}
+
+/* Modal Styles */
+.academic_setup .modal_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.academic_setup .modal_content {
+    background: white;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.academic_setup .modal_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 25px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.academic_setup .modal_header h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    color: var(--main_color);
+}
+
+.academic_setup .close_button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.academic_setup .close_button:hover {
+    background: rgba(0, 0, 0, 0.1);
+    color: rgba(0, 0, 0, 0.8);
+}
+
+.academic_setup .modal_body {
+    padding: 25px;
+}
+
+.academic_setup .form_group {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.academic_setup .form_row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.academic_setup .form_field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.academic_setup .form_field label {
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.8);
+}
+
+.academic_setup .form_field input,
+.academic_setup .form_field select {
+    padding: 12px 15px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.academic_setup .form_field input:focus,
+.academic_setup .form_field select:focus {
+    outline: none;
+    border-color: var(--main_color);
+    box-shadow: 0 0 0 3px rgba(160, 90, 200, 0.1);
+}
+
+.academic_setup .modal_footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    padding: 20px 25px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.academic_setup .cancel_button {
+    padding: 12px 24px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    background: white;
+    color: rgba(0, 0, 0, 0.7);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.academic_setup .cancel_button:hover {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.3);
+}
+
+.academic_setup .save_button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: var(--main_color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.academic_setup .save_button:hover {
+    background: #8a4fb8;
+    transform: translateY(-1px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .academic_setup {
+        transform: translateX(0);
+        width: 100vw;
+        padding: 15px;
+    }
+    
+    .academic_setup .tabs {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .academic_setup .tab {
+        padding: 10px 15px;
+        font-size: 13px;
+    }
+    
+    .academic_setup .subjects_list,
+    .academic_setup .years_list,
+    .academic_setup .terms_list,
+    .academic_setup .classes_list,
+    .academic_setup .grading_list,
+    .academic_setup .curriculum_list {
+        grid-template-columns: 1fr;
+    }
+    
+    .academic_setup .schedule_table {
+        overflow-x: auto;
+    }
+    
+    .academic_setup .schedule_table table {
+        min-width: 600px;
+    }
+    
+    .academic_setup .header_actions {
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+    }
+    
+    .academic_setup .search_box input {
+        width: 100%;
+    }
+    
+    .academic_setup .form_row {
+        grid-template-columns: 1fr;
+    }
+    
+    .academic_setup .modal_content {
+        margin: 10px;
+        max-width: calc(100vw - 20px);
+    }
+    
+    .academic_setup .modal_footer {
+        flex-direction: column;
+    }
+    
+    .academic_setup .cancel_button,
+    .academic_setup .save_button {
+        width: 100%;
+        justify-content: center;
+    }
+}

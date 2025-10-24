@@ -1,6 +1,6 @@
 import React from 'react'
-import { LeftSideBar } from '../../../components/leftSideBar/LeftSideBar'
-import { Settings } from '../../../components/settings_page/settings'
+import { LeftSideBar } from '../../../components/for_an_admin/leftSideBar/LeftSideBar'
+import { Settings } from '../../../components/for_an_admin/settings_page/settings'
 
 export const Admin_settings = () => {
   return (

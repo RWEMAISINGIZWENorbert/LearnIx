@@ -1,5 +1,5 @@
 import React from 'react'
-import { Not_Found_page } from '../../components/Not_Found_Page/Not_Found_page'
+import { Not_Found_page } from '../../../components/public_components/Not_Found_Page/Not_Found_page'
 
 export const Not_found = () => {
   return (

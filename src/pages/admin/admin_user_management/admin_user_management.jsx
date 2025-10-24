@@ -1,6 +1,6 @@
 import React from 'react'
-import { LeftSideBar } from '../../../components/leftSideBar/LeftSideBar'
-import { User_management } from '../../../components/user_management/user_management'
+import { LeftSideBar } from '../../../components/for_an_admin/leftSideBar/LeftSideBar'
+import { User_management } from '../../../components/for_an_admin/user_management/user_management'
 
 export const Admin_user_management = () => {
   return (
