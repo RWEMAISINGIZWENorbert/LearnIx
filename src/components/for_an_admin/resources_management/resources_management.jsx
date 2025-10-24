@@ -215,11 +215,6 @@ export const Resources_management = () => {
     <div className='resources_management'>
         <div className="box">
           <div className="whole_up">
-            <div className="up">
-              <div className="button">
-                <button onClick={() => navigate(-1)}><FaArrowLeft className='icon'/><span>Back</span></button>
-              </div>
-            </div>
             <div className="upper">
               <h4>Resources Management</h4>
               <p>Manage educational resources, documents, and learning materials. Organize files by category and track usage analytics.</p>

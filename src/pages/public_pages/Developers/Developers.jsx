@@ -1,6 +1,6 @@
 import React from 'react'
 import { Navbar } from '../../../components/public_components/navbar/navbar'
-import { Dev_team } from '../../../components/for_an_admin/dev_team/Dev_team'
+import { Dev_team } from '../../../components/public_components/dev_team/Dev_team'
 
 export const Developers = () => {
   return (

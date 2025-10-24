@@ -751,11 +751,6 @@ export const Academic_setup = () => {
     <div className='academic_setup'>
         <div className="box">
           <div className="whole_up">
-            <div className="up">
-              <div className="button">
-                <button onClick={() => navigate(-1)}><FaArrowLeft className='icon'/><span>Back</span></button>
-              </div>
-            </div>
             <div className="upper">
               <h4>Academic Setup</h4>
               <p>Configure academic years, terms, subjects, classes, schedules, grading systems, and curricula. Manage the complete academic structure of your institution.</p>

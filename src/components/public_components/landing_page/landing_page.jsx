@@ -1,8 +1,8 @@
 import React from 'react';
-import SplitText from "../animations/SplitText";
+import SplitText from "../../for_an_admin/animations/SplitText";
 import './landing_page.css'
 import Spline from '@splinetool/react-spline';
-import BlurText from "../animations/BlurText";
+import BlurText from "../../for_an_admin/animations/BlurText";
 
 
 const handleAnimationComplete = () => {

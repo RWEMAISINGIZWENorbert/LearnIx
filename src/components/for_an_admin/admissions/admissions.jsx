@@ -112,11 +112,6 @@ export const Aadmissions = () => {
     <div className='admissions_management'>
         <div className="box">
             <div className="whole_up">
-            <div className="up">
-              <div className="button">
-                <button onClick={() => navigate(-1)}><FaArrowLeft className='icon'/><span>Back</span></button>
-              </div>
-            </div>
             <div className="upper">
               <h4>Admissions & Registration Management</h4>
               <p>Manage student applications, review documents, and process admissions. Track application status and maintain enrollment records.</p>
