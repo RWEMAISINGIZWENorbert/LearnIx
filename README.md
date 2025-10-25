@@ -1,6 +1,6 @@
 # 🎓 LearnIx — All-in-One School Management System
 
-![LearnIx Logo](public/assets/learnIx.png)
+![LearnIx Logo](assets/learnIx.png)
 
 
 
