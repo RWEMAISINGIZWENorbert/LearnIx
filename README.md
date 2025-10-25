@@ -1,7 +1,7 @@
 # 🎓 LearnIx — All-in-One School Management System
 
-<<<<<<< HEAD
-![ LearnIx logo ](LearnIx/public/assets/LearnIx.png)
+![LearnIx Logo](public/assets/learnIx.png)
+
 
 
 **LearnIx** is a full-stack, modern **School Management System (SMS)** built to digitalize and simplify academic and administrative workflows.  
