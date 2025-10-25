@@ -79,6 +79,9 @@
     border-radius: 10px;
     background: none;
     width: 25vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 .teachers_management .box .middle .teacher .up h4{
     text-transform: uppercase;
@@ -113,6 +116,10 @@
 }
 .teachers_management .box .middle .teacher .profile .data .email{
     font-size: 14px;
+    opacity: 0.7;
+}
+.teachers_management .box .middle .teacher .profile .data .teacherId{
+    font-size: 12px;
     opacity: 0.7;
 }
 .teachers_management .box .middle .teacher .profile .data{
@@ -205,4 +212,38 @@
 .teachers_management .box .mini_up .new .right p{
     font-size: 12px;
     opacity: 0.6;
+}
+
+
+
+.teachers_management .box .middle .teacher  .lesson-container {
+    max-height: 4.5em; 
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.teachers_management .box .middle .teacher .lesson-container.expanded {
+    max-height: 100vh;
+}
+
+.teachers_management .box .middle .teacher .view-more {
+    display: inline-block;
+    margin-top: 5px;
+    color: #000;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    background: none;
+    padding: 2px 5px;
+    transition: all 0.3s ease;
+}
+
+.teachers_management .box .middle .teacher .view-more:hover {
+    text-decoration: underline;
+    color: #000;
+}
+
+.teachers_management .box .middle .teacher .view-more:active {
+    transform: scale(0.97);
 }
