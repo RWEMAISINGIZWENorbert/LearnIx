@@ -96,7 +96,7 @@ For collaboration or inquiries, feel free to reach out:
 
 For collaboration or inquiries, feel free to reach out:
 
-**Developer:** RWEMA ISINGIZWE Norbert 
+**Developer:** RWEMA ISINGIZWE Norbert
 **Email:** [rwema916@gmail.com](mailto:rwema916@gmail.com)  
 **GitHub:** [@rwema](https://github.com/RWEMAISINGIZWENorbert)  
 **Instagram:** [@franco__nelly](https://www.instagram.com/rwema__1/) 
