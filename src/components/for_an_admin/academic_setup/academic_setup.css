@@ -157,7 +157,7 @@
     font-weight: 500;
 }
 
-.academic_setup .subject_details p {
+.academic_setup .subject_details p{
     display: flex;
     align-items: center;
     gap: 8px;
@@ -168,7 +168,7 @@
 
 .academic_setup .subject_details .icon {
     font-size: 16px;
-    color: var(--main_color);
+    opacity : 0.4;
 }
 
 .academic_setup .subject_actions {
@@ -271,7 +271,7 @@
 
 .academic_setup .year_details .icon {
     font-size: 16px;
-    color: var(--main_color);
+    opacity : 0.4;
 }
 
 .academic_setup .year_actions {
@@ -361,7 +361,7 @@
 
 .academic_setup .term_details .icon {
     font-size: 16px;
-    color: var(--main_color);
+    opacity : 0.4;
 }
 
 .academic_setup .term_actions {
@@ -528,7 +528,7 @@
 
 .academic_setup .class_details .icon {
     font-size: 16px;
-    color: var(--main_color);
+    opacity : 0.4;
 }
 
 .academic_setup .subjects_list {
@@ -818,7 +818,7 @@
 
 .academic_setup .curriculum_details .icon {
     font-size: 16px;
-    color: var(--main_color);
+    opacity : 0.4;
 }
 
 .academic_setup .curriculum_actions {
@@ -857,7 +857,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
     display: flex;
     align-items: center;
     justify-content: center;

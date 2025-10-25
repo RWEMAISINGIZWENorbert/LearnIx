@@ -190,7 +190,7 @@ export const Resources_management = () => {
                 <div className="form_group">
                   <label>Category</label>
                   <select>
-                    <option value="category" hidden disabled>Select file category</option>
+                    <option value="category" hidden>Select file category</option>
                     <option value="category">Learning notes</option>
                     <option value="category">Past papers</option>
                     <option value="category">Rules and regulations</option>

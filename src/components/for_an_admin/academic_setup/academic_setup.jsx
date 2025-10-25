@@ -359,7 +359,7 @@ export const Academic_setup = () => {
                   <CiSearch className="search_icon" />
                   <input 
                     type="text" 
-                    placeholder="Search curricula..." 
+                    placeholder="Search curriculum..." 
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
@@ -440,7 +440,7 @@ export const Academic_setup = () => {
                   <div className="form_field">
                     <label>Level</label>
                     <select defaultValue={editingItem?.level || ''}>
-                      <option value="">Select Level</option>
+                      <option value="" hidden>Select Level</option>
                       <option value="L3">L3</option>
                       <option value="L4">L4</option>
                       <option value="L5">L5</option>
@@ -449,7 +449,7 @@ export const Academic_setup = () => {
                   <div className="form_field">
                     <label>Type</label>
                     <select defaultValue={editingItem?.type || ''}>
-                      <option value="">Select Type</option>
+                      <option value="" hidden>Select Type</option>
                       <option value="Core">Core</option>
                       <option value="Elective">Elective</option>
                       <option value="Optional">Optional</option>
@@ -483,7 +483,7 @@ export const Academic_setup = () => {
                   <div className="form_field">
                     <label>Status</label>
                     <select defaultValue={editingItem?.status || ''}>
-                      <option value="">Select Status</option>
+                      <option value="" hidden>Select Status</option>
                       <option value="Active">Active</option>
                       <option value="Upcoming">Upcoming</option>
                       <option value="Completed">Completed</option>
@@ -540,7 +540,7 @@ export const Academic_setup = () => {
                   <div className="form_field">
                     <label>Status</label>
                     <select defaultValue={editingItem?.status || ''}>
-                      <option value="">Select Status</option>
+                      <option value="" hidden>Select Status</option>
                       <option value="Active">Active</option>
                       <option value="Upcoming">Upcoming</option>
                       <option value="Completed">Completed</option>
@@ -553,55 +553,6 @@ export const Academic_setup = () => {
                 </div>
               </div>
             )}
-
-            {modalType === 'class' && (
-              <div className="form_group">
-                <div className="form_row">
-                  <div className="form_field">
-                    <label>Class Name</label>
-                    <input type="text" defaultValue={editingItem?.name || ''} placeholder="e.g., L3 SOD A" />
-                  </div>
-                  <div className="form_field">
-                    <label>Level</label>
-                    <select defaultValue={editingItem?.level || ''}>
-                      <option value="">Select Level</option>
-                      <option value="L3">L3</option>
-                      <option value="L4">L4</option>
-                      <option value="L5">L5</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="form_row">
-                  <div className="form_field">
-                    <label>Teacher</label>
-                    <input type="text" defaultValue={editingItem?.teacher || ''} />
-                  </div>
-                  <div className="form_field">
-                    <label>Room</label>
-                    <input type="text" defaultValue={editingItem?.room || ''} />
-                  </div>
-                </div>
-                <div className="form_row">
-                  <div className="form_field">
-                    <label>Capacity</label>
-                    <input type="number" defaultValue={editingItem?.capacity || ''} />
-                  </div>
-                  <div className="form_field">
-                    <label>Current Students</label>
-                    <input type="number" defaultValue={editingItem?.students || ''} />
-                  </div>
-                </div>
-                <div className="form_field">
-                  <label>Schedule</label>
-                  <input type="text" defaultValue={editingItem?.schedule || ''} placeholder="e.g., Mon-Fri 8:00-16:00" />
-                </div>
-                <div className="form_field">
-                  <label>Subjects (comma separated)</label>
-                  <input type="text" defaultValue={editingItem?.subjects?.join(', ') || ''} placeholder="e.g., Mathematics, Computer Science" />
-                </div>
-              </div>
-            )}
-
             {modalType === 'schedule' && (
               <div className="form_group">
                 <div className="form_row">
@@ -628,7 +579,7 @@ export const Academic_setup = () => {
                   <div className="form_field">
                     <label>Day</label>
                     <select defaultValue={editingItem?.day || ''}>
-                      <option value="">Select Day</option>
+                      <option value="" hidden>Select Day</option>
                       <option value="Monday">Monday</option>
                       <option value="Tuesday">Tuesday</option>
                       <option value="Wednesday">Wednesday</option>
@@ -645,7 +596,7 @@ export const Academic_setup = () => {
                 <div className="form_field">
                   <label>Type</label>
                   <select defaultValue={editingItem?.type || ''}>
-                    <option value="">Select Type</option>
+                    <option value="" hidden>Select Type</option>
                     <option value="Lecture">Lecture</option>
                     <option value="Practical">Practical</option>
                     <option value="Tutorial">Tutorial</option>
@@ -724,7 +675,7 @@ export const Academic_setup = () => {
                   <div className="form_field">
                     <label>Status</label>
                     <select defaultValue={editingItem?.status || ''}>
-                      <option value="">Select Status</option>
+                      <option value="" hidden>Select Status</option>
                       <option value="Active">Active</option>
                       <option value="Draft">Draft</option>
                       <option value="Archived">Archived</option>
