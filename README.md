@@ -1,6 +1,6 @@
 # 🎓 LearnIx — All-in-One School Management System
 
-<img src='assets/LearnIx.png' width='150px' alt='LearnIx logo' />
+<img src='public/assets/LearnIx.png' width='150px' alt='LearnIx logo' />
 
 
 
