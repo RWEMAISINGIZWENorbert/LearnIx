@@ -92,13 +92,14 @@ For collaboration or inquiries, feel free to reach out:
 **Instagram:** [@franco__nelly](https://www.instagram.com/franco__nelly/)  
 **Phone/WhatsApp:** [+250 795 207 569](https://wa.me/250795207569)
 
-## 📧 Contact & Links for Back-End Developer
+
+
+## 📧 Contact & Links for Front-End Developer
 
 For collaboration or inquiries, feel free to reach out:
 
 **Developer:** RWEMA ISINGIZWE Norbert
 **Email:** [rwema916@gmail.com](mailto:rwema916@gmail.com)  
 **GitHub:** [@rwema](https://github.com/RWEMAISINGIZWENorbert)  
-**Instagram:** [@franco__nelly](https://www.instagram.com/rwema__1/) 
+**Instagram:** [@rwema__1](https://www.instagram.com/rwema__1/)  
 **Phone/WhatsApp:** N/A
-
