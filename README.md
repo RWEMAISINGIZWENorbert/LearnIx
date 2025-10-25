@@ -1,6 +1,6 @@
 # 🎓 LearnIx — All-in-One School Management System
 
-<img src='https://github.com/franco-nelly/learnix/blob/main/public/assets/LearnIx.png?raw=true' width='150px' alt='LearnIx logo' />
+<img src='assets/LearnIx.png' width='150px' alt='LearnIx logo' />
 
 
 
@@ -95,7 +95,7 @@ For collaboration or inquiries, feel free to reach out:
 
 
 
-## 📧 Contact & Links for Front-End Developer
+## 📧 Contact & Links for Back-End Developer
 
 For collaboration or inquiries, feel free to reach out:
 
