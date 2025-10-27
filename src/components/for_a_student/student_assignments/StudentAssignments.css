@@ -62,23 +62,14 @@
 }
 
 .studentAssignments .assignment-card {
-    background: rgba(255,255,255,0.8);
     backdrop-filter: blur(10px);
     border-radius: 12px;
     padding: 20px;
     box-shadow: var(--box-shadow);
     transition: all 0.3s ease;
-    border-left: 4px solid #3b82f6;
+    border: none;
 }
 
-.studentAssignments .assignment-card.urgent {
-    border-left-color: #ef4444;
-    background: rgba(255, 240, 240, 0.8);
-}
-
-.studentAssignments .assignment-card.submitted {
-    border-left-color: #f59e0b;
-}
 
 .studentAssignments .assignment-card.graded {
     border-left-color: #10b981;

@@ -117,9 +117,9 @@ export const StudentGrades = () => {
           <div className="gpa-card main">
             <div className="icon"><BiBarChart /></div>
             <div className="content">
-              <h3>Current GPA</h3>
+              <h3>Current Percentege</h3>
               <div className="gpa-value">{gpa}</div>
-              <p>Out of 4.0</p>
+              <p>Out of 100</p>
             </div>
           </div>
           <div className="gpa-card">
