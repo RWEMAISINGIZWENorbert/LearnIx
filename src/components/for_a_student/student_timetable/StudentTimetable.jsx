@@ -59,7 +59,7 @@ export const StudentTimetable = () => {
 
         <div className="schedule-grid">
           {timetable[selectedDay].map((session, index) => (
-            <div key={index} className="session-card" style={{borderLeft: `4px solid ${session.color}`}}>
+            <div key={index} className="session-card" style={{border:'none'}}>
               <div className="session-header">
                 <div className="time-badge">
                   <LuClock className="icon" />
