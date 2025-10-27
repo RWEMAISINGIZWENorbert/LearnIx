@@ -80,9 +80,6 @@ export const Teachers_management = () => {
                 <div className="icon"><CiSearch /></div>
                 <input type="text" placeholder='Search for teachers . . .' value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
               </div>
-              <div className="button">
-                <button>Search</button>
-              </div>
             </div>
             <div className="new" onClick={handleAddClick}>
               <div className="left"><div className="icon"><BiEdit/></div></div>
