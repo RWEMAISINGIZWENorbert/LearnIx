@@ -1,0 +1,210 @@
+:root {
+    --main_color: #A05AC8;
+    --box-shadow: 0 8px 26px rgba(0,0,0,0.06);
+}
+
+.teacherAssignments {
+    transform: translateX(20vw);
+    padding: 20px;
+    width: 80vw;
+    min-height: 100vh;
+}
+
+.teacherAssignments .box .upper {
+    margin-bottom: 20px;
+}
+
+.teacherAssignments .box .upper h2 {
+    margin-bottom: 5px;
+}
+
+.teacherAssignments .box .upper p {
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+.teacherAssignments .tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+    border-bottom: 2px solid rgba(0,0,0,0.1);
+}
+
+.teacherAssignments .tabs button {
+    padding: 12px 24px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.teacherAssignments .tabs button.active {
+    color: var(--main_color);
+}
+
+.teacherAssignments .tabs button.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--main_color);
+}
+
+.teacherAssignments .tabs .create-btn {
+    margin-left: auto;
+    background: var(--main_color);
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 8px;
+}
+
+.teacherAssignments .tabs .create-btn::after {
+    display: none;
+}
+
+.teacherAssignments .assignments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+}
+
+.teacherAssignments .assignment-card {
+    background: rgba(255,255,255,0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--box-shadow);
+    transition: all 0.3s ease;
+}
+
+.teacherAssignments .assignment-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.1);
+}
+
+.teacherAssignments .assignment-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding-left: 10px;
+}
+
+.teacherAssignments .assignment-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.teacherAssignments .assignment-info h3 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.teacherAssignments .course-name {
+    font-size: 13px;
+    opacity: 0.6;
+}
+
+.teacherAssignments .assignment-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.teacherAssignments .detail-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #666;
+}
+
+.teacherAssignments .detail-row .icon {
+    font-size: 16px;
+    opacity: 0.6;
+}
+
+.teacherAssignments .progress-section {
+    margin-bottom: 15px;
+}
+
+.teacherAssignments .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 13px;
+}
+
+.teacherAssignments .progress-value {
+    font-weight: 600;
+}
+
+.teacherAssignments .progress-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(0,0,0,0.06);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.teacherAssignments .progress {
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+.teacherAssignments .status-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.teacherAssignments .status-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.teacherAssignments .status-item.graded {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.teacherAssignments .status-item.pending {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+.teacherAssignments .view-btn {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.teacherAssignments .view-btn:hover {
+    opacity: 0.9;
+}

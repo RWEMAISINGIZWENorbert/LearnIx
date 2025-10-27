@@ -51,7 +51,11 @@ export const LeftSideBar = () => {
                     <div className="website all"><CiGlobe className="icon" /><span><a href="https://www.greenhillsacademy.rw" target='_blank'>www.greenhillsacademy.rw</a></span></div>
                 </div>
                 <div className="lower">
-                    <div className="prof"><button><FaRegUser className="icon" /><span>Profile</span></button></div>
+                    <div className="prof">
+                        <NavLink to='/admin/profile'>
+                            <button><FaRegUser className="icon" /><span>Profile</span></button>
+                        </NavLink>
+                    </div>
                     <div className="separator"></div>
                     <div className="logout"><button><span>Sign Out</span><MdLogout className="icon" /></button></div>
                 </div>

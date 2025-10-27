@@ -1,0 +1,136 @@
+:root {
+    --main_color: #A05AC8;
+    --box-shadow: 0 8px 26px rgba(0,0,0,0.06);
+}
+
+.studentAttendance {
+    transform: translateX(20vw);
+    padding: 20px;
+    width: 80vw;
+    min-height: 100vh;
+}
+
+.studentAttendance .box .upper {
+    margin-bottom: 20px;
+}
+
+.studentAttendance .box .upper h2 {
+    margin-bottom: 5px;
+}
+
+.studentAttendance .box .upper p {
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+.studentAttendance .stats-grid {
+    margin-bottom: 25px;
+}
+
+.studentAttendance .stat-card {
+    background: linear-gradient(135deg, var(--main_color), #8e4ab0);
+    color: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: var(--box-shadow);
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.studentAttendance .stat-card .icon {
+    font-size: 3rem;
+    background: rgba(255,255,255,0.15);
+    width: 80px;
+    height: 80px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.studentAttendance .stat-card .content h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    opacity: 0.9;
+}
+
+.studentAttendance .stat-card .value {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 8px;
+}
+
+.studentAttendance .stat-card .content p {
+    opacity: 0.9;
+    font-size: 14px;
+}
+
+.studentAttendance .attendance-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+}
+
+.studentAttendance .attendance-card {
+    background: rgba(255,255,255,0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--box-shadow);
+}
+
+.studentAttendance .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.studentAttendance .card-header h3 {
+    font-size: 18px;
+}
+
+.studentAttendance .percentage {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.studentAttendance .progress-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(0,0,0,0.06);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.studentAttendance .progress {
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+.studentAttendance .stats {
+    display: flex;
+    justify-content: space-around;
+}
+
+.studentAttendance .stat {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+}
+
+.studentAttendance .stat.present {
+    color: #10b981;
+}
+
+.studentAttendance .stat.absent {
+    color: #ef4444;
+}
+
+.studentAttendance .stat .icon {
+    font-size: 18px;
+}

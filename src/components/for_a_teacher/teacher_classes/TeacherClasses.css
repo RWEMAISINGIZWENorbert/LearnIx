@@ -1,0 +1,173 @@
+:root {
+    --main_color: #A05AC8;
+    --box-shadow: 0 8px 26px rgba(0,0,0,0.06);
+}
+
+.teacherClasses {
+    transform: translateX(20vw);
+    padding: 20px;
+    width: 80vw;
+    min-height: 100vh;
+}
+
+.teacherClasses .box .upper {
+    margin-bottom: 20px;
+}
+
+.teacherClasses .box .upper h2 {
+    margin-bottom: 5px;
+}
+
+.teacherClasses .box .upper p {
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+.teacherClasses .classes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+}
+
+.teacherClasses .class-card {
+    background: rgba(255,255,255,0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--box-shadow);
+    transition: all 0.3s ease;
+}
+
+.teacherClasses .class-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.1);
+}
+
+.teacherClasses .class-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding-left: 10px;
+}
+
+.teacherClasses .class-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.teacherClasses .class-info h3 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.teacherClasses .class-code {
+    font-size: 13px;
+    opacity: 0.6;
+}
+
+.teacherClasses .class-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.teacherClasses .detail-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #666;
+}
+
+.teacherClasses .detail-item .icon {
+    font-size: 16px;
+    opacity: 0.6;
+}
+
+.teacherClasses .detail-item .badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.teacherClasses .class-stats {
+    margin-bottom: 20px;
+}
+
+.teacherClasses .stat {
+    margin-bottom: 15px;
+}
+
+.teacherClasses .stat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.teacherClasses .stat-header .label {
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+.teacherClasses .stat-header .value {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.teacherClasses .progress-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(0,0,0,0.06);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.teacherClasses .progress {
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+.teacherClasses .class-actions {
+    display: flex;
+    gap: 10px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(0,0,0,0.06);
+}
+
+.teacherClasses .btn-primary,
+.teacherClasses .btn-secondary {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.teacherClasses .btn-primary {
+    color: white;
+}
+
+.teacherClasses .btn-primary:hover {
+    opacity: 0.9;
+}
+
+.teacherClasses .btn-secondary {
+    background: rgb(247, 247, 247);
+    color: #333;
+}
+
+.teacherClasses .btn-secondary:hover {
+    background: rgb(235, 235, 235);
+}

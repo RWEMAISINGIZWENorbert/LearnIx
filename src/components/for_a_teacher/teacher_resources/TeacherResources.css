@@ -1,0 +1,113 @@
+:root {
+    --main_color: #A05AC8;
+    --box-shadow: 0 8px 26px rgba(0,0,0,0.06);
+}
+
+.teacherResources {
+    transform: translateX(20vw);
+    padding: 20px;
+    width: 80vw;
+    min-height: 100vh;
+}
+
+.teacherResources .box .upper {
+    margin-bottom: 20px;
+}
+
+.teacherResources .box .upper h2 {
+    margin-bottom: 5px;
+}
+
+.teacherResources .box .upper p {
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+.teacherResources .upload-btn {
+    padding: 12px 24px;
+    background: var(--main_color);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 25px;
+    transition: all 0.3s ease;
+}
+
+.teacherResources .upload-btn:hover {
+    opacity: 0.9;
+}
+
+.teacherResources .resources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+}
+
+.teacherResources .resource-card {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    padding: 20px;
+    background: rgba(255,255,255,0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    box-shadow: var(--box-shadow);
+    transition: all 0.3s ease;
+}
+
+.teacherResources .resource-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.1);
+}
+
+.teacherResources .resource-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.teacherResources .resource-info {
+    flex: 1;
+}
+
+.teacherResources .resource-info h3 {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.teacherResources .resource-info .course {
+    font-size: 13px;
+    opacity: 0.6;
+    margin-bottom: 8px;
+}
+
+.teacherResources .resource-info .meta {
+    display: flex;
+    gap: 12px;
+    font-size: 12px;
+    color: #666;
+}
+
+.teacherResources .download-btn {
+    padding: 10px;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.teacherResources .download-btn:hover {
+    opacity: 0.9;
+}

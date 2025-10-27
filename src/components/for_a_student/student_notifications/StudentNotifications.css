@@ -1,0 +1,94 @@
+:root {
+    --main_color: #A05AC8;
+    --box-shadow: 0 8px 26px rgba(0,0,0,0.06);
+}
+
+.studentNotifications {
+    transform: translateX(20vw);
+    padding: 20px;
+    width: 80vw;
+    min-height: 100vh;
+}
+
+.studentNotifications .box .upper {
+    margin-bottom: 20px;
+}
+
+.studentNotifications .box .upper h2 {
+    margin-bottom: 5px;
+}
+
+.studentNotifications .box .upper p {
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+.studentNotifications .notifications-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.studentNotifications .notification-card {
+    background: rgba(255,255,255,0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: var(--box-shadow);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.studentNotifications .notification-card.unread {
+    background: rgba(160, 90, 200, 0.05);
+    border-left: 4px solid var(--main_color);
+}
+
+.studentNotifications .notification-card:hover {
+    transform: translateX(5px);
+}
+
+.studentNotifications .notification-icon {
+    width: 50px;
+    height: 50px;
+    background: rgba(160, 90, 200, 0.1);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--main_color);
+}
+
+.studentNotifications .notification-content {
+    flex: 1;
+}
+
+.studentNotifications .notification-content h3 {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.studentNotifications .notification-content p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.studentNotifications .time {
+    font-size: 12px;
+    color: #999;
+}
+
+.studentNotifications .unread-dot {
+    width: 10px;
+    height: 10px;
+    background: var(--main_color);
+    border-radius: 50%;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}

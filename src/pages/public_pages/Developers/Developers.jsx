@@ -1,12 +1,13 @@
 import React from 'react'
+import './Developers.css'
 import { Navbar } from '../../../components/public_components/navbar/navbar'
-import { Dev_team } from '../../../components/public_components/dev_team/Dev_team'
+import { DevTeam } from '../../../components/public_components/dev_team/DevTeam'
 
 export const Developers = () => {
   return (
-    <div className='developers'>
+    <div className='Developers'>
         <Navbar />
-        <Dev_team />
+        <DevTeam />
     </div>
   )
 }

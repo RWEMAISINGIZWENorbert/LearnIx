@@ -1,0 +1,363 @@
+:root {
+    --main_color: #A05AC8;
+    --box-shadow: 0 8px 26px rgba(0,0,0,0.06);
+}
+
+.communications_management {
+    transform: translateX(20vw);
+    padding: 30px;
+    width: 80vw;
+    min-height: 100vh;
+}
+
+.communications_management_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 30px;
+}
+
+.communications_management_title h1 {
+    font-size: 32px;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+}
+
+.communications_management_title p {
+    font-size: 15px;
+    color: #666;
+}
+
+.communications_management_new_btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    background: var(--main_color);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(160, 90, 200, 0.3);
+}
+
+.communications_management_new_btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(160, 90, 200, 0.4);
+}
+
+/* Stats Grid */
+.communications_management_stats_grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.communications_management_stat_card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 25px;
+    background: white;
+    border-radius: 16px;
+    border-left: 4px solid;
+    box-shadow: var(--box-shadow);
+    transition: all 0.3s ease;
+}
+
+.communications_management_stat_card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+}
+
+.communications_management_stat_icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.communications_management_stat_info h3 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 4px;
+}
+
+.communications_management_stat_info p {
+    font-size: 14px;
+    color: #666;
+}
+
+/* Tabs */
+.communications_management_tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+    padding-bottom: 3px;
+    border-bottom: 2px solid rgba(0,0,0,0.05);
+}
+
+.communications_management_tabs button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: transparent;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    color: #666;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.communications_management_tabs button::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--main_color);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.communications_management_tabs button.active {
+    color: var(--main_color);
+}
+
+.communications_management_tabs button.active::after {
+    transform: scaleX(1);
+}
+
+.communications_management_tabs button:hover {
+    color: var(--main_color);
+}
+
+/* Content */
+.communications_management_content {
+    min-height: 400px;
+}
+
+.communications_management_list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.communications_management_card {
+    background: white;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: var(--box-shadow);
+    transition: all 0.3s ease;
+}
+
+.communications_management_card:hover {
+    box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+}
+
+.communications_management_card_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.communications_management_card_header h3 {
+    font-size: 18px;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.communications_management_card_meta {
+    display: flex;
+    gap: 15px;
+    font-size: 13px;
+}
+
+.communications_management_author {
+    color: var(--main_color);
+    font-weight: 600;
+}
+
+.communications_management_date {
+    color: #999;
+}
+
+.communications_management_status {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.communications_management_status.published {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.communications_management_status.draft {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+.communications_management_unread_badge {
+    padding: 4px 10px;
+    background: #ef4444;
+    color: white;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.communications_management_card_actions {
+    display: flex;
+    gap: 8px;
+}
+
+.communications_management_action_btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.communications_management_action_btn.view {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+}
+
+.communications_management_action_btn.view:hover {
+    background: #3b82f6;
+    color: white;
+}
+
+.communications_management_action_btn.edit {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+.communications_management_action_btn.edit:hover {
+    background: #f59e0b;
+    color: white;
+}
+
+.communications_management_action_btn.delete {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.communications_management_action_btn.delete:hover {
+    background: #ef4444;
+    color: white;
+}
+
+.communications_management_card_message {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.communications_management_card_footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+}
+
+.communications_management_recipients {
+    font-size: 13px;
+    color: #666;
+    font-weight: 500;
+}
+
+.communications_management_publish_btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: var(--main_color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.communications_management_publish_btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(160, 90, 200, 0.3);
+}
+
+/* Empty State */
+.communications_management_empty_state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.communications_management_empty_state svg {
+    font-size: 80px;
+    color: rgba(160, 90, 200, 0.2);
+    margin-bottom: 20px;
+}
+
+.communications_management_empty_state h3 {
+    font-size: 24px;
+    color: #1a1a1a;
+    margin-bottom: 10px;
+}
+
+.communications_management_empty_state p {
+    font-size: 15px;
+    color: #666;
+    margin-bottom: 25px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .communications_management {
+        padding: 20px;
+    }
+    
+    .communications_management_header {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .communications_management_card_header {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .communications_management_card_actions {
+        align-self: flex-start;
+    }
+}

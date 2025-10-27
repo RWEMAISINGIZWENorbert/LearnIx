@@ -1,0 +1,125 @@
+:root {
+    --main_color: #A05AC8;
+    --box-shadow: 0 8px 26px rgba(0,0,0,0.06);
+}
+
+.teacherAnnouncements {
+    transform: translateX(20vw);
+    padding: 20px;
+    width: 80vw;
+    min-height: 100vh;
+}
+
+.teacherAnnouncements .box .upper {
+    margin-bottom: 20px;
+}
+
+.teacherAnnouncements .box .upper h2 {
+    margin-bottom: 5px;
+}
+
+.teacherAnnouncements .box .upper p {
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+.teacherAnnouncements .create-btn {
+    padding: 12px 24px;
+    background: var(--main_color);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 25px;
+    transition: all 0.3s ease;
+}
+
+.teacherAnnouncements .create-btn:hover {
+    opacity: 0.9;
+}
+
+.teacherAnnouncements .announcements-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.teacherAnnouncements .announcement-card {
+    background: rgba(255,255,255,0.8);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: var(--box-shadow);
+    border-left: 4px solid;
+    transition: all 0.3s ease;
+}
+
+.teacherAnnouncements .announcement-card.priority-urgent {
+    border-left-color: #ef4444;
+}
+
+.teacherAnnouncements .announcement-card.priority-normal {
+    border-left-color: #f59e0b;
+}
+
+.teacherAnnouncements .announcement-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.1);
+}
+
+.teacherAnnouncements .announcement-header {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.teacherAnnouncements .announcement-header .icon {
+    font-size: 24px;
+    color: var(--main_color);
+}
+
+.teacherAnnouncements .header-content {
+    flex: 1;
+}
+
+.teacherAnnouncements .header-content h3 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.teacherAnnouncements .meta {
+    display: flex;
+    gap: 10px;
+    font-size: 13px;
+    color: #666;
+}
+
+.teacherAnnouncements .priority-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.teacherAnnouncements .priority-badge.urgent {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+}
+
+.teacherAnnouncements .priority-badge.normal {
+    background: rgba(245, 158, 11, 0.2);
+    color: #f59e0b;
+}
+
+.teacherAnnouncements .content {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #666;
+}

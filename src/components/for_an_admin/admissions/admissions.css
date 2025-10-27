@@ -77,43 +77,40 @@
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
-}
-.admissions_management .filter_buttons .all.active{
-    background: rgb(229, 229, 255);
-  color: blue;
-  border: none;
-}
-.admissions_management .filter_buttons .approved.active{
-    background: rgb(214, 250, 214);
-    color: green;
-    border: none;
-}
-.admissions_management .filter_buttons .pending.active{
-    background: rgb(253, 253, 210);
-    color: rgb(202, 202, 0);
-    border: none;
-}
-.admissions_management .filter_buttons .rejected.active{
-    background: #fcd5d5;
-    color: red;
-    border: none;
+    border-bottom: 2px solid rgba(0,0,0,0.1);
+    padding-bottom: 10px;
 }
 .admissions_management .filter_buttons button {
-    padding: 8px 16px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 20px;
-    background: none;
+    padding: 12px 24px;
+    border: none;
+    background: transparent;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 15px;
+    font-weight: 500;
+    position: relative;
     transition: all 0.3s ease;
 }
 .admissions_management .filter_buttons button:hover {
-    background: rgba(0, 0, 0, 0.05);
+    color: var(--main_color);
 }
-.admissions_management .filter_buttons button.active {
+.admissions_management .filter_buttons .all.active,
+.admissions_management .filter_buttons .approved.active,
+.admissions_management .filter_buttons .pending.active,
+.admissions_management .filter_buttons .rejected.active{
+    color: var(--main_color);
+    background: transparent;
+}
+.admissions_management .filter_buttons .all.active::after,
+.admissions_management .filter_buttons .approved.active::after,
+.admissions_management .filter_buttons .pending.active::after,
+.admissions_management .filter_buttons .rejected.active::after{
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 0;
+    width: 100%;
+    height: 2px;
     background: var(--main_color);
-    color: white;
-    border-color: var(--main_color);
 }
 .admissions_management .box .mini_up .new:hover{
     background: rgba(0, 0, 0, 0.06);

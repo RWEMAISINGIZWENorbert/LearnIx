@@ -1,0 +1,151 @@
+:root {
+    --main_color: #A05AC8;
+    --box-shadow: 0 8px 26px rgba(0,0,0,0.06);
+}
+
+.studentSettings {
+    transform: translateX(20vw);
+    padding: 20px;
+    width: 80vw;
+    min-height: 100vh;
+}
+
+.studentSettings .box .upper {
+    margin-bottom: 20px;
+}
+
+.studentSettings .box .upper h2 {
+    margin-bottom: 5px;
+}
+
+.studentSettings .box .upper p {
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+.studentSettings .settings-container {
+    display: flex;
+    gap: 20px;
+    background: rgba(255,255,255,0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+}
+
+.studentSettings .settings-sidebar {
+    width: 250px;
+    background: rgba(0,0,0,0.02);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.studentSettings .tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+    border-bottom: 2px solid rgba(0,0,0,0.1);
+}
+
+.studentSettings .tabs button {
+    padding: 12px 24px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.studentSettings .tabs button.active {
+    color: var(--main_color);
+}
+
+.studentSettings .tabs button.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--main_color);
+}
+
+.studentSettings .settings-sidebar button:hover {
+    background: rgba(160, 90, 200, 0.1);
+}
+
+.studentSettings .settings-sidebar button.active {
+    background: var(--main_color);
+    color: white;
+}
+
+.studentSettings .settings-sidebar button .icon {
+    font-size: 18px;
+}
+
+.studentSettings .settings-content {
+    flex: 1;
+    padding: 30px;
+}
+
+.studentSettings .section h3 {
+    font-size: 20px;
+    margin-bottom: 25px;
+}
+
+.studentSettings .form-group {
+    margin-bottom: 20px;
+}
+
+.studentSettings .form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.studentSettings .form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.studentSettings .toggle-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: rgba(0,0,0,0.02);
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.studentSettings .toggle-group label {
+    font-size: 14px;
+}
+
+.studentSettings .save-btn {
+    margin-top: 20px;
+    padding: 12px 30px;
+    background: var(--main_color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.studentSettings .save-btn:hover {
+    background: #8e4ab0;
+}

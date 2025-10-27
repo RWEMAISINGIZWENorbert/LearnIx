@@ -1,0 +1,129 @@
+:root {
+    --main_color: #A05AC8;
+    --box-shadow: 0 8px 26px rgba(0,0,0,0.06);
+}
+
+.teacherSchedule {
+    transform: translateX(20vw);
+    padding: 20px;
+    width: 80vw;
+    min-height: 100vh;
+}
+
+.teacherSchedule .box .upper {
+    margin-bottom: 20px;
+}
+
+.teacherSchedule .box .upper h2 {
+    margin-bottom: 5px;
+}
+
+.teacherSchedule .box .upper p {
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+.teacherSchedule .week-navigator {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+    border-bottom: 2px solid rgba(0,0,0,0.1);
+}
+
+.teacherSchedule .day-btn {
+    flex: 1;
+    padding: 12px 24px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.teacherSchedule .day-btn.active {
+    color: var(--main_color);
+}
+
+.teacherSchedule .day-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--main_color);
+}
+
+.teacherSchedule .day-btn:hover {
+    color: var(--main_color);
+}
+
+.teacherSchedule .schedule-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.teacherSchedule .session-card {
+    display: flex;
+    gap: 20px;
+    background: rgba(255,255,255,0.8);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: var(--box-shadow);
+    transition: all 0.3s ease;
+}
+
+.teacherSchedule .session-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.1);
+}
+
+.teacherSchedule .session-time {
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 120px;
+}
+
+.teacherSchedule .session-time .icon {
+    font-size: 20px;
+}
+
+.teacherSchedule .session-time span {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.teacherSchedule .session-details {
+    flex: 1;
+}
+
+.teacherSchedule .session-details h4 {
+    font-size: 18px;
+    margin-bottom: 12px;
+}
+
+.teacherSchedule .session-meta {
+    display: flex;
+    gap: 20px;
+}
+
+.teacherSchedule .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #666;
+}
+
+.teacherSchedule .meta-item .icon {
+    font-size: 16px;
+}

@@ -1,0 +1,158 @@
+:root {
+    --main_color: #A05AC8;
+}
+
+.access-denied-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.access-denied-page .gradient-bg {
+    position: fixed;
+    width: 200vmin;
+    height: 200vmin;
+    border-radius: 50%;
+    left: -80vmin;
+    top: -60vmin;
+    z-index: -1;
+    animation: gradientFloat 20s ease-in-out infinite;
+}
+
+@keyframes gradientFloat {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(30px, -30px) scale(1.05); }
+}
+
+.access-denied-page .content {
+    text-align: center;
+    padding: 40px;
+    max-width: 600px;
+    animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.access-denied-page .icon-container {
+    margin-bottom: 30px;
+    animation: shake 0.8s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-10deg); }
+    75% { transform: rotate(10deg); }
+}
+
+.access-denied-page .lock-icon {
+    font-size: 120px;
+    color: #ef4444;
+    filter: drop-shadow(0 10px 30px rgba(239, 68, 68, 0.3));
+}
+
+.access-denied-page .content h1 {
+    font-size: 48px;
+    color: #1a1a1a;
+    margin-bottom: 20px;
+}
+
+.access-denied-page .message {
+    font-size: 18px;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.access-denied-page .error-code {
+    display: inline-block;
+    padding: 10px 25px;
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border-radius: 25px;
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 40px;
+}
+
+.access-denied-page .actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.access-denied-page .btn-back,
+.access-denied-page .btn-home,
+.access-denied-page .btn-login {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.access-denied-page .btn-back {
+    background: rgba(0,0,0,0.05);
+    color: #666;
+    border: 2px solid rgba(0,0,0,0.1);
+}
+
+.access-denied-page .btn-back:hover {
+    background: rgba(0,0,0,0.1);
+    transform: translateX(-5px);
+}
+
+.access-denied-page .btn-home {
+    background: var(--main_color);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 12px rgba(160, 90, 200, 0.3);
+}
+
+.access-denied-page .btn-home:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(160, 90, 200, 0.4);
+}
+
+.access-denied-page .btn-login {
+    background: var(--main_color);
+    color: white;
+    border: none;
+}
+
+.access-denied-page .btn-login:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+}
+
+@media (max-width: 768px) {
+    .access-denied-page .content h1 {
+        font-size: 36px;
+    }
+    
+    .access-denied-page .lock-icon {
+        font-size: 80px;
+    }
+    
+    .access-denied-page .actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

@@ -1,7 +1,7 @@
 import React from 'react';
-import SplitText from "../../for_an_admin/animations/SplitText";
+import SplitText from "../../public_components/animations/SplitText";
 import './features.css'
-import BlurText from "../../for_an_admin/animations/BlurText";
+import BlurText from "../../public_components/animations/BlurText";
 
 
 const handleAnimationComplete = () => {

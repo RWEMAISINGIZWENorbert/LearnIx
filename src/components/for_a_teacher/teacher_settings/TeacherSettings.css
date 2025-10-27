@@ -1,0 +1,145 @@
+:root {
+    --main_color: #A05AC8;
+    --box-shadow: 0 8px 26px rgba(0,0,0,0.06);
+}
+
+.teacherSettings {
+    transform: translateX(20vw);
+    padding: 20px;
+    width: 80vw;
+    min-height: 100vh;
+}
+
+.teacherSettings .box .upper {
+    margin-bottom: 20px;
+}
+
+.teacherSettings .box .upper h2 {
+    margin-bottom: 5px;
+}
+
+.teacherSettings .box .upper p {
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+.teacherSettings .tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+    border-bottom: 2px solid rgba(0,0,0,0.1);
+}
+
+.teacherSettings .tabs button {
+    padding: 12px 24px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.teacherSettings .tabs button.active {
+    color: var(--main_color);
+}
+
+.teacherSettings .tabs button.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--main_color);
+}
+
+.teacherSettings .settings-content {
+    background: rgba(255,255,255,0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: var(--box-shadow);
+}
+
+.teacherSettings .section h3 {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.teacherSettings .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.teacherSettings .form-group {
+    margin-bottom: 20px;
+}
+
+.teacherSettings .form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.teacherSettings .form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.teacherSettings .save-btn {
+    padding: 12px 24px;
+    background: var(--main_color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.teacherSettings .save-btn:hover {
+    opacity: 0.9;
+}
+
+.teacherSettings .notification-options {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.teacherSettings .notification-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: rgb(247, 247, 247);
+    border-radius: 10px;
+}
+
+.teacherSettings .notification-item h4 {
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+.teacherSettings .notification-item p {
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+.teacherSettings .notification-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
