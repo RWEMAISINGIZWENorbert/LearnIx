@@ -62,9 +62,9 @@ export const TeacherSidebar = () => {
                     </div>
                     <div className="info">
                         <h3 className="name">Dr. Sarah Johnson</h3>
-                        <p className="role">Senior Lecturer</p>
+                        <p className="role">Teacher</p>
                         <p className="id">ID: TCHR042</p>
-                        <p className="school">🏫 Green Hills Academy</p>
+                        <p className="school">Green Hills Academy</p>
                     </div>
                 </div>
                 <div className="contact">
@@ -73,12 +73,16 @@ export const TeacherSidebar = () => {
                 </div>
                 <div className="lower">
                     <div className="prof">
-                        <NavLink to='/teacher/profile'>
+                        <NavLink to='/teacher/profile' style={{textDecoration:'none'}}>
                             <button><FaRegUser className="icon" /><span>Profile</span></button>
                         </NavLink>
                     </div>
                     <div className="separator"></div>
-                    <div className="logout"><button><span>Sign Out</span><MdLogout className="icon" /></button></div>
+                    <div className="logout">
+                        <NavLink to='/' style={{textDecoration:'none'}}>
+                            <button><span>Sign out</span><MdLogout className="icon" /></button>
+                        </NavLink>
+                    </div>
                 </div>
             </div>
         </div>

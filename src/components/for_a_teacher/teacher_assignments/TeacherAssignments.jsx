@@ -102,7 +102,7 @@ export const TeacherAssignments = () => {
         <div className="assignments-grid">
           {activeTab === 'active' && assignments.active.map((assignment) => (
             <div key={assignment.id} className="assignment-card">
-              <div className="assignment-header" style={{borderLeft: `4px solid ${assignment.color}`}}>
+              <div className="assignment-header" style={{borderLeft: `none`}}>
                 <div className="assignment-icon" style={{background: `${assignment.color}20`, color: assignment.color}}>
                   <MdOutlineAssignment />
                 </div>
@@ -150,7 +150,7 @@ export const TeacherAssignments = () => {
 
           {activeTab === 'completed' && assignments.completed.map((assignment) => (
             <div key={assignment.id} className="assignment-card">
-              <div className="assignment-header" style={{borderLeft: `4px solid ${assignment.color}`}}>
+              <div className="assignment-header" style={{borderLeft: `none`}}>
                 <div className="assignment-icon" style={{background: `${assignment.color}20`, color: assignment.color}}>
                   <MdCheckCircle />
                 </div>

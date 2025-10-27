@@ -104,7 +104,7 @@ export const TeacherClasses = () => {
         <div className="classes-grid">
           {classes.map((cls) => (
             <div key={cls.id} className="class-card">
-              <div className="class-header" style={{borderLeft: `4px solid ${cls.color}`}}>
+              <div className="class-header" style={{borderLeft: `none`}}>
                 <div className="class-icon" style={{background: `${cls.color}20`, color: cls.color}}>
                   <HiOutlineBookOpen />
                 </div>

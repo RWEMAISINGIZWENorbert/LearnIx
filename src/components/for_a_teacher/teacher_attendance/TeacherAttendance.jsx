@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './TeacherAttendance.css';
 import { FaCheckCircle, FaTimesCircle, FaCalendarAlt } from 'react-icons/fa';
 import { MdSave } from 'react-icons/md';
+import { FaXmark,FaCheck  } from "react-icons/fa6";
 
 export const TeacherAttendance = () => {
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
@@ -47,14 +48,14 @@ export const TeacherAttendance = () => {
           </div>
           <div className="summary-cards">
             <div className="summary-card present">
-              <FaCheckCircle className="icon" />
+              <FaCheck  className="icon" />
               <div>
                 <h3>{presentCount}</h3>
                 <p>Present</p>
               </div>
             </div>
             <div className="summary-card absent">
-              <FaTimesCircle className="icon" />
+              <FaXmark className="icon" />
               <div>
                 <h3>{absentCount}</h3>
                 <p>Absent</p>
@@ -78,13 +79,13 @@ export const TeacherAttendance = () => {
                   className={`toggle-btn ${student.status === 'present' ? 'active-present' : ''}`}
                   onClick={() => toggleAttendance(student.id)}
                 >
-                  <FaCheckCircle className="icon" /> Present
+                  <FaCheck  className="icon" /> Present
                 </button>
                 <button
                   className={`toggle-btn ${student.status === 'absent' ? 'active-absent' : ''}`}
                   onClick={() => toggleAttendance(student.id)}
                 >
-                  <FaTimesCircle className="icon" /> Absent
+                  <FaXmark className="icon" /> Absent
                 </button>
               </div>
             </div>

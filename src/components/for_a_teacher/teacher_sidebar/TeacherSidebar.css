@@ -90,10 +90,13 @@
     width: 70px;
 }
 
+.teacherSidebar .box .profile .info .school,
 .teacherSidebar .box .profile .info .id {
     font-size: 12px;
     opacity: 0.6;
     margin-top: 2px;
+    color: black;
+    font-weight: 400;
 }
 
 .teacherSidebar .box .lowerSection .contact .all .icon {

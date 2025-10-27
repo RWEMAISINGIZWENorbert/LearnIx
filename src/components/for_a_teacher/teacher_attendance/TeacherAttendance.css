@@ -83,7 +83,7 @@
     display: flex;
     align-items: center;
     gap: 15px;
-    padding: 15px 25px;
+    padding: 10px ;
     background: rgba(255,255,255,0.8);
     backdrop-filter: blur(10px);
     border-radius: 10px;
@@ -96,10 +96,16 @@
 
 .teacherAttendance .summary-card.present .icon {
     color: green;
+    background: rgb(192, 247, 192);
+    padding: 5px;
+    border-radius: 5px;
 }
 
 .teacherAttendance .summary-card.absent .icon {
     color: #ef4444;
+    background: #ffd6d6;
+    padding: 5px;
+    border-radius: 5px;
 }
 
 .teacherAttendance .summary-card h3 {
@@ -134,13 +140,13 @@
 }
 
 .teacherAttendance .student-row.present {
-    border-left-color: green;
     background: rgba(16, 185, 129, 0.05);
+    border: none;
 }
 
 .teacherAttendance .student-row.absent {
-    border-left-color: #ef4444;
     background: rgba(239, 68, 68, 0.05);
+    border: none;
 }
 
 .teacherAttendance .student-info {

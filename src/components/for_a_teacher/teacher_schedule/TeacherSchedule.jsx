@@ -50,7 +50,7 @@ export const TeacherSchedule = () => {
 
         <div className="schedule-content">
           {schedule[selectedDay].map((session, index) => (
-            <div className="session-card" key={index} style={{borderLeft: `4px solid ${session.color}`}}>
+            <div className="session-card" key={index} style={{borderLeft: `none`}}>
               <div className="session-time" style={{background: `${session.color}20`, color: session.color}}>
                 <FaClock className="icon" />
                 <span>{session.time}</span>

@@ -57,14 +57,7 @@
     box-shadow: var(--box-shadow);
     border-left: 4px solid;
     transition: all 0.3s ease;
-}
-
-.teacherAnnouncements .announcement-card.priority-urgent {
-    border-left-color: #ef4444;
-}
-
-.teacherAnnouncements .announcement-card.priority-normal {
-    border-left-color: #f59e0b;
+    border: none;
 }
 
 .teacherAnnouncements .announcement-card:hover {
