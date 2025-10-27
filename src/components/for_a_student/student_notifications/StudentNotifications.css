@@ -43,8 +43,8 @@
 }
 
 .studentNotifications .notification-card.unread {
-    background: rgba(160, 90, 200, 0.05);
-    border-left: 4px solid var(--main_color);
+    background: none;
+    border: none;
 }
 
 .studentNotifications .notification-card:hover {

@@ -38,7 +38,7 @@ export const StudentAttendance = () => {
 
         <div className="attendance-list">
           {attendance.map((item, index) => (
-            <div key={index} className="attendance-card" style={{borderLeft: `4px solid ${item.color}`}}>
+            <div key={index} className="attendance-card" style={{borderLeft: `none`}}>
               <div className="card-header">
                 <h3>{item.course}</h3>
                 <div className="percentage" style={{color: item.color}}>{item.percentage}%</div>
