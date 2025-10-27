@@ -17,7 +17,6 @@ export const StudentProfile = () => {
     address: 'Kigali, Rwanda',
     dateOfBirth: '2005-03-15',
     enrollmentDate: 'August 12, 2022',
-    bloodGroup: 'O+',
     profileImage: `${import.meta.env.BASE_URL}assets/profile_pic_blank.png`
   });
 
@@ -132,20 +131,6 @@ export const StudentProfile = () => {
                     />
                   ) : (
                     <p>{new Date(profileData.dateOfBirth).toLocaleDateString()}</p>
-                  )}
-                </div>
-
-                <div className="detail-item">
-                  <label>Blood Group</label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      name="bloodGroup"
-                      value={profileData.bloodGroup}
-                      onChange={handleInputChange}
-                    />
-                  ) : (
-                    <p>{profileData.bloodGroup}</p>
                   )}
                 </div>
 
