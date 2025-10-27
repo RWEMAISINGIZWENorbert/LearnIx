@@ -6,6 +6,7 @@
 .teacherDashboard {
     height: 100vh;
     overflow-y: auto;
+    overflow-x: hidden;/
 }
 
 .teacherDashboard .dash {
@@ -83,6 +84,7 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+    overflow-y: auto;
 }
 
 .teacherDashboard .dash .box .middle .left .upper,
@@ -201,6 +203,7 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+    overflow-y: auto;
 }
 
 .teacherDashboard .dash .box .middle .right .schedule,
