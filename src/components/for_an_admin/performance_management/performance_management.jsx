@@ -79,7 +79,7 @@ export const Performance_management = () => {
       {/* Stats Cards */}
       <div className="performance_management_stats_grid">
         {stats.map((stat, index) => (
-          <div className="performance_management_stat_card" key={index} style={{ borderColor: stat.color }}>
+          <div className="performance_management_stat_card" key={index} style={{ border:'none' }}>
             <div className="performance_management_stat_icon" style={{ background: `${stat.color}15`, color: stat.color }}>
               {stat.icon}
             </div>

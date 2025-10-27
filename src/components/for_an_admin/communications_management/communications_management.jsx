@@ -80,7 +80,7 @@ export const Communications_management = () => {
       {/* Stats Grid */}
       <div className="communications_management_stats_grid">
         {stats.map((stat, index) => (
-          <div className="communications_management_stat_card" key={index} style={{ borderColor: stat.color }}>
+          <div className="communications_management_stat_card" key={index} style={{border:'none'}}>
             <div className="communications_management_stat_icon" style={{ background: `${stat.color}15`, color: stat.color }}>
               {stat.icon}
             </div>
@@ -105,12 +105,6 @@ export const Communications_management = () => {
           onClick={() => setActiveTab('messages')}
         >
           <FaEnvelope /> Messages
-        </button>
-        <button
-          className={activeTab === 'notifications' ? 'active' : ''}
-          onClick={() => setActiveTab('notifications')}
-        >
-          <MdNotifications /> Notifications
         </button>
       </div>
 
@@ -190,19 +184,6 @@ export const Communications_management = () => {
                 </div>
               </div>
             ))}
-          </div>
-        </div>
-      )}
-
-      {activeTab === 'notifications' && (
-        <div className="communications_management_content">
-          <div className="communications_management_empty_state">
-            <MdNotifications />
-            <h3>Notifications Center</h3>
-            <p>Send push notifications and SMS alerts to students and parents</p>
-            <button className="communications_management_new_btn">
-              <FaPlus /> Create Notification
-            </button>
           </div>
         </div>
       )}

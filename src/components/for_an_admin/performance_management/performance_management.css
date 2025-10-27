@@ -61,7 +61,7 @@
     display: flex;
     align-items: center;
     gap: 20px;
-    padding: 25px;
+    padding: 10px;
     background: white;
     border-radius: 16px;
     border-left: 4px solid;
@@ -85,14 +85,14 @@
 }
 
 .performance_management_stat_info h3 {
-    font-size: 28px;
+    font-size: 20px;
     font-weight: 700;
     color: #1a1a1a;
     margin-bottom: 4px;
 }
 
 .performance_management_stat_info p {
-    font-size: 14px;
+    font-size: 13px;
     color: #666;
 }
 
