@@ -63,7 +63,7 @@ export const StudentSidebar = () => {
                         <h3 className="name">John Doe</h3>
                         <p className="role">Student - L5 SOD A</p>
                         <p className="id">ID: STU001</p>
-                        <p className="school">🏫 Green Hills Academy</p>
+                        <p className="school">Green Hills Academy</p>
                     </div>
                 </div>
                 <div className="contact">
@@ -72,12 +72,16 @@ export const StudentSidebar = () => {
                 </div>
                 <div className="lower">
                     <div className="prof">
-                        <NavLink to='/student/profile'>
+                        <NavLink to='/student/profile'  style={{textDecoration:'none'}}>
                             <button><FaRegUser className="icon" /><span>Profile</span></button>
                         </NavLink>
                     </div>
                     <div className="separator"></div>
-                    <div className="logout"><button><span>Sign Out</span><MdLogout className="icon" /></button></div>
+                    <div className="logout">
+                        <NavLink to='/' style={{textDecoration:'none'}}>
+                            <button><span>Sign out</span><MdLogout className="icon" /></button>
+                        </NavLink>
+                    </div>
                 </div>
             </div>
         </div>

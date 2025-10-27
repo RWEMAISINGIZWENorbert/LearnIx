@@ -49,7 +49,7 @@
     border-bottom: 2px solid rgba(0,0,0,0.1);
 }
 
-.studentSettings .tabs button {
+.studentSettings .settings-sidebar button {
     padding: 12px 24px;
     border: none;
     background: transparent;
@@ -61,21 +61,14 @@
     gap: 8px;
     position: relative;
     transition: all 0.3s ease;
+    border-radius: 10px;
+    border: none;
 }
 
-.studentSettings .tabs button.active {
+.studentSettings .settings-sidebar button.active {
     color: var(--main_color);
 }
 
-.studentSettings .tabs button.active::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: var(--main_color);
-}
 
 .studentSettings .settings-sidebar button:hover {
     background: rgba(160, 90, 200, 0.1);
