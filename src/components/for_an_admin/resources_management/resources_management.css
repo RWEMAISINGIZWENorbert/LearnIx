@@ -479,3 +479,22 @@
     background: #8a4fb8;
     transform: translateY(-2px);
 }
+
+/* Required Field Indicator */
+.resources_management .form_group label .required {
+    color: #ef4444;
+    margin-left: 4px;
+}
+
+/* Disabled Button State */
+.resources_management .submit_button:disabled {
+    background: rgba(0, 0, 0, 0.1);
+    color: rgba(0, 0, 0, 0.3);
+    cursor: not-allowed;
+    transform: none;
+}
+
+.resources_management .submit_button:disabled:hover {
+    background: rgba(0, 0, 0, 0.1);
+    transform: none;
+}

@@ -16,36 +16,24 @@
 }
 
 .student-profile-page .profile-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin-bottom: 30px;
 }
 
 .student-profile-page .profile-header h1 {
     font-size: 32px;
     color: #1a1a1a;
+    margin-bottom: 8px;
 }
 
-.student-profile-page .edit-btn {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 24px;
-    background: var(--main_color);
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(160, 90, 200, 0.3);
-}
-
-.student-profile-page .edit-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(160, 90, 200, 0.4);
+.student-profile-page .read-only-notice {
+    font-size: 14px;
+    color: #666;
+    background: rgba(160, 90, 200, 0.1);
+    padding: 10px 16px;
+    border-radius: 8px;
+    border-left: 4px solid var(--main_color);
+    margin-top: 10px;
+    display: inline-block;
 }
 
 .student-profile-page .profile-content {

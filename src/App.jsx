@@ -23,14 +23,11 @@ import { Admin_academic_setup } from './pages/admin/admin_academic_setup/admin_a
 import { Admin_communications } from './pages/admin/admin_communications/admin_communications';
 import { AccessDenied } from './pages/public_pages/access_denied/AccessDenied';
 import { Admin_profile } from './pages/admin/admin_profile/admin_profile';
+import { Email_Verification_Page } from './pages/public_pages/email_verification/email_verification';
 
 // Student Pages
 import { Student_Dashboard_Page } from './pages/student/student_dashboard/student_dashboard';
-import { Student_Courses_Page } from './pages/student/student_courses/student_courses';
 import { Student_Assignments_Page } from './pages/student/student_assignments/student_assignments';
-import { Student_Grades_Page } from './pages/student/student_grades/student_grades';
-import { Student_Timetable_Page } from './pages/student/student_timetable/student_timetable';
-import { Student_Attendance_Page } from './pages/student/student_attendance/student_attendance';
 import { Student_Resources_Page } from './pages/student/student_resources/student_resources';
 import { Student_Announcements_Page } from './pages/student/student_announcements/student_announcements';
 import { Student_Notifications_Page } from './pages/student/student_notifications/student_notifications';
@@ -71,6 +68,7 @@ function App() {
         <Route path='/dev_team' element={<Developers/>}/>
         <Route path='/signup' element={<AuthFlow/>}/>
         <Route path='/login' element={<AuthFlow/>}/>
+        <Route path='/email-verification' element={<Email_Verification_Page/>}/>
 
         {/* Admin page routes */}
         <Route path='/admin'>
@@ -95,11 +93,7 @@ function App() {
         <Route path='/student'>
             <Route path='' element={<Student_Dashboard_Page/>}/>
             <Route path='dashboard' element={<Student_Dashboard_Page/>}/>
-            <Route path='courses' element={<Student_Courses_Page/>}/>
             <Route path='assignments' element={<Student_Assignments_Page/>}/>
-            <Route path='grades' element={<Student_Grades_Page/>}/>
-            <Route path='timetable' element={<Student_Timetable_Page/>}/>
-            <Route path='attendance' element={<Student_Attendance_Page/>}/>
             <Route path='resources' element={<Student_Resources_Page/>}/>
             <Route path='announcements' element={<Student_Announcements_Page/>}/>
             <Route path='notifications' element={<Student_Notifications_Page/>}/>

@@ -4,11 +4,9 @@ import { RxDashboard } from "react-icons/rx";
 import { MdLogout, MdOutlineAssignment } from "react-icons/md";
 import { IoSettingsOutline } from "react-icons/io5";
 import { FaRegBell, FaRegUser } from "react-icons/fa";
-import { HiOutlineMail, HiOutlineAcademicCap, HiOutlineBookOpen } from "react-icons/hi";
-import { LuCalendarDays, LuClipboardList } from "react-icons/lu";
+import { HiOutlineMail, HiOutlineAcademicCap } from "react-icons/hi";
 import { GrResources, GrAnnounce } from "react-icons/gr";
 import { NavLink } from 'react-router-dom';
-import { BiBarChart } from "react-icons/bi";
 
 export const StudentSidebar = () => {
   return (
@@ -24,20 +22,8 @@ export const StudentSidebar = () => {
                         <NavLink className={({ isActive }) => isActive ? 'left-item when_active' : 'left-item'} to='/student/dashboard'>
                             <div className="link"><RxDashboard className="icon" /><span>Dashboard</span></div>
                         </NavLink>
-                        <NavLink className={({ isActive }) => isActive ? 'left-item when_active' : 'left-item'} to='/student/courses'>
-                            <div className="link"><HiOutlineBookOpen className="icon" /><span>My Courses</span></div>
-                        </NavLink>
                         <NavLink className={({ isActive }) => isActive ? 'left-item when_active' : 'left-item'} to='/student/assignments'>
                             <div className="link"><MdOutlineAssignment className="icon" /><span>Assignments</span></div>
-                        </NavLink>
-                        <NavLink className={({ isActive }) => isActive ? 'left-item when_active' : 'left-item'} to='/student/grades'>
-                            <div className="link"><BiBarChart className="icon" /><span>Grades & Results</span></div>
-                        </NavLink>
-                        <NavLink className={({ isActive }) => isActive ? 'left-item when_active' : 'left-item'} to='/student/timetable'>
-                            <div className="link"><LuCalendarDays className="icon" /><span>Timetable</span></div>
-                        </NavLink>
-                        <NavLink className={({ isActive }) => isActive ? 'left-item when_active' : 'left-item'} to='/student/attendance'>
-                            <div className="link"><LuClipboardList className="icon" /><span>Attendance</span></div>
                         </NavLink>
                         <NavLink className={({ isActive }) => isActive ? 'left-item when_active' : 'left-item'} to='/student/resources'>
                             <div className="link"><GrResources className="icon" /><span>Resources & Library</span></div>

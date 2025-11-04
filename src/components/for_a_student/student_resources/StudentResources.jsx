@@ -4,6 +4,7 @@ import { GrResources } from 'react-icons/gr';
 import { BiDownload, BiFile } from 'react-icons/bi';
 import { HiOutlineBookOpen } from 'react-icons/hi';
 import { MdOutlineVideoLibrary } from 'react-icons/md';
+import { LuFileText, LuVideo, LuFolder } from 'react-icons/lu';
 
 export const StudentResources = () => {
   const [filter, setFilter] = useState('all');
@@ -17,22 +18,58 @@ export const StudentResources = () => {
     { id: 6, title: 'HTML/CSS Workshop', course: 'Web Technologies', type: 'Video', size: '98 MB', date: '2025-10-08' }
   ];
 
+  const filteredResources = filter === 'all' 
+    ? resources 
+    : resources.filter(r => r.type.toLowerCase() === filter);
+
+  const totalResources = resources.length;
+  const pdfCount = resources.filter(r => r.type === 'PDF').length;
+  const videoCount = resources.filter(r => r.type === 'Video').length;
+
   return (
     <div className='studentResources'>
-      <div className="box">
-        <div className="upper">
-          <h2>Resources & Library</h2>
-          <p>Access study materials and course resources</p>
+      <div className="resources-header">
+        <div className="header-content">
+          <h1>Resources & Library</h1>
+          <p>Access study materials, course resources, and learning content</p>
         </div>
+        <div className="stats-cards">
+          <div className="stat-card total-stat">
+            <LuFolder className="stat-icon" />
+            <div className="stat-number">{totalResources}</div>
+            <div className="stat-label">Total Resources</div>
+          </div>
+          <div className="stat-card pdf-stat">
+            <LuFileText className="stat-icon" />
+            <div className="stat-number">{pdfCount}</div>
+            <div className="stat-label">Documents</div>
+          </div>
+          <div className="stat-card video-stat">
+            <LuVideo className="stat-icon" />
+            <div className="stat-number">{videoCount}</div>
+            <div className="stat-label">Videos</div>
+          </div>
+        </div>
+      </div>
 
+      <div className="box">
         <div className="filters">
-          <button className={filter === 'all' ? 'active' : ''} onClick={() => setFilter('all')}>All Resources</button>
-          <button className={filter === 'pdf' ? 'active' : ''} onClick={() => setFilter('pdf')}>Documents</button>
-          <button className={filter === 'video' ? 'active' : ''} onClick={() => setFilter('video')}>Videos</button>
+          <button className={filter === 'all' ? 'active' : ''} onClick={() => setFilter('all')}>
+            <LuFolder className="filter-icon" />
+            All Resources
+          </button>
+          <button className={filter === 'pdf' ? 'active' : ''} onClick={() => setFilter('pdf')}>
+            <LuFileText className="filter-icon" />
+            Documents
+          </button>
+          <button className={filter === 'video' ? 'active' : ''} onClick={() => setFilter('video')}>
+            <LuVideo className="filter-icon" />
+            Videos
+          </button>
         </div>
 
         <div className="resources-grid">
-          {resources.map(resource => (
+          {filteredResources.map(resource => (
             <div key={resource.id} className="resource-card">
               <div className="resource-icon">
                 {resource.type === 'PDF' ? <BiFile /> : <MdOutlineVideoLibrary />}

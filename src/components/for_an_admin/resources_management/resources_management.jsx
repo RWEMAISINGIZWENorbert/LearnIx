@@ -4,8 +4,8 @@ import { FaArrowLeft } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
 import { DeleteConfirmation } from '../../shared/DeleteConfirmation';
 import { LuBookOpen, LuFileText, LuDownload, LuUpload, LuEye, LuTrash, LuPlus } from 'react-icons/lu';
-import { MdOutlineSubject, MdOutlineClass, MdOutlineSchedule } from 'react-icons/md';
-import { FaLongArrowAltRight, FaFilePdf, FaFileWord, FaFileImage, FaFileVideo, FaEdit } from "react-icons/fa";
+import { MdOutlineSubject } from 'react-icons/md';
+import { FaFilePdf, FaFileWord, FaFileImage, FaFileVideo } from "react-icons/fa";
 
 export const Resources_management = () => {
   let navigate = useNavigate();
@@ -13,8 +13,11 @@ export const Resources_management = () => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
   const [deleteType, setDeleteType] = useState('');
-
-  const documents = [
+  const [uploadedFile, setUploadedFile] = useState(null);
+  const [fileName, setFileName] = useState('');
+  const [fileCategory, setFileCategory] = useState('');
+  const [fileDescription, setFileDescription] = useState('');
+  const [documents, setDocuments] = useState([
     {
       id: 1,
       name: "Mathematics Past Papers 2023",
@@ -60,7 +63,7 @@ export const Resources_management = () => {
       downloads: 123,
       category: "Learning notes"
     }
-  ];
+  ]);
 
   const categories = [
     { name: "Learning notes", count: 45, color: "#3b82f6" },
@@ -99,10 +102,81 @@ export const Resources_management = () => {
 
   const confirmDelete = () => {
     // Handle actual deletion logic here
+    setDocuments(documents.filter(doc => doc.id !== itemToDelete.id));
     console.log(`Deleting ${deleteType}:`, itemToDelete);
     setShowDeleteConfirm(false);
     setItemToDelete(null);
     setDeleteType('');
+  };
+
+  const handleFileSelect = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setUploadedFile(file);
+      setFileName(file.name);
+    }
+  };
+
+  const handleFileUpload = () => {
+    if (uploadedFile && fileName && fileCategory) {
+      const newDocument = {
+        id: documents.length + 1,
+        name: fileName,
+        type: uploadedFile.name.split('.').pop(),
+        size: `${(uploadedFile.size / (1024 * 1024)).toFixed(2)} MB`,
+        uploaded: 'Just now',
+        downloads: 0,
+        category: fileCategory,
+        file: uploadedFile
+      };
+      
+      setDocuments([newDocument, ...documents]);
+      
+      // Reset form
+      setUploadedFile(null);
+      setFileName('');
+      setFileCategory('');
+      setFileDescription('');
+      
+      // Switch to documents tab to see the uploaded file
+      setActiveTab('documents');
+      
+      alert('File uploaded successfully!');
+    } else {
+      alert('Please fill in all required fields and select a file.');
+    }
+  };
+
+  const handleViewDocument = (document) => {
+    // In a real application, this would open the document in a new tab or modal
+    if (document.file) {
+      const fileURL = URL.createObjectURL(document.file);
+      window.open(fileURL, '_blank');
+    } else {
+      alert(`Viewing: ${document.name}\nThis would open the document in a viewer.`);
+    }
+  };
+
+  const handleDownloadDocument = (doc) => {
+    // In a real application, this would trigger a file download
+    if (doc.file) {
+      const fileURL = URL.createObjectURL(doc.file);
+      const link = window.document.createElement('a');
+      link.href = fileURL;
+      link.download = doc.name;
+      window.document.body.appendChild(link);
+      link.click();
+      window.document.body.removeChild(link);
+      
+      // Update download count
+      setDocuments(documents.map(d => 
+        d.id === doc.id 
+          ? { ...d, downloads: d.downloads + 1 }
+          : d
+      ));
+    } else {
+      alert(`Downloading: ${doc.name}`);
+    }
   };
 
   const tabs = [
@@ -144,10 +218,9 @@ export const Resources_management = () => {
                     </div>
                   </div>
                   <div className="document_actions">
-                    <button className="view"><LuEye /></button>
-                    <button className="download"><LuDownload /></button>
-                    <button className="edit"><FaEdit /></button>
-                    <button className="delete" onClick={() => handleDelete(document, 'document')}><LuTrash /></button>
+                    <button className="view" onClick={() => handleViewDocument(document)} title="View document"><LuEye /></button>
+                    <button className="download" onClick={() => handleDownloadDocument(document)} title="Download document"><LuDownload /></button>
+                    <button className="delete" onClick={() => handleDelete(document, 'document')} title="Delete document"><LuTrash /></button>
                   </div>
                 </div>
               ))}
@@ -196,32 +269,59 @@ export const Resources_management = () => {
                   <LuUpload />
                 </div>
                 <h3>Upload Resources</h3>
-                <p>Drag and drop files here or click to browse</p>
-                <button className="browse_button">Browse Files</button>
+                <p>Click the button below to select a file</p>
+                <input 
+                  type="file" 
+                  id="fileInput" 
+                  style={{ display: 'none' }} 
+                  onChange={handleFileSelect}
+                  accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.jpg,.jpeg,.png,.mp4,.avi"
+                />
+                <button className="browse_button" onClick={() => document.getElementById('fileInput').click()}>
+                  {uploadedFile ? `Selected: ${uploadedFile.name}` : 'Browse Files'}
+                </button>
               </div>
               
               <div className="upload_form">
                 <div className="form_group">
-                  <label>File Name</label>
-                  <input type="text" placeholder="Enter file name" />
+                  <label>File Name <span className="required">*</span></label>
+                  <input 
+                    type="text" 
+                    placeholder="Enter file name" 
+                    value={fileName}
+                    onChange={(e) => setFileName(e.target.value)}
+                  />
                 </div>
                 <div className="form_group">
-                  <label>Category</label>
-                  <select>
-                    <option value="category" hidden>Select file category</option>
-                    <option value="category">Learning notes</option>
-                    <option value="category">Past papers</option>
-                    <option value="category">Rules and regulations</option>
-                    <option value="category">Reading books</option>
-                    <option value="category">Novels</option>
-                    <option value="category">Other</option>
+                  <label>Category <span className="required">*</span></label>
+                  <select 
+                    value={fileCategory}
+                    onChange={(e) => setFileCategory(e.target.value)}
+                  >
+                    <option value="" hidden>Select file category</option>
+                    <option value="Learning notes">Learning notes</option>
+                    <option value="Past papers">Past papers</option>
+                    <option value="Rules and regulations">Rules and regulations</option>
+                    <option value="Reading books">Reading books</option>
+                    <option value="Novels">Novels</option>
+                    <option value="Other">Other</option>
                   </select>
                 </div>
                 <div className="form_group">
                   <label>Description</label>
-                  <textarea placeholder="Enter file description"></textarea>
+                  <textarea 
+                    placeholder="Enter file description (optional)"
+                    value={fileDescription}
+                    onChange={(e) => setFileDescription(e.target.value)}
+                  ></textarea>
                 </div>
-                <button className="submit_button">Upload File</button>
+                <button 
+                  className="submit_button" 
+                  onClick={handleFileUpload}
+                  disabled={!uploadedFile || !fileName || !fileCategory}
+                >
+                  Upload File
+                </button>
               </div>
             </div>
           </div>

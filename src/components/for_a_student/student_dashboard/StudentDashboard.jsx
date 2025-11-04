@@ -1,11 +1,10 @@
 import React from 'react';
 import './StudentDashboard.css';
-import { HiOutlineBookOpen, HiOutlineAcademicCap } from 'react-icons/hi';
-import { MdOutlineAssignment, MdOutlineEventNote } from 'react-icons/md';
-import { BiBarChart } from 'react-icons/bi';
-import { IoMdArrowDropright } from 'react-icons/io';
-import { LuCalendarDays, LuClock } from 'react-icons/lu';
-import { FiTrendingUp } from 'react-icons/fi';
+import { HiOutlineAcademicCap } from 'react-icons/hi';
+import { MdOutlineAssignment } from 'react-icons/md';
+import { LuClock, LuBookOpen, LuFileText } from 'react-icons/lu';
+import { GrAnnounce, GrResources } from 'react-icons/gr';
+import { FaRegBell } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
 
 export const StudentDashboard = () => {
@@ -16,23 +15,13 @@ export const StudentDashboard = () => {
           {/* Welcome Section */}
           <div className="upper">
             <h2>Welcome back, John!</h2>
-            <p>Here's your academic overview and upcoming tasks.</p>
+            <p>Stay organized and on track with your academic journey.</p>
           </div>
 
           {/* Quick Stats Cards */}
           <div className="mid_upper">
             <div className="divisions">
               <div className="div1 all">
-                <div className="left">
-                  <h3>6</h3>
-                  <p>Enrolled Courses</p>
-                </div>
-                <div className="right">
-                  <div className="icon"><HiOutlineBookOpen /></div>
-                </div>
-              </div>
-
-              <div className="div2 all">
                 <div className="left">
                   <h3>12</h3>
                   <p>Pending Assignments</p>
@@ -42,23 +31,33 @@ export const StudentDashboard = () => {
                 </div>
               </div>
 
-              <div className="div3 all">
+              <div className="div2 all">
                 <div className="left">
-                  <h3>85%</h3>
-                  <p>Average Grade</p>
+                  <h3>45</h3>
+                  <p>Available Resources</p>
                 </div>
                 <div className="right">
-                  <div className="icon"><BiBarChart /></div>
+                  <div className="icon"><GrResources /></div>
+                </div>
+              </div>
+
+              <div className="div3 all">
+                <div className="left">
+                  <h3>8</h3>
+                  <p>New Announcements</p>
+                </div>
+                <div className="right">
+                  <div className="icon"><GrAnnounce /></div>
                 </div>
               </div>
 
               <div className="div4 all">
                 <div className="left">
-                  <h3>92%</h3>
-                  <p>Attendance Rate</p>
+                  <h3>5</h3>
+                  <p>Unread Notifications</p>
                 </div>
                 <div className="right">
-                  <div className="icon"><MdOutlineEventNote /></div>
+                  <div className="icon"><FaRegBell /></div>
                 </div>
               </div>
             </div>
@@ -112,97 +111,83 @@ export const StudentDashboard = () => {
                 </div>
               </div>
 
-              {/* Recent Grades */}
+              {/* Recent Resources */}
               <div className="lower">
                 <div className="up">
-                  <h3>Recent Grades</h3>
-                  <NavLink to='/student/grades'><button>View All</button></NavLink>
+                  <h3>Recent Resources</h3>
+                  <NavLink to='/student/resources'><button>View All</button></NavLink>
                 </div>
                 <div className="down">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Course</th>
-                        <th>Assessment</th>
-                        <th>Grade</th>
-                        <th>Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>Mathematics</td>
-                        <td>Mid-term Exam</td>
-                        <td>92%</td>
-                        <td><span className='excellent'>Excellent</span></td>
-                      </tr>
-                      <tr>
-                        <td>Physics</td>
-                        <td>Quiz 3</td>
-                        <td>88%</td>
-                        <td><span className='good'>Good</span></td>
-                      </tr>
-                      <tr>
-                        <td>Software Dev</td>
-                        <td>Project 1</td>
-                        <td>95%</td>
-                        <td><span className='excellent'>Excellent</span></td>
-                      </tr>
-                      <tr>
-                        <td>English</td>
-                        <td>Essay</td>
-                        <td>78%</td>
-                        <td><span className='average'>Average</span></td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <div className="resource-list">
+                    <div className="resource-item">
+                      <div className="resource-icon pdf">
+                        <LuFileText />
+                      </div>
+                      <div className="resource-info">
+                        <h4>Mathematics Past Papers 2023</h4>
+                        <p>Past Papers • 2.4 MB • 2 days ago</p>
+                      </div>
+                      <button className="view-btn">View</button>
+                    </div>
+                    <div className="resource-item">
+                      <div className="resource-icon book">
+                        <LuBookOpen />
+                      </div>
+                      <div className="resource-info">
+                        <h4>English Literature Notes</h4>
+                        <p>Learning notes • 3.2 MB • 3 days ago</p>
+                      </div>
+                      <button className="view-btn">View</button>
+                    </div>
+                    <div className="resource-item">
+                      <div className="resource-icon doc">
+                        <LuFileText />
+                      </div>
+                      <div className="resource-info">
+                        <h4>School Rules and Regulations</h4>
+                        <p>Rules and regulations • 1.8 MB • 1 week ago</p>
+                      </div>
+                      <button className="view-btn">View</button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
             {/* Right Sidebar */}
             <div className="right">
-              {/* Today's Schedule */}
+              {/* Recent Announcements */}
               <div className="schedule">
                 <div className="section-title">
-                  <h3>Today's Schedule</h3>
-                  <NavLink to='/student/timetable'><span className="view-link">View Full</span></NavLink>
+                  <h3>Recent Announcements</h3>
+                  <NavLink to='/student/announcements'><span className="view-link">View All</span></NavLink>
                 </div>
                 <div className="schedule-items">
-                  <div className="schedule-item">
-                    <div className="time">08:00 - 09:30</div>
-                    <div className="details">
-                      <h4>Mathematics</h4>
-                      <p>Room 301</p>
-                    </div>
+                  <div className="announcement-item">
+                    <div className="announcement-badge important">Important</div>
+                    <h4>Mid-Term Examination Schedule Released</h4>
+                    <p className="announcement-time">Posted 2 hours ago</p>
+                    <p className="announcement-preview">The mid-term examination schedule has been released...</p>
                   </div>
-                  <div className="schedule-item active">
-                    <div className="time">09:45 - 11:15</div>
-                    <div className="details">
-                      <h4>Physics</h4>
-                      <p>Lab 102</p>
-                    </div>
+                  <div className="announcement-item">
+                    <div className="announcement-badge general">General</div>
+                    <h4>Library Hours Extended</h4>
+                    <p className="announcement-time">Posted 1 day ago</p>
+                    <p className="announcement-preview">The library will now be open until 10 PM...</p>
                   </div>
-                  <div className="schedule-item">
-                    <div className="time">12:00 - 13:30</div>
-                    <div className="details">
-                      <h4>Software Development</h4>
-                      <p>Computer Lab A</p>
-                    </div>
-                  </div>
-                  <div className="schedule-item">
-                    <div className="time">14:00 - 15:30</div>
-                    <div className="details">
-                      <h4>English Literature</h4>
-                      <p>Room 205</p>
-                    </div>
+                  <div className="announcement-item">
+                    <div className="announcement-badge event">Event</div>
+                    <h4>Science Fair Next Week</h4>
+                    <p className="announcement-time">Posted 2 days ago</p>
+                    <p className="announcement-preview">Annual science fair will be held next week...</p>
                   </div>
                 </div>
               </div>
 
-              {/* Performance Overview */}
+              {/* Assignment Progress */}
               <div className="performance">
                 <div className="section-title">
-                  <h3>Performance Overview</h3>
+                  <h3>Assignment Progress</h3>
                 </div>
                 <div className="performance-items">
                   <div className="perf-item">
@@ -213,14 +198,14 @@ export const StudentDashboard = () => {
                     <div className="value">85%</div>
                   </div>
                   <div className="perf-item">
-                    <div className="label">Attendance</div>
+                    <div className="label">Submitted On Time</div>
                     <div className="progress-bar">
                       <div className="progress" style={{width: '92%', background: 'green'}}></div>
                     </div>
                     <div className="value">92%</div>
                   </div>
                   <div className="perf-item">
-                    <div className="label">Course Progress</div>
+                    <div className="label">Resources Accessed</div>
                     <div className="progress-bar">
                       <div className="progress" style={{width: '68%', background: '#f59e0b'}}></div>
                     </div>
@@ -235,13 +220,6 @@ export const StudentDashboard = () => {
           <div className="quick-actions">
             <h3>Quick Actions</h3>
             <div className="actions-grid">
-              <NavLink to='/student/courses' className="action-card">
-                <div className="icon"><HiOutlineBookOpen /></div>
-                <div className="text">
-                  <h4>My Courses</h4>
-                  <p>View all enrolled courses</p>
-                </div>
-              </NavLink>
               <NavLink to='/student/assignments' className="action-card">
                 <div className="icon"><MdOutlineAssignment /></div>
                 <div className="text">
@@ -256,11 +234,18 @@ export const StudentDashboard = () => {
                   <p>Access learning materials</p>
                 </div>
               </NavLink>
-              <NavLink to='/student/timetable' className="action-card">
-                <div className="icon"><LuCalendarDays /></div>
+              <NavLink to='/student/announcements' className="action-card">
+                <div className="icon"><GrAnnounce /></div>
                 <div className="text">
-                  <h4>Class Schedule</h4>
-                  <p>View your timetable</p>
+                  <h4>Announcements</h4>
+                  <p>View school updates</p>
+                </div>
+              </NavLink>
+              <NavLink to='/student/notifications' className="action-card">
+                <div className="icon"><FaRegBell /></div>
+                <div className="text">
+                  <h4>Notifications</h4>
+                  <p>Check your alerts</p>
                 </div>
               </NavLink>
             </div>

@@ -120,29 +120,48 @@ export const StudentAssignments = () => {
 
   return (
     <div className='studentAssignments'>
-      <div className="box">
-        <div className="upper">
-          <h2>My Assignments</h2>
-          <p>Track and submit your assignments</p>
+      <div className="assignments-header">
+        <div className="header-content">
+          <h1>My Assignments</h1>
+          <p>Track, submit, and manage your course assignments</p>
         </div>
+        <div className="stats-cards">
+          <div className="stat-card pending-stat">
+            <div className="stat-number">{assignments.pending.length}</div>
+            <div className="stat-label">Pending</div>
+          </div>
+          <div className="stat-card submitted-stat">
+            <div className="stat-number">{assignments.submitted.length}</div>
+            <div className="stat-label">Submitted</div>
+          </div>
+          <div className="stat-card graded-stat">
+            <div className="stat-number">{assignments.graded.length}</div>
+            <div className="stat-label">Graded</div>
+          </div>
+        </div>
+      </div>
 
+      <div className="box">
         <div className="tabs">
           <button 
             className={activeTab === 'pending' ? 'active' : ''}
             onClick={() => setActiveTab('pending')}
           >
+            <MdOutlineAssignment className="tab-icon" />
             Pending ({assignments.pending.length})
           </button>
           <button 
             className={activeTab === 'submitted' ? 'active' : ''}
             onClick={() => setActiveTab('submitted')}
           >
+            <MdUpload className="tab-icon" />
             Submitted ({assignments.submitted.length})
           </button>
           <button 
             className={activeTab === 'graded' ? 'active' : ''}
             onClick={() => setActiveTab('graded')}
           >
+            <MdCheckCircle className="tab-icon" />
             Graded ({assignments.graded.length})
           </button>
         </div>
