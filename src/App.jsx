@@ -5,8 +5,6 @@ import { Home } from './pages/public_pages/home/Home_page';
 import { Features } from './pages/public_pages/features/features_page';
 import { Schools } from './pages/public_pages/schools/Schools';
 import { Books } from './pages/public_pages/books/Books';
-import { Login_page } from './pages/public_pages/Login/login_page';
-import { Auth } from './components/public_components/auth/Auth';
 import { AuthFlow } from './components/public_components/auth/AuthFlow';
 import ClickSpark from './components/public_components/animations/ClickSpark';
 import { Not_found } from './pages/public_pages/Not_Found/Not_found';

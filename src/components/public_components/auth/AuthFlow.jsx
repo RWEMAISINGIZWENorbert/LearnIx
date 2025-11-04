@@ -265,7 +265,7 @@ export const AuthFlow = () => {
               )}
               <div style={{ marginTop: '16px', padding: '12px', background: 'rgba(160, 90, 200, 0.05)', borderRadius: '8px', borderLeft: '3px solid var(--main_color)' }}>
                 <p style={{ fontSize: '13px', color: '#6b7280', marginBottom: '6px' }}>
-                  Don't have an ID yet? Register your school first!
+                  Want to register a school instead?
                 </p>
                 <Link to="/school-registration" style={{ fontSize: '14px', color: 'var(--main_color)', fontWeight: '600', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                   <FaSchool /> Register School for Admin Access
