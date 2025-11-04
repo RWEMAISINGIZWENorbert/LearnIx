@@ -1,115 +1,158 @@
 import React, { useState } from 'react';
 import './TeacherStudents.css';
-import { FaSearch, FaEnvelope, FaPhone } from 'react-icons/fa';
-import { BiTrendingUp, BiTrendingDown } from 'react-icons/bi';
-import { HiOutlineAcademicCap } from 'react-icons/hi';
+import { CiSearch } from 'react-icons/ci';
+import { LuUser } from 'react-icons/lu';
+import { IoTimeOutline } from 'react-icons/io5';
+import { MdOutlinePhone, MdOutlineEmail } from "react-icons/md";
+import { HiOutlineAcademicCap } from "react-icons/hi2";
+import { FaWhatsapp } from "react-icons/fa";
 
 export const TeacherStudents = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedClass, setSelectedClass] = useState('all');
-
-  const students = [
-    { id: 'STU001', name: 'John Doe', email: 'john.doe@student.com', phone: '+1 234 567 8901', class: 'L5 SOD A', courses: 'Web Dev, Database', attendance: 95, avgGrade: 85, trend: 'up' },
-    { id: 'STU002', name: 'Emma Wilson', email: 'emma.wilson@student.com', phone: '+1 234 567 8902', class: 'L5 SOD A', courses: 'Web Dev, Software Eng', attendance: 92, avgGrade: 88, trend: 'up' },
-    { id: 'STU003', name: 'Michael Brown', email: 'michael.brown@student.com', phone: '+1 234 567 8903', class: 'L5 SOD B', courses: 'Database, Cloud', attendance: 78, avgGrade: 72, trend: 'down' },
-    { id: 'STU004', name: 'Sarah Davis', email: 'sarah.davis@student.com', phone: '+1 234 567 8904', class: 'L6 SOD A', courses: 'Software Eng, AI', attendance: 98, avgGrade: 92, trend: 'up' },
-    { id: 'STU005', name: 'James Johnson', email: 'james.johnson@student.com', phone: '+1 234 567 8905', class: 'L5 SOD C', courses: 'Mobile Dev, Web', attendance: 88, avgGrade: 80, trend: 'up' },
-    { id: 'STU006', name: 'Lisa Martinez', email: 'lisa.martinez@student.com', phone: '+1 234 567 8906', class: 'L6 SOD B', courses: 'Cloud, AI', attendance: 85, avgGrade: 78, trend: 'down' }
-  ];
+  const [students, setStudents] = useState([
+    {
+      id: 1,
+      name: "John Doe",
+      email: "john.doe@student.com",
+      guardian_name: "John Doe Sr.",
+      guardian_phone: "+250 795 123 456",
+      whatsapp: "+250 795 123 456",
+      studentId: "STU001",
+      class: "L5 SOD A",
+      status: "active",
+      enrollmentDate: "Mon, August 12, 2024 8:34:12 a.m",
+      profilePic: "profile_pic_blank.png"
+    },
+    {
+      id: 2,
+      name: "Jane Smith",
+      email: "jane.smith@student.com",
+      guardian_name: "Jane Smith Sr.",
+      guardian_phone: "+250 795 234 567",
+      whatsapp: "+250 795 234 567",
+      studentId: "STU002",
+      class: "L5 SOD B",
+      status: "active",
+      enrollmentDate: "Mon, August 12, 2024 8:34:12 a.m",
+      profilePic: "profile_pic_blank.png"
+    },
+    {
+      id: 3,
+      name: "Mike Johnson",
+      email: "mike.johnson@student.com",
+      guardian_name: "Mike Johnson Sr.",
+      guardian_phone: "+250 795 345 678",
+      whatsapp: "+250 795 345 678",
+      studentId: "STU003",
+      class: "L6 SOD A",
+      status: "inactive",
+      enrollmentDate: "Mon, August 12, 2024 8:34:12 a.m",
+      profilePic: "profile_pic_blank.png"
+    },
+    {
+      id: 4,
+      name: "Sarah Wilson",
+      email: "sarah.wilson@student.com",
+      guardian_name: "Sarah Wilson Sr.",
+      guardian_phone: "+250 795 456 789",
+      whatsapp: "+250 795 456 789",
+      studentId: "STU004",
+      class: "L5 SOD A",
+      status: "active",
+      enrollmentDate: "Mon, August 12, 2024 8:34:12 a.m",
+      profilePic: "profile_pic_blank.png"
+    },
+    {
+      id: 5,
+      name: "David Brown",
+      email: "david.brown@student.com",
+      guardian_name: "David Brown Sr.",
+      guardian_phone: "+250 795 567 890",
+      whatsapp: "+250 795 567 890",
+      studentId: "STU005",
+      class: "L6 SOD B",
+      status: "active",
+      enrollmentDate: "Mon, August 12, 2024 8:34:12 a.m",
+      profilePic: "profile_pic_blank.png"
+    },
+    {
+      id: 6,
+      name: "Emily Davis",
+      email: "emily.davis@student.com",
+      guardian_name: "Emily Davis Sr.",
+      guardian_phone: "+250 795 678 901",
+      whatsapp: "+250 795 678 901",
+      studentId: "STU006",
+      class: "L5 SOD A",
+      status: "active",
+      enrollmentDate: "Mon, August 12, 2024 8:34:12 a.m",
+      profilePic: "profile_pic_blank.png"
+    }
+  ]);
 
   const filteredStudents = students.filter(student => {
-    const matchesSearch = student.name.toLowerCase().includes(searchTerm.toLowerCase()) || student.id.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesClass = selectedClass === 'all' || student.class === selectedClass;
-    return matchesSearch && matchesClass;
+    const matchesSearch = student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      student.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      student.studentId.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      student.class.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    return matchesSearch;
   });
 
   return (
-    <div className='teacherStudents'>
+    <div className='teacherStudents students_management'>
       <div className="box">
-        <div className="upper">
-          <h2>Students Directory</h2>
-          <p>View and manage all students in your classes</p>
-        </div>
-
-        <div className="filters-section">
-          <div className="search-box">
-            <FaSearch className="icon" />
-            <input
-              type="text"
-              placeholder="Search by name or student ID..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+        <div className="whole_up">
+          <div className="upper">
+            <h4>My Students</h4>
+            <p>View and manage all students in your classes. Access contact information and track enrollment records.</p>
           </div>
-          <select value={selectedClass} onChange={(e) => setSelectedClass(e.target.value)} className="class-filter">
-            <option value="all">All Classes</option>
-            <option value="L5 SOD A">L5 SOD A</option>
-            <option value="L5 SOD B">L5 SOD B</option>
-            <option value="L5 SOD C">L5 SOD C</option>
-            <option value="L6 SOD A">L6 SOD A</option>
-            <option value="L6 SOD B">L6 SOD B</option>
-          </select>
+          <div className="mini_up">
+            <div className="search_box">
+              <div className="search">
+                <div className="icon"><CiSearch /></div>
+                <input 
+                  type="text" 
+                  placeholder='Search for students...' 
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+              <div className="button">
+                <button>Search</button>
+              </div>
+            </div>
+            <div className="stats">
+              <div className="left"><div className="icon"><LuUser/></div></div>
+              <div className="right">
+                <span>Total Students</span>
+                <p>{students.length} students</p>
+              </div>
+            </div>
+          </div>
         </div>
-
-        <div className="students-grid">
-          {filteredStudents.map((student) => (
-            <div className="student-card" key={student.id}>
-              <div className="student-header">
-                <div className="student-avatar">{student.name.split(' ').map(n => n[0]).join('')}</div>
-                <div className="student-info">
-                  <h3>{student.name}</h3>
-                  <p className="student-id">{student.id}</p>
-                  <span className="class-badge">{student.class}</span>
-                </div>
-                <div className="trend-indicator">
-                  {student.trend === 'up' ? 
-                    <BiTrendingUp className="icon up" /> : 
-                    <BiTrendingDown className="icon down" />
-                  }
-                </div>
-              </div>
-
-              <div className="student-contact">
-                <div className="contact-item">
-                  <FaEnvelope className="icon" />
-                  <span>{student.email}</span>
-                </div>
-                <div className="contact-item">
-                  <FaPhone className="icon" />
-                  <span>{student.phone}</span>
-                </div>
-                <div className="contact-item">
-                  <HiOutlineAcademicCap className="icon" />
-                  <span>{student.courses}</span>
-                </div>
-              </div>
-
-              <div className="student-performance">
-                <div className="perf-metric">
-                  <div className="label">Attendance</div>
-                  <div className="progress-bar">
-                    <div className="progress" style={{
-                      width: `${student.attendance}%`,
-                      background: student.attendance >= 90 ? 'green' : student.attendance >= 75 ? '#f59e0b' : '#ef4444'
-                    }}></div>
+        <div className="middle">
+          {filteredStudents.map(student => (
+            <div key={student.id} className="student">
+              <div className="up">
+                <div className="profile">
+                  <div className="img">
+                    <img src={`${import.meta.env.BASE_URL}assets/${student.profilePic}`} alt="Student profile pic" />
                   </div>
-                  <div className="value">{student.attendance}%</div>
-                </div>
-                <div className="perf-metric">
-                  <div className="label">Average Grade</div>
-                  <div className="progress-bar">
-                    <div className="progress" style={{
-                      width: `${student.avgGrade}%`,
-                      background: student.avgGrade >= 85 ? 'green' : student.avgGrade >= 70 ? '#3b82f6' : '#ef4444'
-                    }}></div>
+                  <div className="data">
+                    <p className='name'>{student.name}</p>
+                    <p className='email'>{student.email}</p>
+                    <p className='studentId'>ID: {student.studentId}</p>
                   </div>
-                  <div className="value">{student.avgGrade}%</div>
                 </div>
+                <p className={`active_status ${student.status}`}>{student.status}</p>
               </div>
-
-              <div className="student-actions">
-                <button className="btn-primary">View Profile</button>
-                <button className="btn-secondary">Send Email</button>
+              <div className="details">
+                <p><div className="icon"><MdOutlineEmail /></div><span>{student.email}</span></p>
+                <p><div className="icon"><MdOutlinePhone /></div><span>{student.guardian_phone}</span></p>
+                <p><div className="icon"><FaWhatsapp /></div><span>{student.whatsapp}</span></p>
+                <p><div className="icon"><IoTimeOutline/></div><span>enrolled <span>{student.enrollmentDate}</span></span></p>
+                <p><div className="icon"><HiOutlineAcademicCap /></div><span>Class: {student.class}</span></p>
               </div>
             </div>
           ))}

@@ -16,12 +16,12 @@ export const Teachers_management = () => {
   const navigate = useNavigate();
 
   const [teachers, setTeachers] = useState([
-    { id: "T1001", name: "SHEMA Valentin", email: "valentinshema@gmail.com", phone: "+250 795 207 569", status: "active", subjects: ["Mathematics","Mobile application development","NoSQL database development","Extra lesson 1"], created: "Mon, August 12, 2025 8:34:12 a.m", avatar: "shema.jpeg" },
-    { id: "T1002", name: "Franco Nelly", email: "franconelly@gmail.com", phone: "+250 795 207 569", status: "active", subjects: ["Physics","Python development","Chemistry"], created: "Mon, August 12, 2025 8:34:12 a.m", avatar: "franco.png" },
-    { id: "T1003", name: "RWEMA Norbert", email: "rwemanobii@gmail.com", phone: "+250 795 207 569", status: "active", subjects: ["Computer science","Basics of networking","NoSQL database development","Extra lesson 2","Extra lesson 3"], created: "Mon, August 12, 2025 8:34:12 a.m", avatar: "rwema.jpg" },
-    { id: "T1004", name: "SHEMA Valentin", email: "valentinshema@gmail.com", phone: "+250 795 207 569", status: "active", subjects: ["Mathematics","Mobile application development","NoSQL database development","Extra lesson 1"], created: "Mon, August 12, 2025 8:34:12 a.m", avatar: "shema.jpeg" },
-    { id: "T1005", name: "Franco Nelly", email: "franconelly@gmail.com", phone: "+250 795 207 569", status: "active", subjects: ["Physics","Python development","Chemistry"], created: "Mon, August 12, 2025 8:34:12 a.m", avatar: "franco.png" },
-    { id: "T1006", name: "RWEMA Norbert", email: "rwemanobii@gmail.com", phone: "+250 795 207 569", status: "active", subjects: ["Computer science","Basics of networking","NoSQL database development","Extra lesson 2","Extra lesson 3"], created: "Mon, August 12, 2025 8:34:12 a.m", avatar: "rwema.jpg" },
+    { id: "TR001", name: "SHEMA Valentin", email: "valentinshema@gmail.com", phone: "+250 795 207 569", status: "active", subjects: ["Mathematics","Mobile application development","NoSQL database development","Extra lesson 1"], created: "Mon, August 12, 2025 8:34:12 a.m", avatar: "shema.jpeg" },
+    { id: "TR002", name: "Franco Nelly", email: "franconelly@gmail.com", phone: "+250 795 207 569", status: "active", subjects: ["Physics","Python development","Chemistry"], created: "Mon, August 12, 2025 8:34:12 a.m", avatar: "franco.png" },
+    { id: "TR003", name: "RWEMA Norbert", email: "rwemanobii@gmail.com", phone: "+250 795 207 569", status: "active", subjects: ["Computer science","Basics of networking","NoSQL database development","Extra lesson 2","Extra lesson 3"], created: "Mon, August 12, 2025 8:34:12 a.m", avatar: "rwema.jpg" },
+    { id: "TR004", name: "SHEMA Valentin", email: "valentinshema@gmail.com", phone: "+250 795 207 569", status: "active", subjects: ["Mathematics","Mobile application development","NoSQL database development","Extra lesson 1"], created: "Mon, August 12, 2025 8:34:12 a.m", avatar: "shema.jpeg" },
+    { id: "TR005", name: "Franco Nelly", email: "franconelly@gmail.com", phone: "+250 795 207 569", status: "active", subjects: ["Physics","Python development","Chemistry"], created: "Mon, August 12, 2025 8:34:12 a.m", avatar: "franco.png" },
+    { id: "TR006", name: "RWEMA Norbert", email: "rwemanobii@gmail.com", phone: "+250 795 207 569", status: "active", subjects: ["Computer science","Basics of networking","NoSQL database development","Extra lesson 2","Extra lesson 3"], created: "Mon, August 12, 2025 8:34:12 a.m", avatar: "rwema.jpg" },
  ]);
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -71,6 +71,13 @@ export const Teachers_management = () => {
 
   const toggleSubjects = (id) => {
     setExpandedSubjects(prev => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const generateTeacherId = () => {
+    const existingIds = teachers.map(t => parseInt(t.id.replace('TR', '')));
+    const maxId = Math.max(0, ...existingIds);
+    const newIdNumber = String(maxId + 1).padStart(3, '0');
+    return `TR${newIdNumber}`;
   };
 
   return (
@@ -158,7 +165,7 @@ export const Teachers_management = () => {
                   e.preventDefault();
                   const form = e.target;
                   const teacher = {
-                    id: editingTeacher ? editingTeacher.id : `T${Math.floor(Math.random() * 10000)}`,
+                    id: editingTeacher ? editingTeacher.id : generateTeacherId(),
                     name: form.name.value,
                     email: form.email.value,
                     phone: form.phone.value,
@@ -172,7 +179,15 @@ export const Teachers_management = () => {
               >
                 <div className="form-group">
                   <label>Teacher ID</label>
-                  <input type="text" placeholder='Teacher ID' name="id" defaultValue={editingTeacher?.id || ""} disabled={!!editingTeacher}/>
+                  <input 
+                    type="text" 
+                    placeholder='Auto-generated (e.g., TR007)' 
+                    name="id" 
+                    value={editingTeacher?.id || "Auto-generated (e.g., TR007)"} 
+                    disabled
+                    style={{ background: '#f3f4f6', cursor: 'not-allowed', color: '#6b7280' }}
+                  />
+                  <small style={{ display: 'block', marginTop: '4px', color: '#6b7280', fontSize: '12px' }}>Teacher ID will be automatically generated</small>
                 </div>
                 <div className="form-group">
                   <label>Full name</label>

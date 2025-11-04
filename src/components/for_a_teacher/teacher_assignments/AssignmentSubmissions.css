@@ -1,0 +1,368 @@
+:root {
+    --main_color: #A05AC8;
+    --shadow: 0 8px 24px rgba(0,0,0,0.06);
+}
+
+.assignmentSubmissions {
+    transform: translateX(20vw);
+    padding: 20px;
+    width: 80vw;
+    min-height: 100vh;
+}
+
+.assignmentSubmissions .box {
+    background: white;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+/* Header */
+.submissions_header {
+    padding: 24px;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.back_btn {
+    padding: 10px 20px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all .2s ease;
+}
+
+.back_btn:hover {
+    background: rgba(0,0,0,0.05);
+}
+
+.assignment_info h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+    font-size: 20px;
+}
+
+.assignment_info h2 .icon {
+    color: var(--main_color);
+}
+
+.assignment_info p {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.stats_summary {
+    display: flex;
+    gap: 16px;
+}
+
+.stat_item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.stat_item.submitted {
+    background: rgba(34, 197, 94, 0.1);
+    color: #16a34a;
+}
+
+.stat_item.pending {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+/* Submissions Container */
+.submissions_container {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    min-height: 600px;
+}
+
+.submissions_list {
+    border-right: 1px solid rgba(0,0,0,0.1);
+    overflow-y: auto;
+    max-height: calc(100vh - 200px);
+}
+
+.submission_card {
+    padding: 16px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+.submission_card:hover {
+    background: rgba(0,0,0,0.02);
+}
+
+.submission_card.active {
+    background: rgba(160, 90, 200, 0.05);
+    border-left: 3px solid var(--main_color);
+}
+
+.student_info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.student_avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.student_avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.student_details {
+    flex: 1;
+}
+
+.student_details h4 {
+    font-size: 15px;
+    margin-bottom: 2px;
+}
+
+.student_id {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.status_badge {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.status_badge.submitted {
+    background: rgba(34, 197, 94, 0.15);
+    color: #16a34a;
+}
+
+.status_badge.pending {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+}
+
+.submission_meta {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 8px;
+    padding-left: 57px;
+}
+
+.meta_item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.meta_item .icon {
+    font-size: 14px;
+}
+
+.graded_badge {
+    margin-top: 8px;
+    padding: 6px 12px;
+    background: rgba(59, 130, 246, 0.1);
+    color: #2563eb;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center;
+}
+
+/* Grading Panel */
+.grading_panel {
+    padding: 24px;
+    overflow-y: auto;
+    max-height: calc(100vh - 200px);
+}
+
+.panel_header {
+    margin-bottom: 24px;
+}
+
+.panel_header h3 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.panel_header p {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.submitted_work {
+    margin-bottom: 24px;
+}
+
+.file_preview {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background: rgba(0,0,0,0.02);
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 10px;
+}
+
+.file_icon {
+    font-size: 36px;
+    color: var(--main_color);
+}
+
+.file_info {
+    flex: 1;
+}
+
+.file_info h4 {
+    font-size: 15px;
+    margin-bottom: 4px;
+}
+
+.file_info p {
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.download_btn {
+    padding: 10px 16px;
+    border: none;
+    background: var(--main_color);
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all .2s ease;
+}
+
+.download_btn:hover {
+    background: #8a4aaa;
+}
+
+/* Grading Form */
+.grading_form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form_group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form_group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+}
+
+.form_group input,
+.form_group textarea {
+    padding: 12px;
+    border: 2px solid rgba(0,0,0,0.1);
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    transition: all .2s ease;
+}
+
+.form_group input:focus,
+.form_group textarea:focus {
+    outline: none;
+    border-color: var(--main_color);
+    box-shadow: 0 0 0 3px rgba(160, 90, 200, 0.1);
+}
+
+.save_grade_btn {
+    padding: 14px;
+    border: none;
+    background: #22c55e;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all .2s ease;
+}
+
+.save_grade_btn:hover {
+    background: #16a34a;
+}
+
+.save_grade_btn:disabled {
+    background: #d1d5db;
+    cursor: not-allowed;
+}
+
+/* No Submission/Selection States */
+.no_submission,
+.no_selection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 500px;
+    color: #9ca3af;
+}
+
+.no_submission .icon,
+.no_selection .icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+    opacity: 0.3;
+}
+
+.no_submission h4,
+.no_selection h3 {
+    font-size: 18px;
+    color: #6b7280;
+    margin-bottom: 8px;
+}
+
+.no_submission p,
+.no_selection p {
+    font-size: 14px;
+    color: #9ca3af;
+}

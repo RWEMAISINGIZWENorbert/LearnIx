@@ -1,74 +1,169 @@
 :root {
-    --main_color: #A05AC8;
-    --box-shadow: 0 8px 26px rgba(0,0,0,0.06);
+  --main_color: #A05AC8;
+  --black: black;
+  --white: white;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 }
-
-.teacherResources {
+.teacherResources{
     transform: translateX(20vw);
     padding: 20px;
-    width: 80vw;
-    min-height: 100vh;
 }
-
-.teacherResources .box .upper {
+.teacherResources.resources_management{
+    transform: translateX(20vw);
+    padding: 20px;
+}
+.resources_management .up {
     margin-bottom: 20px;
 }
-
-.teacherResources .box .upper h2 {
-    margin-bottom: 5px;
-}
-
-.teacherResources .box .upper p {
-    font-size: 14px;
-    opacity: 0.7;
-}
-
-.teacherResources .upload-btn {
-    padding: 12px 24px;
-    background: var(--main_color);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 600;
+.resources_management .up  .button button{
+    background: none;
+    outline: none;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 30px;
+    padding:5px 10px;
+    gap: 10px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
     cursor: pointer;
+}
+.resources_management .upper p{
+    opacity: 0.7;
+    font-size: 14px;
+}
+.resources_management{
+    width: 80vw;
+}
+
+.resources_management .middle {
+    margin-top: 30px;
+}
+
+.resources_management .tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 10px;
+}
+
+.resources_management .tab {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 25px;
+    padding: 12px 20px;
+    border: none;
+    background: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.6);
     transition: all 0.3s ease;
 }
 
-.teacherResources .upload-btn:hover {
-    opacity: 0.9;
+.resources_management .tab:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--main_color);
 }
 
-.teacherResources .resources-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 20px;
+.resources_management .tab.active {
+    background: var(--main_color);
+    color: white;
 }
 
-.teacherResources .resource-card {
+.resources_management .content {
+    background: none;
+    border-radius: 10px;
+}
+
+.resources_management .content_section {
+    background: none;
+}
+
+/* Section Header */
+.resources_management .section_header {
     display: flex;
-    gap: 15px;
+    justify-content: space-between;
     align-items: center;
-    padding: 20px;
-    background: rgba(255,255,255,0.8);
-    backdrop-filter: blur(10px);
-    border-radius: 12px;
-    box-shadow: var(--box-shadow);
+    margin-bottom: 20px;
+}
+
+.resources_management .section_header h3 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.resources_management .header_actions {
+    display: flex;
+    gap: 10px;
+}
+
+.resources_management .upload_button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: var(--main_color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
     transition: all 0.3s ease;
 }
 
-.teacherResources .resource-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 35px rgba(0,0,0,0.1);
+.resources_management .upload_button:hover {
+    background: #8a4fb8;
+    transform: translateY(-2px);
 }
 
-.teacherResources .resource-icon {
-    width: 50px;
-    height: 50px;
+.resources_management .filter_button {
+    padding: 10px 16px;
+    background: none;
+    color: var(--main_color);
+    border: 1px solid var(--main_color);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.resources_management .filter_button:hover {
+    background: var(--main_color);
+    color: white;
+}
+
+/* Documents List */
+.resources_management .documents_list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.resources_management .document_card {
+    background: white;
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: all 0.3s ease;
+}
+
+.resources_management .document_card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12);
+}
+
+.resources_management .document_icon {
+    width: 60px;
+    height: 60px;
     border-radius: 10px;
     display: flex;
     align-items: center;
@@ -76,38 +171,334 @@
     font-size: 24px;
 }
 
-.teacherResources .resource-info {
+.resources_management .document_icon .icon.pdf {
+    color: #ef4444;
+}
+
+.resources_management .document_icon .icon.word {
+    color: #3b82f6;
+}
+
+.resources_management .document_icon .icon.image {
+    color: #22c55e;
+}
+
+.resources_management .document_icon .icon.video {
+    color: #8b5cf6;
+}
+
+.resources_management .document_icon .icon.default {
+    color: #6b7280;
+}
+
+.resources_management .document_info {
     flex: 1;
 }
 
-.teacherResources .resource-info h3 {
+.resources_management .document_info h4 {
     font-size: 16px;
-    margin-bottom: 5px;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+    color: var(--black);
 }
 
-.teacherResources .resource-info .course {
-    font-size: 13px;
-    opacity: 0.6;
-    margin-bottom: 8px;
-}
-
-.teacherResources .resource-info .meta {
+.resources_management .document_meta {
     display: flex;
-    gap: 12px;
-    font-size: 12px;
-    color: #666;
+    gap: 15px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    opacity: 0.7;
 }
 
-.teacherResources .download-btn {
-    padding: 10px;
+.resources_management .document_meta .category {
+    background: rgba(160, 90, 200, 0.1);
+    color: var(--main_color);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.resources_management .document_stats {
+    font-size: 14px;
+    opacity: 0.6;
+}
+
+.resources_management .document_actions {
+    display: flex;
+    gap: 10px;
+}
+
+.resources_management .document_actions button {
+    width: 40px;
+    height: 40px;
     border: none;
-    color: white;
     border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
     transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.teacherResources .download-btn:hover {
-    opacity: 0.9;
+.resources_management .document_actions .view {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+}
+
+.resources_management .document_actions .download {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+}
+
+.resources_management .document_actions .edit {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+.resources_management .document_actions .delete {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.resources_management .document_actions button:hover {
+    transform: scale(1.1);
+}
+
+/* Categories Grid */
+.resources_management .categories_grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.resources_management .category_card {
+    background: white;
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.resources_management .category_card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12);
+}
+
+.resources_management .category_header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.resources_management .category_icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: white;
+}
+
+.resources_management .category_info h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 5px 0;
+}
+
+.resources_management .category_info p {
+    font-size: 14px;
+    opacity: 0.7;
+    margin: 0;
+}
+
+.resources_management .category_actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.resources_management .category_actions button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.resources_management .category_actions .view {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+}
+
+.resources_management .category_actions .edit {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+.resources_management .category_actions button:hover {
+    transform: translateY(-2px);
+}
+
+/* Upload Section */
+.resources_management .upload_section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.resources_management .upload_area {
+    background: white;
+    border: 2px dashed rgba(160, 90, 200, 0.3);
+    border-radius: 10px;
+    padding: 40px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.resources_management .upload_area:hover {
+    border-color: var(--main_color);
+    background: rgba(160, 90, 200, 0.05);
+}
+
+.resources_management .upload_icon {
+    font-size: 48px;
+    color: var(--main_color);
+    margin-bottom: 20px;
+}
+
+.resources_management .upload_area h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.resources_management .upload_area p {
+    color: rgba(0, 0, 0, 0.6);
+    margin-bottom: 20px;
+}
+
+.resources_management .browse_button {
+    padding: 12px 24px;
+    background: var(--main_color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.resources_management .browse_button:hover {
+    background: #8a4fb8;
+    transform: translateY(-2px);
+}
+
+.resources_management .upload_form {
+    background: white;
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+}
+
+.resources_management .form_group {
+    margin-bottom: 20px;
+}
+
+.resources_management .form_group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--black);
+}
+
+.resources_management .form_group input,
+.resources_management .form_group select,
+.resources_management .form_group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.resources_management .form_group input:focus,
+.resources_management .form_group select:focus,
+.resources_management .form_group textarea:focus {
+    outline: none;
+    border-color: var(--main_color);
+}
+
+.resources_management .form_group textarea {
+    height: 80px;
+    resize: vertical;
+}
+
+.resources_management .submit_button {
+    width: 100%;
+    padding: 12px;
+    background: var(--main_color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.resources_management .submit_button:hover {
+    background: #8a4fb8;
+    transform: translateY(-2px);
+}
+
+/* Add Button */
+.resources_management .add_button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: var(--main_color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.resources_management .add_button:hover {
+    background: #8a4fb8;
+    transform: translateY(-2px);
+}
+
+/* Required Field Indicator */
+.resources_management .form_group label .required {
+    color: #ef4444;
+    margin-left: 4px;
+}
+
+/* Disabled Button State */
+.resources_management .submit_button:disabled {
+    background: rgba(0, 0, 0, 0.1);
+    color: rgba(0, 0, 0, 0.3);
+    cursor: not-allowed;
+    transform: none;
+}
+
+.resources_management .submit_button:disabled:hover {
+    background: rgba(0, 0, 0, 0.1);
+    transform: none;
 }

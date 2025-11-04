@@ -10,42 +10,487 @@
     min-height: 100vh;
 }
 
-.teacherSettings .box .upper {
-    margin-bottom: 20px;
+.teacherSettings .settings .upper p {
+  font-size: 14px;
+  opacity: 0.7;
+  margin-bottom: 20px;
 }
 
-.teacherSettings .box .upper h2 {
-    margin-bottom: 5px;
+.teacherSettings .settings .down {
+  margin-top: 20px;
 }
 
-.teacherSettings .box .upper p {
-    font-size: 14px;
-    opacity: 0.7;
+.teacherSettings .settings .down .divs {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
-.teacherSettings .tabs {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 25px;
-    border-bottom: 2px solid rgba(0,0,0,0.1);
+.teacherSettings .settings .down .divs .all {
+  width: 25vw;
+  box-shadow: var(--box-shadow);
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.teacherSettings .tabs button {
-    padding: 12px 24px;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    font-size: 15px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    position: relative;
-    transition: all 0.3s ease;
+.teacherSettings .settings .down .divs .all .i {
+  margin-right: 20px;
 }
 
-.teacherSettings .tabs button.active {
-    color: var(--main_color);
+.teacherSettings .settings .down .divs .all .i .icon {
+  font-size: 20px;
+  padding: 5px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.teacherSettings .settings .down .divs .all .mid {
+  font-size: 14px;
+  opacity: 0.7;
+  margin-bottom: 10px;
+}
+
+.teacherSettings .settings .down .divs .div1 button {
+  color: var(--main_color);
+}
+
+.teacherSettings .settings .down .divs .div1 .i .icon {
+  background: #e4b5ff;
+  color: var(--main_color);
+}
+
+.teacherSettings .settings .down .divs .div2 button {
+  color: green;
+}
+
+.teacherSettings .settings .down .divs .div2 .i .icon {
+  background: rgb(165, 255, 165);
+  color: green;
+}
+
+.teacherSettings .settings .down .divs .div3 button {
+  color: blue;
+}
+
+.teacherSettings .settings .down .divs .div3 .i .icon {
+  background: rgb(188, 188, 255);
+  color: blue;
+}
+
+.teacherSettings .settings .down .divs .div4 button {
+  color: brown;
+}
+
+.teacherSettings .settings .down .divs .div4 .i .icon {
+  background: rgb(230, 172, 172);
+  color: brown;
+}
+
+.teacherSettings .settings .down .divs .div5 button {
+  color: rgb(211, 122, 137);
+}
+
+.teacherSettings .settings .down .divs .div5 .i .icon {
+  background: rgb(255, 192, 203);
+  color: rgb(211, 122, 137);
+}
+
+.teacherSettings .settings .down .divs .div6 button {
+  color: rgb(245, 158, 11);
+}
+
+.teacherSettings .settings .down .divs .div6 .i .icon {
+  background: rgba(245, 158, 11, 0.15);
+  color: rgb(245, 158, 11);
+}
+
+.teacherSettings .settings .down .divs .all .down button .icon {
+  margin-top: 3px;
+}
+
+.teacherSettings .settings .down .divs .all .down button {
+  border: none;
+  background: none;
+  padding: 8px 0;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.teacherSettings .settings .down .divs .all:hover {
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12);
+  transform: translateY(-5px);
+}
+
+/* Modal Styles - Same as Student Settings */
+.settings_modal_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.3s ease;
+}
+
+.settings_modal {
+  background: white;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 550px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+}
+
+.settings_modal_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.settings_modal_header h3 {
+  font-size: 22px;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.settings_modal_close {
+  width: 35px;
+  height: 35px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(0,0,0,0.05);
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  color: #666;
+}
+
+.settings_modal_close:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+.settings_modal_body {
+  padding: 25px;
+}
+
+.form_group {
+  margin-bottom: 20px;
+}
+
+.form_group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.form_group input,
+.form_group select,
+.form_group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid rgba(0,0,0,0.1);
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: all 0.3s ease;
+}
+
+.form_group input:focus,
+.form_group select:focus,
+.form_group textarea:focus {
+  outline: none;
+  border-color: var(--main_color);
+  box-shadow: 0 0 0 3px rgba(160, 90, 200, 0.1);
+}
+
+.form_hint {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  color: #666;
+}
+
+.form_group input:disabled {
+  background: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.settings_modal_footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 20px 25px;
+  border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+.cancel_btn,
+.submit_btn {
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.cancel_btn {
+  background: rgba(0,0,0,0.05);
+  color: #666;
+}
+
+.cancel_btn:hover {
+  background: rgba(0,0,0,0.1);
+}
+
+.submit_btn {
+  background: var(--main_color);
+  color: white;
+}
+
+.submit_btn:hover {
+  background: #8a4aaa;
+}
+
+.submit_btn:disabled {
+  background: rgba(0,0,0,0.2);
+  cursor: not-allowed;
+}
+
+/* Password Requirements */
+.password_requirements {
+  background: rgba(160, 90, 200, 0.05);
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 15px;
+}
+
+.password_requirements h4 {
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: #1a1a1a;
+}
+
+.password_requirements ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.password_requirements li {
+  font-size: 13px;
+  color: #666;
+  padding: 4px 0;
+  padding-left: 20px;
+  position: relative;
+}
+
+.password_requirements li::before {
+  content: "✓";
+  position: absolute;
+  left: 5px;
+  color: var(--main_color);
+  font-weight: bold;
+}
+
+/* Notification Section */
+.notification_section {
+  margin-bottom: 25px;
+}
+
+.notification_section h4 {
+  font-size: 16px;
+  margin-bottom: 15px;
+  color: #1a1a1a;
+}
+
+.toggle_item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background: rgba(0,0,0,0.02);
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+
+.toggle_info label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.toggle_info p {
+  font-size: 13px;
+  color: #666;
+  margin: 0;
+}
+
+/* Modal Description */
+.modal_description {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+/* Email Notice */
+.email_notice {
+  background: rgba(245, 158, 11, 0.1);
+  border-left: 4px solid #f59e0b;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.email_notice strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #f59e0b;
+}
+
+.email_notice ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.email_notice li {
+  font-size: 13px;
+  color: #666;
+  padding: 4px 0;
+  padding-left: 20px;
+  position: relative;
+}
+
+.email_notice li::before {
+  content: "•";
+  position: absolute;
+  left: 5px;
+  color: #f59e0b;
+}
+
+/* Rating Section */
+.rating_section {
+  text-align: center;
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+.rating_section h4 {
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: #1a1a1a;
+}
+
+.star_rating {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.star_rating .star {
+  font-size: 36px;
+  color: #d1d5db;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.star_rating .star:hover,
+.star_rating .star.filled {
+  color: #f59e0b;
+  transform: scale(1.1);
+}
+
+.rating_label {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--main_color);
+  min-height: 24px;
+}
+
+/* Feedback Benefits */
+.feedback_benefits {
+  background: rgba(160, 90, 200, 0.05);
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.feedback_benefits h4 {
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: #1a1a1a;
+}
+
+.feedback_benefits ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.feedback_benefits li {
+  font-size: 13px;
+  color: #666;
+  padding: 4px 0;
+  padding-left: 20px;
+  position: relative;
+}
+
+.feedback_benefits li::before {
+  content: "✓";
+  position: absolute;
+  left: 5px;
+  color: var(--main_color);
+  font-weight: bold;
+}
+
+@keyframes fadeIn {
+  from {
+    background: rgba(0,0,0,0);
+  }
+  to {
+    background: rgba(0,0,0,0.5);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .teacherSettings .tabs button.active::after {

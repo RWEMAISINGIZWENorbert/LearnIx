@@ -1,243 +1,359 @@
 :root {
-    --main_color: #A05AC8;
-    --box-shadow: 0 8px 26px rgba(0,0,0,0.06);
+  --main_color: #A05AC8;
+  --black: black;
+  --white: white;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 }
-
-.teacherStudents {
+.teacherStudents, .students_management{
     transform: translateX(20vw);
     padding: 20px;
+}
+.teacherStudents.students_management{
+    transform: translateX(20vw);
+    padding: 20px;
+}
+.teacherStudents, .students_management{
     width: 80vw;
     min-height: 100vh;
 }
-
-.teacherStudents .box .upper {
+.teacherStudents .up, .students_management .up {
     margin-bottom: 20px;
 }
-
-.teacherStudents .box .upper h2 {
-    margin-bottom: 5px;
+.students_management .up  .button button{
+    background: none;
+    outline: none;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 30px;
+    padding:5px 10px;
+    gap: 10px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    cursor: pointer;
+}
+.students_management .upper p{
+    opacity: 0.7;
+    font-size: 14px;
 }
 
-.teacherStudents .box .upper p {
+.students_management .box .whole_up .mini_up{
+    margin-top: 20px;
+    display: flex;
+    gap:10px
+}
+.students_management .box .whole_up .mini_up .search_box .search,
+.students_management .box .whole_up .mini_up .search_box{
+    display: flex;
+    width: 100%;
+    gap: 10px;
+    align-items: center;
+}
+.students_management .box .whole_up .mini_up .search_box .search input{
+    width: 100%;
+    outline: none;
+    background: none;
+    border: none;
+}
+.students_management .box .whole_up .mini_up .search_box .search .icon{
+    font-size: 1.2rem;
+    margin-top: 5px;
+}
+.students_management .box .whole_up .mini_up .search_box{
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding:10px 10px; 
+}
+.students_management .box .whole_up .mini_up .search_box .button button{
+    background: none;
+    color:var(--main_color);
+    font-weight: 600;
+    font-size: 15px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+.students_management .box .middle{
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    gap: 20px;
+}
+.students_management .box .middle .student{
+    box-shadow: var(--shadow);
+    padding: 10px;
+    border-radius: 10px;
+    background: none;
+    width: 25vw;
+}
+.students_management .box .middle .student .up h4{
+    text-transform: uppercase;
+}
+.students_management .box .middle .student .up{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.students_management .box .middle .student .up .active_status.inactive{
+  background: rgb(255, 192, 203);
+  color: rgb(216, 81, 103);
+}
+.students_management .box .middle .student .up .active_status.active{
+    background: rgb(165, 255, 165);
+    color: green;
+}
+.students_management .box .middle .student .up .active_status{
+    padding:3px 5px;
+    border-radius: 10px;
+    font-size: 12px;
+}
+.students_management .box .middle .student .details p .icon{
+    font-size: 16px;
+}
+.students_management .box .middle .student .details p ul{
+    margin-left: 12px;
+}
+.students_management .box .middle .student .profile .data .name{
+    font-weight: 500;
+    font-size: 15px;
+}
+.students_management .box .middle .student .profile .data .email{
     font-size: 14px;
     opacity: 0.7;
 }
-
-.teacherStudents .filters-section {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 25px;
+.students_management .box .middle .student .profile .data .studentId{
+    font-size: 12px;
+    opacity: 0.6;
+    font-weight: 500;
 }
-
-.teacherStudents .search-box {
-    flex: 1;
+.students_management .box .middle .student .profile .data{
+    margin-left: 10px;
+}
+.students_management .box .middle .student .up{
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 10px;
+}
+.students_management .box .middle .student .profile {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 12px 15px;
-    background: rgba(255,255,255,0.8);
-    backdrop-filter: blur(10px);
-    border-radius: 10px;
-    box-shadow: var(--box-shadow);
 }
-
-.teacherStudents .search-box .icon {
-    color: var(--main_color);
+.students_management .box .middle .student .profile .img img{
+    width: 2cm;
+    height: 2cm;
+    border-radius: 50%;
+}
+.students_management .box .middle .student .details p{
+    display: flex;
+    opacity: 0.7;
+    font-size: 14px;
+    gap: 10px;
+    margin-bottom: 5px;
+    align-items: center;
+}
+.students_management .box .middle .student .down{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+.students_management .box .middle .student .down button .icon{
     font-size: 16px;
+    display: flex;
+    margin-top: 3px;
 }
-
-.teacherStudents .search-box input {
-    flex: 1;
+.students_management .box .middle .student .down button{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 13px;
+    background: none;
     border: none;
     outline: none;
-    font-size: 14px;
-    background: transparent;
-}
-
-.teacherStudents .class-filter {
-    padding: 12px 15px;
-    border: 1px solid rgba(0,0,0,0.1);
-    background: rgba(255,255,255,0.8);
-    backdrop-filter: blur(10px);
-    border-radius: 10px;
     cursor: pointer;
+}
+.students_management .box .middle .student .down .more{
+    color: blue;
+}
+.students_management .box .middle .student .down .archive{
+    color: red;
+}
+.students_management .box .mini_up .new:hover{
+    background: rgba(0, 0, 0, 0.06);
+    transition: 0.3s;
+}
+.students_management .box .mini_up .new:active{
+    transform: scale(0.98);
+    transition: 0.3s ease-in-out;
+}
+.students_management .box .mini_up .new {
+    display: flex;
+    background:none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    align-items: center;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+.students_management .box .mini_up .new .left {
+    margin-right: 10px;
+}
+.students_management .box .mini_up .new .left .icon{
+    font-size: 1.5rem;
+    background: rgb(188, 188, 255);
+    color: blue;
+    padding: 5px;
+    border-radius: 5px;
+    display: flex;
+}
+.students_management .box .mini_up .new .right span,
+.students_management .box .mini_up .new .right p{
+    text-wrap: nowrap;
+}
+.students_management .box .mini_up .new .right span{
+    font-weight: 500;
     font-size: 14px;
-    box-shadow: var(--box-shadow);
 }
-
-.teacherStudents .students-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 20px;
-}
-
-.teacherStudents .student-card {
-    background: rgba(255,255,255,0.8);
-    backdrop-filter: blur(10px);
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: var(--box-shadow);
-    transition: all 0.3s ease;
-}
-
-.teacherStudents .student-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 35px rgba(0,0,0,0.1);
-}
-
-.teacherStudents .student-header {
-    display: flex;
-    gap: 15px;
-    align-items: flex-start;
-    margin-bottom: 15px;
-    position: relative;
-}
-
-.teacherStudents .student-avatar {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: var(--main_color);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    font-weight: 600;
-}
-
-.teacherStudents .student-info {
-    flex: 1;
-}
-
-.teacherStudents .student-info h3 {
-    font-size: 18px;
-    margin-bottom: 3px;
-}
-
-.teacherStudents .student-id {
-    font-size: 13px;
-    opacity: 0.6;
-    margin-bottom: 5px;
-}
-
-.teacherStudents .class-badge {
-    display: inline-block;
-    padding: 4px 10px;
-    background: rgba(160, 90, 200, 0.1);
-    color: var(--main_color);
-    border-radius: 20px;
+.students_management .box .mini_up .new .right p{
     font-size: 12px;
-    font-weight: 600;
+    opacity: 0.6;
 }
 
-.teacherStudents .trend-indicator {
-    position: absolute;
+/* Modal Styles with Glass Effect */
+.students_management .modal-overlay {
+    position: fixed;
     top: 0;
+    left: 0;
     right: 0;
-}
-
-.teacherStudents .trend-indicator .icon {
-    font-size: 24px;
-}
-
-.teacherStudents .trend-indicator .icon.up {
-    color: green;
-}
-
-.teacherStudents .trend-indicator .icon.down {
-    color: #ef4444;
-}
-
-.teacherStudents .student-contact {
+    bottom: 0;
+    backdrop-filter: blur(8px);
     display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 15px;
-    padding: 12px;
-    background: rgb(247, 247, 247);
-    border-radius: 8px;
-}
-
-.teacherStudents .contact-item {
-    display: flex;
+    height: 100%;
+    justify-content: center;
     align-items: center;
-    gap: 10px;
-    font-size: 13px;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.students_management .modal {
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    position: relative;
+    width: 90%;
+    max-width: 550px;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 25px 60px rgba(160, 90, 200, 0.2);
+    border: 1px solid rgba(255,255,255,0.5);
+    animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.students_management .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.students_management .modal-header h3 {
+    margin: 0;
+    color: var(--main_color);
+}
+
+.students_management .modal-header button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
     color: #666;
 }
 
-.teacherStudents .contact-item .icon {
-    font-size: 14px;
-    color: var(--main_color);
+.students_management .modal-body {
+    padding: 20px;
 }
 
-.teacherStudents .student-performance {
-    margin-bottom: 15px;
+.students_management .form-group {
+    margin-bottom: 20px;
 }
 
-.teacherStudents .perf-metric {
-    margin-bottom: 12px;
-}
-
-.teacherStudents .perf-metric .label {
-    font-size: 13px;
-    opacity: 0.7;
-    margin-bottom: 5px;
-}
-
-.teacherStudents .perf-metric .progress-bar {
-    width: 100%;
-    height: 6px;
-    background: rgba(0,0,0,0.06);
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 5px;
-}
-
-.teacherStudents .perf-metric .progress {
-    height: 100%;
-    transition: width 0.3s ease;
-}
-
-.teacherStudents .perf-metric .value {
-    font-size: 14px;
+.students_management .form-group label {
+    display: block;
+    margin-bottom: 8px;
     font-weight: 600;
-}
-
-.teacherStudents .student-actions {
-    display: flex;
-    gap: 10px;
-    padding-top: 15px;
-    border-top: 1px solid rgba(0,0,0,0.06);
-}
-
-.teacherStudents .btn-primary,
-.teacherStudents .btn-secondary {
-    flex: 1;
-    padding: 10px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
+    color: #333;
     font-size: 14px;
-    font-weight: 500;
+}
+
+.students_management .form-group input,
+.students_management .form-group select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    outline: none;
+    font-size: 14px;
+    background: white;
     transition: all 0.3s ease;
 }
 
-.teacherStudents .btn-primary {
-    background: var(--main_color);
+.students_management .form-group input:focus,
+.students_management .form-group select:focus {
+    border-color: var(--main_color);
+    box-shadow: 0 0 0 4px rgba(160, 90, 200, 0.1);
+}
+
+.students_management .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 25px 30px;
+    border-top: 2px solid rgba(160, 90, 200, 0.1);
+    background: rgba(160, 90, 200, 0.02);
+}
+
+.students_management .modal-footer button {
+    padding: 12px 28px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.students_management .modal-footer button:first-child {
+    background: rgba(0,0,0,0.05);
+    color: #666;
+}
+
+.students_management .modal-footer button:first-child:hover {
+    background: rgba(0,0,0,0.1);
+}
+
+.students_management .modal-footer button:last-child {
+    background: linear-gradient(135deg, var(--main_color) 0%, #7b2cbf 100%);
     color: white;
+    box-shadow: 0 4px 12px rgba(160, 90, 200, 0.3);
 }
 
-.teacherStudents .btn-primary:hover {
-    background: #8e4ab0;
-}
-
-.teacherStudents .btn-secondary {
-    background: rgb(247, 247, 247);
-    color: #333;
-}
-
-.teacherStudents .btn-secondary:hover {
-    background: rgb(235, 235, 235);
+.students_management .modal-footer button:last-child:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(160, 90, 200, 0.4);
 }

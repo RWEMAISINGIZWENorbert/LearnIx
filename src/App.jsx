@@ -24,6 +24,7 @@ import { Admin_communications } from './pages/admin/admin_communications/admin_c
 import { AccessDenied } from './pages/public_pages/access_denied/AccessDenied';
 import { Admin_profile } from './pages/admin/admin_profile/admin_profile';
 import { Email_Verification_Page } from './pages/public_pages/email_verification/email_verification';
+import { School_Registration_Page } from './pages/public_pages/school_registration/school_registration';
 
 // Student Pages
 import { Student_Dashboard_Page } from './pages/student/student_dashboard/student_dashboard';
@@ -46,6 +47,7 @@ import { Teacher_Resources_Page } from './pages/teacher/teacher_resources_page';
 import { Teacher_Announcements_Page } from './pages/teacher/teacher_announcements_page';
 import { Teacher_Settings_Page } from './pages/teacher/teacher_settings_page';
 import { Teacher_profile } from './pages/teacher/teacher_profile/teacher_profile';
+import { Teacher_Assignment_Submissions_Page } from './pages/teacher/teacher_assignment_submissions_page';
 
 function App() {
   return (
@@ -68,6 +70,7 @@ function App() {
         <Route path='/dev_team' element={<Developers/>}/>
         <Route path='/signup' element={<AuthFlow/>}/>
         <Route path='/login' element={<AuthFlow/>}/>
+        <Route path='/school-registration' element={<School_Registration_Page/>}/>
         <Route path='/email-verification' element={<Email_Verification_Page/>}/>
 
         {/* Admin page routes */}
@@ -108,6 +111,7 @@ function App() {
             <Route path='classes' element={<Teacher_Classes_Page/>}/>
             <Route path='students' element={<Teacher_Students_Page/>}/>
             <Route path='assignments' element={<Teacher_Assignments_Page/>}/>
+            <Route path='assignments/:assignmentId/submissions' element={<Teacher_Assignment_Submissions_Page/>}/>
             <Route path='grades' element={<Teacher_Grades_Page/>}/>
             <Route path='attendance' element={<Teacher_Attendance_Page/>}/>
             <Route path='schedule' element={<Teacher_Schedule_Page/>}/>

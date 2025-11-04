@@ -1,0 +1,588 @@
+:root {
+  --main_color: #A05AC8;
+  --gradient-start: #8b5cf6;
+  --gradient-end: #ec4899;
+}
+
+.school-registration-page {
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  background: linear-gradient(135deg, #9d66ea 0%, #764ba2 100%);
+}
+
+.school-registration-page .gradient-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(160, 90, 200, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 40% 80%, rgba(139, 92, 246, 0.3) 0%, transparent 50%);
+  z-index: 0;
+}
+
+.school-registration-page .school-registration-container {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 45% 55%;
+  min-height: 100vh;
+}
+
+/* Left Side - Branding */
+.school-registration-page .registration-left {
+  padding: 60px 80px;
+  display: flex;
+  flex-direction: column;
+  color: white;
+}
+
+.school-registration-page .registration-left .logo {
+  margin-bottom: 40px;
+}
+
+.school-registration-page .registration-left .logo img {
+  width: 60px;
+  height: 60px;
+  filter: brightness(0) invert(1);
+}
+
+.school-registration-page .branding-content h1 {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.school-registration-page .branding-content .learn {
+  color: #fbbf24;
+}
+
+.school-registration-page .branding-content .tagline {
+  font-size: 18px;
+  opacity: 0.9;
+  margin-bottom: 40px;
+}
+
+.school-registration-page .registration-info {
+  margin-top: 30px;
+}
+
+.school-registration-page .info-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.school-registration-page .info-card .info-icon {
+  font-size: 36px;
+  margin-bottom: 12px;
+  color: #fbbf24;
+}
+
+.school-registration-page .info-card h3 {
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+
+.school-registration-page .info-card p {
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+.school-registration-page .benefits-list {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.school-registration-page .benefits-list h4 {
+  font-size: 18px;
+  margin-bottom: 16px;
+  color: #fbbf24;
+}
+
+.school-registration-page .benefits-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.school-registration-page .benefits-list ul li {
+  padding: 8px 0;
+  opacity: 0.9;
+  font-size: 15px;
+}
+
+/* Right Side - Registration Form */
+.school-registration-page .registration-right {
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.school-registration-page .registration-card {
+  width: 100%;
+  max-width: 600px;
+}
+
+/* Form Header */
+.school-registration-page .form-header {
+  margin-bottom: 32px;
+}
+
+.school-registration-page .form-header h2 {
+  font-size: 28px;
+  color: #1f2937;
+  margin-bottom: 12px;
+}
+
+.school-registration-page .mode-switch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.school-registration-page .mode-switch a {
+  text-decoration: none;
+}
+
+.school-registration-page .mode-switch button {
+  background: none;
+  border: none;
+  color: var(--main_color);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  font-size: 14px;
+}
+
+.school-registration-page .mode-switch button:hover {
+  text-decoration: underline;
+}
+
+/* Progress Steps */
+.school-registration-page .progress-steps {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.school-registration-page .progress-steps::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #e5e7eb;
+  z-index: 0;
+}
+
+.school-registration-page .step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  z-index: 1;
+  flex: 1;
+}
+
+.school-registration-page .step-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: #9ca3af;
+  transition: all 0.3s ease;
+}
+
+.school-registration-page .step.active .step-icon {
+  background: var(--main_color);
+  border-color: var(--main_color);
+  color: white;
+  transform: scale(1.1);
+}
+
+.school-registration-page .step.completed .step-icon {
+  background: #10b981;
+  border-color: #10b981;
+  color: white;
+}
+
+.school-registration-page .step-title {
+  font-size: 11px;
+  color: #9ca3af;
+  text-align: center;
+  font-weight: 500;
+}
+
+.school-registration-page .step.active .step-title {
+  color: var(--main_color);
+  font-weight: 600;
+}
+
+.school-registration-page .step.completed .step-title {
+  color: #10b981;
+}
+
+/* Form Content */
+.school-registration-page .form-content {
+  min-height: 400px;
+}
+
+.school-registration-page .step-content h3 {
+  font-size: 22px;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.school-registration-page .step-desc {
+  color: #6b7280;
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+
+.school-registration-page .form-group {
+  margin-bottom: 20px;
+}
+
+.school-registration-page .form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #374151;
+  font-size: 14px;
+}
+
+.school-registration-page .input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.school-registration-page .input-icon {
+  position: absolute;
+  left: 16px;
+  font-size: 18px;
+  color: #9ca3af;
+}
+
+.school-registration-page .input-wrapper input,
+.school-registration-page .input-wrapper select {
+  width: 100%;
+  padding: 14px 16px 14px 48px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.school-registration-page .input-wrapper input:focus,
+.school-registration-page .input-wrapper select:focus {
+  outline: none;
+  border-color: var(--main_color);
+  box-shadow: 0 0 0 3px rgba(160, 90, 200, 0.1);
+}
+
+.school-registration-page .input-wrapper select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%239ca3af' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 40px;
+}
+
+/* Admin ID Note */
+.school-registration-page .admin-id-note {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  background: rgba(160, 90, 200, 0.05);
+  border-left: 3px solid var(--main_color);
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.school-registration-page .admin-id-note .note-icon {
+  font-size: 24px;
+  color: var(--main_color);
+  flex-shrink: 0;
+}
+
+.school-registration-page .admin-id-note .note-content {
+  flex: 1;
+}
+
+.school-registration-page .admin-id-note .note-title {
+  font-weight: 600;
+  color: var(--main_color);
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+
+.school-registration-page .admin-id-note .note-text {
+  font-size: 13px;
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+.school-registration-page .admin-id-note .note-text strong {
+  color: var(--main_color);
+}
+
+/* Verification Section */
+.school-registration-page .verification-section {
+  text-align: center;
+}
+
+.school-registration-page .verify-label {
+  color: #6b7280;
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+
+.school-registration-page .code-inputs {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.school-registration-page .code-input {
+  width: 50px;
+  height: 56px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.school-registration-page .code-input:focus {
+  outline: none;
+  border-color: var(--main_color);
+  box-shadow: 0 0 0 3px rgba(160, 90, 200, 0.1);
+}
+
+.school-registration-page .resend-btn {
+  background: none;
+  border: none;
+  color: var(--main_color);
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.school-registration-page .resend-btn:hover {
+  text-decoration: underline;
+}
+
+/* Password Requirements */
+.school-registration-page .password-requirements {
+  margin-top: 16px;
+  padding: 16px;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+.school-registration-page .password-requirements .req-title {
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+.school-registration-page .password-requirements ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.school-registration-page .password-requirements ul li {
+  font-size: 13px;
+  color: #6b7280;
+  padding: 4px 0;
+  padding-left: 20px;
+  position: relative;
+}
+
+.school-registration-page .password-requirements ul li::before {
+  content: '•';
+  position: absolute;
+  left: 8px;
+  color: var(--main_color);
+}
+
+/* Profile Upload */
+.school-registration-page .profile-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.school-registration-page .profile-preview {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f9fafb;
+}
+
+.school-registration-page .profile-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.school-registration-page .profile-preview .placeholder {
+  font-size: 60px;
+  color: #d1d5db;
+}
+
+.school-registration-page .upload-btn {
+  padding: 12px 24px;
+  background: var(--main_color);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.school-registration-page .upload-btn:hover {
+  background: #8a4aaa;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(160, 90, 200, 0.3);
+}
+
+.school-registration-page .skip-btn {
+  padding: 10px 24px;
+  background: none;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #6b7280;
+  transition: all 0.3s ease;
+}
+
+.school-registration-page .skip-btn:hover {
+  background: #f9fafb;
+}
+
+/* Form Navigation */
+.school-registration-page .form-navigation {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  margin-top: 32px;
+}
+
+.school-registration-page .btn-back,
+.school-registration-page .btn-next {
+  padding: 14px 28px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.school-registration-page .btn-back {
+  background: white;
+  border: 2px solid #e5e7eb;
+  color: #6b7280;
+}
+
+.school-registration-page .btn-back:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+}
+
+.school-registration-page .btn-next {
+  background: var(--main_color);
+  color: white;
+  flex: 1;
+  justify-content: center;
+}
+
+.school-registration-page .btn-next:hover {
+  background: #8a4aaa;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(160, 90, 200, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .school-registration-page .school-registration-container {
+    grid-template-columns: 1fr;
+  }
+
+  .school-registration-page .registration-left {
+    display: none;
+  }
+
+  .school-registration-page .registration-right {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .school-registration-page .progress-steps {
+    overflow-x: auto;
+    padding-bottom: 10px;
+  }
+
+  .school-registration-page .step-title {
+    font-size: 10px;
+  }
+
+  .school-registration-page .step-icon {
+    width: 35px;
+    height: 35px;
+    font-size: 14px;
+  }
+
+  .school-registration-page .code-inputs {
+    gap: 8px;
+  }
+
+  .school-registration-page .code-input {
+    width: 42px;
+    height: 48px;
+    font-size: 20px;
+  }
+}

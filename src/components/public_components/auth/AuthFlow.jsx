@@ -117,7 +117,7 @@ export const AuthFlow = () => {
   const getSteps = () => {
     if (isLogin) {
       return [
-        { title: 'User ID', icon: <FaIdCard /> },
+        { title: 'Email', icon: <FaEnvelope /> },
         { title: 'Password', icon: <FaLock /> }
       ];
     }
@@ -196,17 +196,17 @@ export const AuthFlow = () => {
       if (currentStep === 0) {
         return (
           <div className="step-content">
-            <h3>Enter Your User ID</h3>
-            <p className="step-desc">Use your assigned ID to access your account</p>
+            <h3>Enter Your Email</h3>
+            <p className="step-desc">Use your registered email to access your account</p>
             <div className="form-group">
               <div className="input-wrapper">
-                <FaIdCard className="input-icon" />
+                <FaEnvelope className="input-icon" />
                 <input
-                  type="text"
-                  name="userId"
-                  value={formData.userId}
+                  type="email"
+                  name="email"
+                  value={formData.email}
                   onChange={handleInputChange}
-                  placeholder="STU000, TR000, or AD000"
+                  placeholder="Enter your email address"
                   autoFocus
                 />
               </div>
@@ -242,17 +242,17 @@ export const AuthFlow = () => {
       case 'User ID':
         return (
           <div className="step-content">
-            <h3>Choose Your User ID</h3>
-            <p className="step-desc">Format: STUGHASOD046 (Role + School + Dept + Number)</p>
+            <h3>Enter Your User ID</h3>
+            <p className="step-desc">Enter the user ID provided by your institution</p>
             <div className="form-group">
               <div className="input-wrapper">
                 <FaIdCard className="input-icon" />
                 <input
                   type="text"
                   name="userId"
-                  value={formData.userId}
-                  onChange={handleInputChange}
-                  placeholder="e.g., STUGHASOD046, TRGHANET012"
+                  value={formData.userId.toUpperCase()}
+                  onChange={(e) => handleInputChange({ target: { name: 'userId', value: e.target.value.toUpperCase() }})}
+                  placeholder="Enter your user ID"
                   autoFocus
                 />
               </div>
@@ -263,12 +263,13 @@ export const AuthFlow = () => {
                   {formData.department && <span className="dept-detected">📚 {formData.department}</span>}
                 </div>
               )}
-              <div className="id-format-hint">
-                <p><strong>Format Guide:</strong></p>
-                <p>• STU/TR/AD = Role</p>
-                <p>• GHA/RHS/KIS = School Code</p>
-                <p>• SOD/NET/ICT = Department</p>
-                <p>• 001-999 = Your Number</p>
+              <div style={{ marginTop: '16px', padding: '12px', background: 'rgba(160, 90, 200, 0.05)', borderRadius: '8px', borderLeft: '3px solid var(--main_color)' }}>
+                <p style={{ fontSize: '13px', color: '#6b7280', marginBottom: '6px' }}>
+                  Don't have an ID yet? Register your school first!
+                </p>
+                <Link to="/school-registration" style={{ fontSize: '14px', color: 'var(--main_color)', fontWeight: '600', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                  <FaSchool /> Register School for Admin Access
+                </Link>
               </div>
             </div>
           </div>

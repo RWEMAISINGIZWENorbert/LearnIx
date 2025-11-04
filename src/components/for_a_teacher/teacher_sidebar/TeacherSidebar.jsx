@@ -3,13 +3,11 @@ import './TeacherSidebar.css';
 import { RxDashboard } from "react-icons/rx";
 import { MdLogout, MdOutlineAssignment } from "react-icons/md";
 import { IoSettingsOutline } from "react-icons/io5";
-import { FaChalkboardTeacher, FaRegUser } from "react-icons/fa";
+import { FaRegUser } from "react-icons/fa";
 import { HiOutlineMail, HiOutlineAcademicCap } from "react-icons/hi";
-import { LuCalendarDays, LuClipboardList } from "react-icons/lu";
 import { GrResources, GrAnnounce } from "react-icons/gr";
 import { PiStudentBold } from "react-icons/pi";
 import { NavLink } from 'react-router-dom';
-import { BiBarChart } from "react-icons/bi";
 
 export const TeacherSidebar = () => {
   return (
@@ -25,23 +23,11 @@ export const TeacherSidebar = () => {
                         <NavLink className={({ isActive }) => isActive ? 'left-item when_active' : 'left-item'} to='/teacher/dashboard'>
                             <div className="link"><RxDashboard className="icon" /><span>Dashboard</span></div>
                         </NavLink>
-                        <NavLink className={({ isActive }) => isActive ? 'left-item when_active' : 'left-item'} to='/teacher/classes'>
-                            <div className="link"><FaChalkboardTeacher className="icon" /><span>My Classes</span></div>
-                        </NavLink>
                         <NavLink className={({ isActive }) => isActive ? 'left-item when_active' : 'left-item'} to='/teacher/students'>
                             <div className="link"><PiStudentBold className="icon" /><span>Students</span></div>
                         </NavLink>
                         <NavLink className={({ isActive }) => isActive ? 'left-item when_active' : 'left-item'} to='/teacher/assignments'>
                             <div className="link"><MdOutlineAssignment className="icon" /><span>Assignments</span></div>
-                        </NavLink>
-                        <NavLink className={({ isActive }) => isActive ? 'left-item when_active' : 'left-item'} to='/teacher/grades'>
-                            <div className="link"><BiBarChart className="icon" /><span>Grade Management</span></div>
-                        </NavLink>
-                        <NavLink className={({ isActive }) => isActive ? 'left-item when_active' : 'left-item'} to='/teacher/attendance'>
-                            <div className="link"><LuClipboardList className="icon" /><span>Attendance</span></div>
-                        </NavLink>
-                        <NavLink className={({ isActive }) => isActive ? 'left-item when_active' : 'left-item'} to='/teacher/schedule'>
-                            <div className="link"><LuCalendarDays className="icon" /><span>My Schedule</span></div>
                         </NavLink>
                         <NavLink className={({ isActive }) => isActive ? 'left-item when_active' : 'left-item'} to='/teacher/resources'>
                             <div className="link"><GrResources className="icon" /><span>Resources</span></div>

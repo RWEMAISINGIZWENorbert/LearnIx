@@ -1,10 +1,10 @@
 import React from 'react';
 import './TeacherDashboard.css';
-import { FaChalkboardTeacher, FaUsers, FaCheckCircle } from 'react-icons/fa';
-import { MdOutlineAssignment, MdPendingActions } from 'react-icons/md';
-import { BiBarChart } from 'react-icons/bi';
-import { LuClock, LuCalendarDays } from 'react-icons/lu';
-import { HiOutlineBookOpen, HiOutlineAcademicCap } from 'react-icons/hi';
+import { FaUsers } from 'react-icons/fa';
+import { MdOutlineAssignment } from 'react-icons/md';
+import { LuClock, LuFileText } from 'react-icons/lu';
+import { HiOutlineBookOpen } from 'react-icons/hi';
+import { GrAnnounce } from 'react-icons/gr';
 import { NavLink } from 'react-router-dom';
 
 export const TeacherDashboard = () => {
@@ -23,16 +23,6 @@ export const TeacherDashboard = () => {
             <div className="divisions">
               <div className="div1 all">
                 <div className="left">
-                  <h3>6</h3>
-                  <p>Active Classes</p>
-                </div>
-                <div className="right">
-                  <div className="icon"><FaChalkboardTeacher /></div>
-                </div>
-              </div>
-
-              <div className="div2 all">
-                <div className="left">
                   <h3>142</h3>
                   <p>Total Students</p>
                 </div>
@@ -41,23 +31,33 @@ export const TeacherDashboard = () => {
                 </div>
               </div>
 
-              <div className="div3 all">
+              <div className="div2 all">
                 <div className="left">
                   <h3>18</h3>
-                  <p>Assignments</p>
+                  <p>Active Assignments</p>
                 </div>
                 <div className="right">
                   <div className="icon"><MdOutlineAssignment /></div>
                 </div>
               </div>
 
-              <div className="div4 all">
+              <div className="div3 all">
                 <div className="left">
-                  <h3>23</h3>
-                  <p>Pending Grades</p>
+                  <h3>47</h3>
+                  <p>Resources Shared</p>
                 </div>
                 <div className="right">
-                  <div className="icon"><MdPendingActions /></div>
+                  <div className="icon"><HiOutlineBookOpen /></div>
+                </div>
+              </div>
+
+              <div className="div4 all">
+                <div className="left">
+                  <h3>12</h3>
+                  <p>Announcements</p>
+                </div>
+                <div className="right">
+                  <div className="icon"><GrAnnounce /></div>
                 </div>
               </div>
             </div>
@@ -66,156 +66,143 @@ export const TeacherDashboard = () => {
           {/* Main Content Section */}
           <div className="middle">
             <div className="left">
-              {/* Today's Classes */}
+              {/* Recent Assignment Activity */}
               <div className="upper">
                 <div className="up">
-                  <h3>Today's Classes</h3>
-                  <NavLink to='/teacher/schedule'><button>View Full Schedule</button></NavLink>
+                  <h3>Recent Assignment Activity</h3>
+                  <NavLink to='/teacher/assignments'><button>View All</button></NavLink>
                 </div>
                 <div className="down">
-                  <div className="class-item">
+                  <div className="assignment-activity-item">
                     <div className="content">
-                      <h4>Web Development - L5 SOD A</h4>
-                      <p className="location">Lab 301 • 24 students</p>
+                      <h4>React Project Submission</h4>
+                      <p className="student-info">John Doe • Web Development</p>
                       <div className="time-info">
                         <LuClock className="icon" />
-                        <span>09:00 - 11:00</span>
+                        <span>2 hours ago</span>
                       </div>
                     </div>
-                    <span className="status upcoming">Upcoming</span>
+                    <span className="status new">New</span>
                   </div>
 
-                  <div className="class-item">
+                  <div className="assignment-activity-item">
                     <div className="content">
-                      <h4>Database Systems - L5 SOD B</h4>
-                      <p className="location">Room 205 • 26 students</p>
+                      <h4>SQL Queries Assignment</h4>
+                      <p className="student-info">Emma Wilson • Database Systems</p>
                       <div className="time-info">
                         <LuClock className="icon" />
-                        <span>11:30 - 13:30</span>
+                        <span>5 hours ago</span>
                       </div>
                     </div>
-                    <span className="status upcoming">Upcoming</span>
+                    <span className="status new">New</span>
                   </div>
 
-                  <div className="class-item">
+                  <div className="assignment-activity-item">
                     <div className="content">
-                      <h4>Software Engineering - L6 SOD A</h4>
-                      <p className="location">Room 108 • 22 students</p>
+                      <h4>UML Diagrams Project</h4>
+                      <p className="student-info">Michael Brown • Software Engineering</p>
                       <div className="time-info">
                         <LuClock className="icon" />
-                        <span>14:00 - 16:00</span>
+                        <span>1 day ago</span>
                       </div>
                     </div>
-                    <span className="status upcoming">Upcoming</span>
+                    <span className="status reviewed">Reviewed</span>
                   </div>
                 </div>
               </div>
 
-              {/* Recent Submissions */}
+              {/* Recent Resources */}
               <div className="lower">
                 <div className="up">
-                  <h3>Recent Submissions</h3>
-                  <NavLink to='/teacher/assignments'><button>View All</button></NavLink>
+                  <h3>Recently Added Resources</h3>
+                  <NavLink to='/teacher/resources'><button>View All</button></NavLink>
                 </div>
-                <div className="down">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Student</th>
-                        <th>Assignment</th>
-                        <th>Course</th>
-                        <th>Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>John Doe</td>
-                        <td>React Project</td>
-                        <td>Web Development</td>
-                        <td><span className='pending'>Pending Review</span></td>
-                      </tr>
-                      <tr>
-                        <td>Emma Wilson</td>
-                        <td>SQL Queries</td>
-                        <td>Database Systems</td>
-                        <td><span className='pending'>Pending Review</span></td>
-                      </tr>
-                      <tr>
-                        <td>Michael Brown</td>
-                        <td>UML Diagrams</td>
-                        <td>Software Engineering</td>
-                        <td><span className='pending'>Pending Review</span></td>
-                      </tr>
-                      <tr>
-                        <td>Sarah Davis</td>
-                        <td>API Design</td>
-                        <td>Web Development</td>
-                        <td><span className='graded'>Graded</span></td>
-                      </tr>
-                    </tbody>
-                  </table>
+                <div className="down resources-list">
+                  <div className="resource-item">
+                    <div className="resource-icon pdf">
+                      <LuFileText />
+                    </div>
+                    <div className="resource-info">
+                      <h4>React Hooks Tutorial</h4>
+                      <p>Web Development • 2.4 MB</p>
+                    </div>
+                    <span className="resource-date">Today</span>
+                  </div>
+                  <div className="resource-item">
+                    <div className="resource-icon pdf">
+                      <LuFileText />
+                    </div>
+                    <div className="resource-info">
+                      <h4>Database Normalization Guide</h4>
+                      <p>Database Systems • 1.8 MB</p>
+                    </div>
+                    <span className="resource-date">Yesterday</span>
+                  </div>
+                  <div className="resource-item">
+                    <div className="resource-icon pdf">
+                      <LuFileText />
+                    </div>
+                    <div className="resource-info">
+                      <h4>SDLC Best Practices</h4>
+                      <p>Software Engineering • 3.2 MB</p>
+                    </div>
+                    <span className="resource-date">2 days ago</span>
+                  </div>
                 </div>
               </div>
             </div>
 
             {/* Right Sidebar */}
             <div className="right">
-              {/* Class Performance */}
-              <div className="performance">
+              {/* Recent Announcements */}
+              <div className="announcements">
                 <div className="section-title">
-                  <h3>Class Performance</h3>
-                  <NavLink to='/teacher/grades'><span className="view-link">View Details</span></NavLink>
+                  <h3>Recent Announcements</h3>
+                  <NavLink to='/teacher/announcements'><span className="view-link">View All</span></NavLink>
                 </div>
-                <div className="performance-items">
-                  <div className="perf-item">
-                    <div className="label">Web Development - Avg Grade</div>
-                    <div className="progress-bar">
-                      <div className="progress" style={{width: '85%'}}></div>
+                <div className="announcement-items">
+                  <div className="announcement-item">
+                    <div className="announcement-header">
+                      <h4>Mid-term Exam Schedule</h4>
+                      <span className="date">2 days ago</span>
                     </div>
-                    <div className="value">85%</div>
+                    <p>The mid-term examination schedule has been finalized...</p>
                   </div>
-                  <div className="perf-item">
-                    <div className="label">Database Systems - Avg Grade</div>
-                    <div className="progress-bar">
-                      <div className="progress" style={{width: '78%', background: '#3b82f6'}}></div>
+                  <div className="announcement-item">
+                    <div className="announcement-header">
+                      <h4>Library Hours Extended</h4>
+                      <span className="date">5 days ago</span>
                     </div>
-                    <div className="value">78%</div>
+                    <p>Library will remain open until 10 PM on weekdays...</p>
                   </div>
-                  <div className="perf-item">
-                    <div className="label">Software Engineering - Avg Grade</div>
-                    <div className="progress-bar">
-                      <div className="progress" style={{width: '82%', background: '#10b981'}}></div>
+                  <div className="announcement-item">
+                    <div className="announcement-header">
+                      <h4>Guest Lecture Series</h4>
+                      <span className="date">1 week ago</span>
                     </div>
-                    <div className="value">82%</div>
+                    <p>Join us for exciting guest lectures on AI and ML...</p>
                   </div>
                 </div>
               </div>
 
-              {/* Upcoming Events */}
-              <div className="schedule">
+              {/* Pending Reviews */}
+              <div className="pending-reviews">
                 <div className="section-title">
-                  <h3>Upcoming Deadlines</h3>
+                  <h3>Pending Reviews</h3>
                 </div>
-                <div className="schedule-items">
-                  <div className="schedule-item">
-                    <div className="time">Oct 30</div>
+                <div className="review-items">
+                  <div className="review-item">
+                    <div className="count">8</div>
                     <div className="details">
-                      <h4>Assignment Deadline</h4>
-                      <p>Database Project Due</p>
+                      <h4>Assignment Submissions</h4>
+                      <p>Awaiting your review</p>
                     </div>
                   </div>
-                  <div className="schedule-item active">
-                    <div className="time">Nov 5</div>
+                  <div className="review-item">
+                    <div className="count">3</div>
                     <div className="details">
-                      <h4>Grade Submission</h4>
-                      <p>Mid-term Grades Due</p>
-                    </div>
-                  </div>
-                  <div className="schedule-item">
-                    <div className="time">Nov 10</div>
-                    <div className="details">
-                      <h4>Exam Period</h4>
-                      <p>Mid-term Examinations</p>
+                      <h4>Resource Requests</h4>
+                      <p>From students</p>
                     </div>
                   </div>
                 </div>
@@ -231,21 +218,7 @@ export const TeacherDashboard = () => {
                 <div className="icon"><MdOutlineAssignment /></div>
                 <div className="text">
                   <h4>Create Assignment</h4>
-                  <p>Add new assignment for class</p>
-                </div>
-              </NavLink>
-              <NavLink to='/teacher/attendance' className="action-card">
-                <div className="icon"><FaCheckCircle /></div>
-                <div className="text">
-                  <h4>Mark Attendance</h4>
-                  <p>Record student attendance</p>
-                </div>
-              </NavLink>
-              <NavLink to='/teacher/grades' className="action-card">
-                <div className="icon"><BiBarChart /></div>
-                <div className="text">
-                  <h4>Enter Grades</h4>
-                  <p>Update student grades</p>
+                  <p>Add new assignment for students</p>
                 </div>
               </NavLink>
               <NavLink to='/teacher/resources' className="action-card">
@@ -253,6 +226,20 @@ export const TeacherDashboard = () => {
                 <div className="text">
                   <h4>Upload Resources</h4>
                   <p>Share course materials</p>
+                </div>
+              </NavLink>
+              <NavLink to='/teacher/announcements' className="action-card">
+                <div className="icon"><GrAnnounce /></div>
+                <div className="text">
+                  <h4>Post Announcement</h4>
+                  <p>Share important updates</p>
+                </div>
+              </NavLink>
+              <NavLink to='/teacher/students' className="action-card">
+                <div className="icon"><FaUsers /></div>
+                <div className="text">
+                  <h4>View Students</h4>
+                  <p>Manage student information</p>
                 </div>
               </NavLink>
             </div>

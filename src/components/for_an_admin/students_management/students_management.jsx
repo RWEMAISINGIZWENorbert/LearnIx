@@ -125,11 +125,19 @@ export const Students_management = () => {
     return matchesSearch && matchesClass;
   });
 
+  const generateStudentId = () => {
+    const existingIds = students.map(s => parseInt(s.studentId.replace('STU', '')));
+    const maxId = Math.max(0, ...existingIds);
+    const newIdNumber = String(maxId + 1).padStart(3, '0');
+    return `STU${newIdNumber}`;
+  };
+
   const handleAddStudent = () => {
-    if (newStudent.name && newStudent.email && newStudent.studentId) {
+    if (newStudent.name && newStudent.email) {
       const student = {
         ...newStudent,
         id: students.length + 1,
+        studentId: generateStudentId(),
         status: 'active',
         enrollmentDate: new Date().toLocaleString(),
         profilePic: 'profile_pic_blank.png'
@@ -281,10 +289,11 @@ export const Students_management = () => {
                 <label>Student ID</label>
                 <input 
                   type="text" 
-                  value={newStudent.studentId}
-                  onChange={(e) => setNewStudent({...newStudent, studentId: e.target.value})}
-                  placeholder="Enter student ID"
+                  value="Auto-generated (e.g., STU007)"
+                  disabled
+                  style={{ background: '#f3f4f6', cursor: 'not-allowed', color: '#6b7280' }}
                 />
+                <small style={{ display: 'block', marginTop: '4px', color: '#6b7280', fontSize: '12px' }}>Student ID will be automatically generated</small>
               </div>
               <div className="form-group">
                 <label>Guardian's full name</label>
