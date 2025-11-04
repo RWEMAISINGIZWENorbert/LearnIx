@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import './notifications.css'
+import { DeleteConfirmation } from '../../shared/DeleteConfirmation'
 import { MdAllInbox,MdOutlineManageAccounts } from 'react-icons/md'
 import { CiSearch } from 'react-icons/ci'
 import { GoUnread } from 'react-icons/go'
@@ -7,7 +8,7 @@ import { IoLockOpenOutline,IoChatbubblesOutline, IoMailOpenOutline, IoTrashBinOu
 import { FaLongArrowAltRight } from "react-icons/fa";
 
 export const Notifications = () => {
-
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deviceInfo, setDeviceInfo] = useState({});
 
   useEffect(() => {
@@ -30,6 +31,12 @@ export const Notifications = () => {
       os,
     });
   }, []);
+
+  const handleDeleteAllNotifications = () => {
+    // Handle deletion logic here
+    console.log('Deleting all notifications');
+    setShowDeleteConfirm(false);
+  };
 
 
 
@@ -104,7 +111,7 @@ export const Notifications = () => {
                   <button><IoMailOpenOutline className='icon'/><span>Mark all as read</span></button>
                 </div>
                 <div className="del">
-                  <button><IoTrashBinOutline className='icon'/><span>Delete all notifications</span></button>
+                  <button onClick={() => setShowDeleteConfirm(true)}><IoTrashBinOutline className='icon'/><span>Delete all notifications</span></button>
                 </div>
               </div>
             </div>
@@ -348,6 +355,15 @@ export const Notifications = () => {
             </div>
           </div>
         </div>
+
+        {/* Delete Confirmation Dialog */}
+        <DeleteConfirmation
+          isOpen={showDeleteConfirm}
+          onClose={() => setShowDeleteConfirm(false)}
+          onConfirm={handleDeleteAllNotifications}
+          itemName="all notifications"
+          itemType="notification group"
+        />
     </div>
   )
 }

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './academic_setup.css'
 import { FaArrowLeft } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
+import { DeleteConfirmation } from '../../shared/DeleteConfirmation';
 import { LuBookOpen, LuCalendar, LuUsers, LuGraduationCap, LuSettings, LuPlus, LuTrash, LuSearch, LuFilter, LuClock, LuMapPin, LuUserCheck, LuAward, LuBookMarked, LuFileText } from 'react-icons/lu';
 import { MdOutlineSubject, MdOutlineClass, MdOutlineSchedule, MdOutlineGrade, MdOutlineAssignment } from 'react-icons/md';
 import { FaEdit, FaLongArrowAltRight, FaTimes, FaSave, FaPlus } from "react-icons/fa";
@@ -14,6 +15,9 @@ export const Academic_setup = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState('');
   const [editingItem, setEditingItem] = useState(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
+  const [deleteType, setDeleteType] = useState('');
 
   // Sample data
   const subjects = [
@@ -37,31 +41,11 @@ export const Academic_setup = () => {
     { id: 3, name: "Term 3", year: "2024-2025", startDate: "Apr 7, 2025", endDate: "Jun 30, 2025", status: "Upcoming", weeks: 12 }
   ];
 
-  const schedules = [
-    { id: 1, subject: "Mathematics", class: "L3 SOD A", teacher: "SHEMA Valentin", day: "Monday", time: "08:00-10:00", type: "Lecture" },
-    { id: 2, subject: "Computer Science", class: "L3 SOD A", teacher: "SHEMA Valentin",day: "Monday", time: "10:30-12:30", type: "Practical" },
-    { id: 3, subject: "Mobile Development", class: "L3 SOD A", teacher: "SHEMA Valentin",  day: "Tuesday", time: "08:00-10:00", type: "Practical" },
-    { id: 4, subject: "Physics", class: "L3 ELT A", teacher: "Franco Nelly",  day: "Monday", time: "08:00-10:00", type: "Lecture" }
-  ];
-
-  const gradingSystems = [
-    { id: 1, name: "Percentage", scale: "0-100", gradeA: "80-100", gradeB: "70-89", gradeC: "60-79", gradeD: "50-69", gradeF: "0-49" },
-    { id: 2, name: "Letter Grade", scale: "A-F", gradeA: "A", gradeB: "B", gradeC: "C", gradeD: "D", gradeF: "F" },
-  ];
-
-  const curricula = [
-    { id: 1, name: "Computer Science Curriculum", level: "L3-L5", subjects: 12, credits: 120, duration: "3 years", status: "Active" },
-    { id: 2, name: "Electronics Curriculum", level: "L3-L5", subjects: 10, credits: 100, duration: "3 years", status: "Active" },
-    { id: 3, name: "General Science Curriculum", level: "L3-L4", subjects: 8, credits: 80, duration: "2 years", status: "Draft" }
-  ];
 
   const tabs = [
     { id: 'subjects', label: 'Subjects', icon: <MdOutlineSubject /> },
     { id: 'years', label: 'Academic Years', icon: <LuCalendar /> },
-    { id: 'terms', label: 'Terms', icon: <LuBookOpen /> },
-    { id: 'schedule', label: 'Schedule', icon: <MdOutlineSchedule /> },
-    { id: 'grading', label: 'Grading System', icon: <MdOutlineGrade /> },
-    { id: 'curriculum', label: 'Curriculum', icon: <LuBookMarked /> }
+    { id: 'terms', label: 'Terms', icon: <LuBookOpen /> }
   ];
 
   // Helper functions
@@ -75,6 +59,20 @@ export const Academic_setup = () => {
     setShowModal(false);
     setModalType('');
     setEditingItem(null);
+  };
+
+  const handleDelete = (item, type) => {
+    setItemToDelete(item);
+    setDeleteType(type);
+    setShowDeleteConfirm(true);
+  };
+
+  const confirmDelete = () => {
+    // Handle actual deletion logic here
+    console.log(`Deleting ${deleteType}:`, itemToDelete);
+    setShowDeleteConfirm(false);
+    setItemToDelete(null);
+    setDeleteType('');
   };
 
   const filteredData = (data, searchTerm) => {
@@ -129,7 +127,7 @@ export const Academic_setup = () => {
                   </div>
                   <div className="subject_actions">
                     <button className="edit" onClick={() => openModal('subject', subject)}><FaEdit /></button>
-                    <button className="delete"><LuTrash /></button>
+                    <button className="delete" onClick={() => handleDelete(subject, 'subject')}><LuTrash /></button>
                   </div>
                 </div>
               ))}
@@ -175,7 +173,7 @@ export const Academic_setup = () => {
                   </div>
                   <div className="year_actions">
                     <button className="edit" onClick={() => openModal('year', year)}><FaEdit /></button>
-                    <button className="delete"><LuTrash /></button>
+                    <button className="delete" onClick={() => handleDelete(year, 'academic year')}><LuTrash /></button>
                   </div>
                 </div>
               ))}
@@ -223,171 +221,7 @@ export const Academic_setup = () => {
                   </div>
                   <div className="term_actions">
                     <button className="edit" onClick={() => openModal('term', term)}><FaEdit /></button>
-                    <button className="delete"><LuTrash /></button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        );
-      case 'schedule':
-        return (
-          <div className="content_section">
-            <div className="section_header">
-              <h3>Schedule Management</h3>
-              <div className="header_actions">
-                <div className="search_box">
-                  <CiSearch className="search_icon" />
-                  <input 
-                    type="text" 
-                    placeholder="Search schedules..." 
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                </div>
-                <button className="add_button" onClick={() => openModal('schedule')}>
-                  <LuPlus className="icon" />
-                  <span>Add Schedule</span>
-                </button>
-              </div>
-            </div>
-            <div className="schedule_table">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Subject</th>
-                    <th>Class</th>
-                    <th>Teacher</th>
-                    <th>Day</th>
-                    <th>Time</th>
-                    <th>Type</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredData(schedules, searchTerm).map(schedule => (
-                    <tr key={schedule.id}>
-                      <td>{schedule.subject}</td>
-                      <td>{schedule.class}</td>
-                      <td>{schedule.teacher}</td>
-                      <td>{schedule.day}</td>
-                      <td>{schedule.time}</td>
-                      <td><span className={`type ${schedule.type.toLowerCase()}`}>{schedule.type}</span></td>
-                      <td>
-                        <div className="table_actions">
-                          <button className="edit" onClick={() => openModal('schedule', schedule)}><FaEdit /></button>
-                          <button className="delete"><LuTrash /></button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        );
-
-      case 'grading':
-        return (
-          <div className="content_section">
-            <div className="section_header">
-              <h3>Grading System</h3>
-              <div className="header_actions">
-                <div className="search_box">
-                  <CiSearch className="search_icon" />
-                  <input 
-                    type="text" 
-                    placeholder="Search grading systems..." 
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                </div>
-                <button className="add_button" onClick={() => openModal('grading')}>
-                  <LuPlus className="icon" />
-                  <span>Add Grading System</span>
-                </button>
-              </div>
-            </div>
-            <div className="grading_list">
-              {filteredData(gradingSystems, searchTerm).map(system => (
-                <div key={system.id} className="grading_card">
-                  <div className="grading_info">
-                    <div className="grading_header">
-                      <h4>{system.name}</h4>
-                      <span className="scale">Scale: {system.scale}</span>
-                    </div>
-                    <div className="grading_details">
-                      <div className="grade_row">
-                        <span className="grade_label">A Grade:</span>
-                        <span className="grade_value">{system.gradeA}</span>
-                      </div>
-                      <div className="grade_row">
-                        <span className="grade_label">B Grade:</span>
-                        <span className="grade_value">{system.gradeB}</span>
-                      </div>
-                      <div className="grade_row">
-                        <span className="grade_label">C Grade:</span>
-                        <span className="grade_value">{system.gradeC}</span>
-                      </div>
-                      <div className="grade_row">
-                        <span className="grade_label">D Grade:</span>
-                        <span className="grade_value">{system.gradeD}</span>
-                      </div>
-                      <div className="grade_row">
-                        <span className="grade_label">F Grade:</span>
-                        <span className="grade_value">{system.gradeF}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="grading_actions">
-                    <button className="edit" onClick={() => openModal('grading', system)}><FaEdit /></button>
-                    <button className="delete"><LuTrash /></button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        );
-
-      case 'curriculum':
-        return (
-          <div className="content_section">
-            <div className="section_header">
-              <h3>Curriculum Management</h3>
-              <div className="header_actions">
-                <div className="search_box">
-                  <CiSearch className="search_icon" />
-                  <input 
-                    type="text" 
-                    placeholder="Search curriculum..." 
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                </div>
-                <button className="add_button" onClick={() => openModal('curriculum')}>
-                  <LuPlus className="icon" />
-                  <span>Add Curriculum</span>
-                </button>
-              </div>
-            </div>
-            <div className="curriculum_list">
-              {filteredData(curricula, searchTerm).map(curriculum => (
-                <div key={curriculum.id} className="curriculum_card">
-                  <div className="curriculum_info">
-                    <div className="curriculum_header">
-                      <h4>{curriculum.name}</h4>
-                      <span className={`status ${curriculum.status.toLowerCase()}`}>{curriculum.status}</span>
-                    </div>
-                    <div className="curriculum_details">
-                      <p><LuGraduationCap className="icon" />Level: {curriculum.level}</p>
-                      <p><LuBookOpen className="icon" />Subjects: {curriculum.subjects}</p>
-                      <p><LuAward className="icon" />Credits: {curriculum.credits}</p>
-                      <p><LuClock className="icon" />Duration: {curriculum.duration}</p>
-                    </div>
-                  </div>
-                  <div className="curriculum_actions">
-                    <button className="edit" onClick={() => openModal('curriculum', curriculum)}><FaEdit /></button>
-                    <button className="delete"><LuTrash /></button>
+                    <button className="delete" onClick={() => handleDelete(term, 'term')}><LuTrash /></button>
                   </div>
                 </div>
               ))}
@@ -406,11 +240,7 @@ export const Academic_setup = () => {
     const modalTitles = {
       subject: editingItem ? 'Edit Subject' : 'Add New Subject',
       year: editingItem ? 'Edit Academic Year' : 'Add New Academic Year',
-      term: editingItem ? 'Edit Term' : 'Add New Term',
-      class: editingItem ? 'Edit Class' : 'Add New Class',
-      schedule: editingItem ? 'Edit Schedule' : 'Add New Schedule',
-      grading: editingItem ? 'Edit Grading System' : 'Add New Grading System',
-      curriculum: editingItem ? 'Edit Curriculum' : 'Add New Curriculum'
+      term: editingItem ? 'Edit Term' : 'Add New Term'
     };
 
     return (
@@ -553,137 +383,6 @@ export const Academic_setup = () => {
                 </div>
               </div>
             )}
-            {modalType === 'schedule' && (
-              <div className="form_group">
-                <div className="form_row">
-                  <div className="form_field">
-                    <label>Subject</label>
-                    <input type="text" defaultValue={editingItem?.subject || ''} />
-                  </div>
-                  <div className="form_field">
-                    <label>Class</label>
-                    <input type="text" defaultValue={editingItem?.class || ''} />
-                  </div>
-                </div>
-                <div className="form_row">
-                  <div className="form_field">
-                    <label>Teacher</label>
-                    <input type="text" defaultValue={editingItem?.teacher || ''} />
-                  </div>
-                  <div className="form_field">
-                    <label>Room</label>
-                    <input type="text" defaultValue={editingItem?.room || ''} />
-                  </div>
-                </div>
-                <div className="form_row">
-                  <div className="form_field">
-                    <label>Day</label>
-                    <select defaultValue={editingItem?.day || ''}>
-                      <option value="" hidden>Select Day</option>
-                      <option value="Monday">Monday</option>
-                      <option value="Tuesday">Tuesday</option>
-                      <option value="Wednesday">Wednesday</option>
-                      <option value="Thursday">Thursday</option>
-                      <option value="Friday">Friday</option>
-                      <option value="Saturday">Saturday</option>
-                    </select>
-                  </div>
-                  <div className="form_field">
-                    <label>Time</label>
-                    <input type="text" defaultValue={editingItem?.time || ''} placeholder="e.g., 08:00-10:00" />
-                  </div>
-                </div>
-                <div className="form_field">
-                  <label>Type</label>
-                  <select defaultValue={editingItem?.type || ''}>
-                    <option value="" hidden>Select Type</option>
-                    <option value="Lecture">Lecture</option>
-                    <option value="Practical">Practical</option>
-                    <option value="Tutorial">Tutorial</option>
-                    <option value="Lab">Lab</option>
-                  </select>
-                </div>
-              </div>
-            )}
-
-            {modalType === 'grading' && (
-              <div className="form_group">
-                <div className="form_row">
-                  <div className="form_field">
-                    <label>System Name</label>
-                    <input type="text" defaultValue={editingItem?.name || ''} />
-                  </div>
-                  <div className="form_field">
-                    <label>Scale</label>
-                    <input type="text" defaultValue={editingItem?.scale || ''} placeholder="e.g., 0-100" />
-                  </div>
-                </div>
-                <div className="form_row">
-                  <div className="form_field">
-                    <label>A Grade</label>
-                    <input type="text" defaultValue={editingItem?.gradeA || ''} />
-                  </div>
-                  <div className="form_field">
-                    <label>B Grade</label>
-                    <input type="text" defaultValue={editingItem?.gradeB || ''} />
-                  </div>
-                </div>
-                <div className="form_row">
-                  <div className="form_field">
-                    <label>C Grade</label>
-                    <input type="text" defaultValue={editingItem?.gradeC || ''} />
-                  </div>
-                  <div className="form_field">
-                    <label>D Grade</label>
-                    <input type="text" defaultValue={editingItem?.gradeD || ''} />
-                  </div>
-                </div>
-                <div className="form_field">
-                  <label>F Grade</label>
-                  <input type="text" defaultValue={editingItem?.gradeF || ''} />
-                </div>
-              </div>
-            )}
-
-            {modalType === 'curriculum' && (
-              <div className="form_group">
-                <div className="form_row">
-                  <div className="form_field">
-                    <label>Curriculum Name</label>
-                    <input type="text" defaultValue={editingItem?.name || ''} />
-                  </div>
-                  <div className="form_field">
-                    <label>Level</label>
-                    <input type="text" defaultValue={editingItem?.level || ''} placeholder="e.g., L3-L5" />
-                  </div>
-                </div>
-                <div className="form_row">
-                  <div className="form_field">
-                    <label>Number of Subjects</label>
-                    <input type="number" defaultValue={editingItem?.subjects || ''} />
-                  </div>
-                  <div className="form_field">
-                    <label>Total Credits</label>
-                    <input type="number" defaultValue={editingItem?.credits || ''} />
-                  </div>
-                </div>
-                <div className="form_row">
-                  <div className="form_field">
-                    <label>Duration</label>
-                    <input type="text" defaultValue={editingItem?.duration || ''} placeholder="e.g., 3 years" />
-                  </div>
-                  <div className="form_field">
-                    <label>Status</label>
-                    <select defaultValue={editingItem?.status || ''}>
-                      <option value="" hidden>Select Status</option>
-                      <option value="Active">Active</option>
-                      <option value="Draft">Draft</option>
-                      <option value="Archived">Archived</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
           
           <div className="modal_footer">
@@ -729,6 +428,19 @@ export const Academic_setup = () => {
         </div>
         
         {renderModal()}
+
+        {/* Delete Confirmation Dialog */}
+        <DeleteConfirmation
+          isOpen={showDeleteConfirm}
+          onClose={() => {
+            setShowDeleteConfirm(false);
+            setItemToDelete(null);
+            setDeleteType('');
+          }}
+          onConfirm={confirmDelete}
+          itemName={itemToDelete?.name || itemToDelete?.year}
+          itemType={deleteType}
+        />
     </div>
   )
 }

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './resources_management.css'
 import { FaArrowLeft } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
+import { DeleteConfirmation } from '../../shared/DeleteConfirmation';
 import { LuBookOpen, LuFileText, LuDownload, LuUpload, LuEye, LuTrash, LuPlus } from 'react-icons/lu';
 import { MdOutlineSubject, MdOutlineClass, MdOutlineSchedule } from 'react-icons/md';
 import { FaLongArrowAltRight, FaFilePdf, FaFileWord, FaFileImage, FaFileVideo, FaEdit } from "react-icons/fa";
@@ -9,6 +10,9 @@ import { FaLongArrowAltRight, FaFilePdf, FaFileWord, FaFileImage, FaFileVideo, F
 export const Resources_management = () => {
   let navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('documents');
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
+  const [deleteType, setDeleteType] = useState('');
 
   const documents = [
     {
@@ -87,6 +91,20 @@ export const Resources_management = () => {
     }
   };
 
+  const handleDelete = (item, type) => {
+    setItemToDelete(item);
+    setDeleteType(type);
+    setShowDeleteConfirm(true);
+  };
+
+  const confirmDelete = () => {
+    // Handle actual deletion logic here
+    console.log(`Deleting ${deleteType}:`, itemToDelete);
+    setShowDeleteConfirm(false);
+    setItemToDelete(null);
+    setDeleteType('');
+  };
+
   const tabs = [
     { id: 'documents', label: 'Documents', icon: <LuFileText /> },
     { id: 'categories', label: 'Categories', icon: <MdOutlineSubject /> },
@@ -129,7 +147,7 @@ export const Resources_management = () => {
                     <button className="view"><LuEye /></button>
                     <button className="download"><LuDownload /></button>
                     <button className="edit"><FaEdit /></button>
-                    <button className="delete"><LuTrash /></button>
+                    <button className="delete" onClick={() => handleDelete(document, 'document')}><LuTrash /></button>
                   </div>
                 </div>
               ))}
@@ -240,6 +258,19 @@ export const Resources_management = () => {
             </div>
           </div>
         </div>
+
+        {/* Delete Confirmation Dialog */}
+        <DeleteConfirmation
+          isOpen={showDeleteConfirm}
+          onClose={() => {
+            setShowDeleteConfirm(false);
+            setItemToDelete(null);
+            setDeleteType('');
+          }}
+          onConfirm={confirmDelete}
+          itemName={itemToDelete?.name}
+          itemType={deleteType}
+        />
     </div>
   )
 }

@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
 import './communications_management.css';
+import { DeleteConfirmation } from '../../shared/DeleteConfirmation';
 import { FaPlus, FaBullhorn, FaEnvelope, FaSms, FaEdit, FaTrash, FaEye, FaPaperPlane } from 'react-icons/fa';
 import { MdNotifications } from 'react-icons/md';
 
 export const Communications_management = () => {
   const [activeTab, setActiveTab] = useState('announcements');
   const [showNewModal, setShowNewModal] = useState(false);
+  const [communicationType, setCommunicationType] = useState('announce');
+  const [recipientType, setRecipientType] = useState('');
+  const [specificRecipient, setSpecificRecipient] = useState('');
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
+  const [deleteType, setDeleteType] = useState('');
 
   const announcements = [
     {
@@ -64,6 +71,36 @@ export const Communications_management = () => {
     { title: 'SMS Notifications', value: '567', icon: <FaSms />, color: '#f59e0b' },
     { title: 'Active Recipients', value: '1,620', icon: <MdNotifications />, color: '#3b82f6' }
   ];
+
+  const teachers = [
+    { id: 1, name: 'SHEMA Valentin' },
+    { id: 2, name: 'Franco Nelly' },
+    { id: 3, name: 'RWEMA Nobii' },
+    { id: 4, name: 'MUKAMANA Grace' },
+    { id: 5, name: 'UWIMANA Jean' }
+  ];
+
+  const students = [
+    { id: 1, name: 'John Doe', class: 'L5 SOD A' },
+    { id: 2, name: 'Jane Smith', class: 'L5 SOD A' },
+    { id: 3, name: 'Robert Johnson', class: 'L4 SOD B' },
+    { id: 4, name: 'Emily Davis', class: 'L3 SOD C' },
+    { id: 5, name: 'Michael Brown', class: 'L5 SOD B' }
+  ];
+
+  const handleDelete = (item, type) => {
+    setItemToDelete(item);
+    setDeleteType(type);
+    setShowDeleteConfirm(true);
+  };
+
+  const confirmDelete = () => {
+    // Handle actual deletion logic here
+    console.log(`Deleting ${deleteType}:`, itemToDelete);
+    setShowDeleteConfirm(false);
+    setItemToDelete(null);
+    setDeleteType('');
+  };
 
   return (
     <div className='communications_management'>
@@ -132,7 +169,7 @@ export const Communications_management = () => {
                     <button className="communications_management_action_btn edit">
                       <FaEdit />
                     </button>
-                    <button className="communications_management_action_btn delete">
+                    <button className="communications_management_action_btn delete" onClick={() => handleDelete(announcement, 'announcement')}>
                       <FaTrash />
                     </button>
                   </div>
@@ -171,7 +208,7 @@ export const Communications_management = () => {
                     <button className="communications_management_action_btn view">
                       <FaEye />
                     </button>
-                    <button className="communications_management_action_btn delete">
+                    <button className="communications_management_action_btn delete" onClick={() => handleDelete(message, 'message')}>
                       <FaTrash />
                     </button>
                   </div>
@@ -187,6 +224,146 @@ export const Communications_management = () => {
           </div>
         </div>
       )}
+
+      {/* Unified Communication Modal */}
+      {showNewModal && (
+        <div className="modal_overlay" onClick={() => setShowNewModal(false)}>
+          <div className="modal_content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal_header">
+              <h3>New Communication</h3>
+              <button className="close_button" onClick={() => setShowNewModal(false)}>×</button>
+            </div>
+            
+            <div className="modal_body">
+              {/* Communication Type Selection */}
+              <div className="form_field">
+                <label>Communication Type</label>
+                <div className="type_selector">
+                  <button 
+                    className={`type_btn ${communicationType === 'announce' ? 'active' : ''}`}
+                    onClick={() => {
+                      setCommunicationType('announce');
+                      setRecipientType('');
+                      setSpecificRecipient('');
+                    }}
+                  >
+                    <FaBullhorn /> Announcement
+                  </button>
+                  <button 
+                    className={`type_btn ${communicationType === 'message' ? 'active' : ''}`}
+                    onClick={() => {
+                      setCommunicationType('message');
+                      setRecipientType('');
+                      setSpecificRecipient('');
+                    }}
+                  >
+                    <FaEnvelope /> Message
+                  </button>
+                </div>
+              </div>
+
+              {/* Subject/Title */}
+              <div className="form_field">
+                <label>{communicationType === 'announce' ? 'Announcement Title' : 'Message Subject'}</label>
+                <input type="text" placeholder={communicationType === 'announce' ? 'Enter announcement title' : 'Enter message subject'} />
+              </div>
+
+              {/* Recipient Selection */}
+              <div className="form_field">
+                <label>Recipients</label>
+                {communicationType === 'announce' ? (
+                  <select 
+                    value={recipientType} 
+                    onChange={(e) => setRecipientType(e.target.value)}
+                  >
+                    <option value="">Select recipient group</option>
+                    <option value="all_students">All Students</option>
+                    <option value="all_teachers">All Teachers</option>
+                    <option value="all">All (Students & Teachers)</option>
+                  </select>
+                ) : (
+                  <>
+                    <select 
+                      value={recipientType} 
+                      onChange={(e) => {
+                        setRecipientType(e.target.value);
+                        setSpecificRecipient('');
+                      }}
+                    >
+                      <option value="">Select recipient type</option>
+                      <option value="student">Student</option>
+                      <option value="teacher">Teacher</option>
+                    </select>
+                    
+                    {recipientType && (
+                      <select 
+                        value={specificRecipient} 
+                        onChange={(e) => setSpecificRecipient(e.target.value)}
+                        style={{ marginTop: '10px' }}
+                      >
+                        <option value="">Select specific {recipientType}</option>
+                        {recipientType === 'student' && students.map(student => (
+                          <option key={student.id} value={student.id}>
+                            {student.name} ({student.class})
+                          </option>
+                        ))}
+                        {recipientType === 'teacher' && teachers.map(teacher => (
+                          <option key={teacher.id} value={teacher.id}>
+                            {teacher.name}
+                          </option>
+                        ))}
+                      </select>
+                    )}
+                  </>
+                )}
+              </div>
+
+              {/* Message Content */}
+              <div className="form_field">
+                <label>Message</label>
+                <textarea 
+                  rows="6" 
+                  placeholder={communicationType === 'announce' ? 'Enter announcement content...' : 'Enter message content...'}
+                ></textarea>
+              </div>
+
+              {/* Priority (for messages) */}
+              {communicationType === 'message' && (
+                <div className="form_field">
+                  <label>Priority</label>
+                  <select>
+                    <option value="normal">Normal</option>
+                    <option value="high">High</option>
+                    <option value="urgent">Urgent</option>
+                  </select>
+                </div>
+              )}
+            </div>
+
+            <div className="modal_footer">
+              <button className="cancel_btn" onClick={() => setShowNewModal(false)}>
+                Cancel
+              </button>
+              <button className="send_btn">
+                <FaPaperPlane /> Send {communicationType === 'announce' ? 'Announcement' : 'Message'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Dialog */}
+      <DeleteConfirmation
+        isOpen={showDeleteConfirm}
+        onClose={() => {
+          setShowDeleteConfirm(false);
+          setItemToDelete(null);
+          setDeleteType('');
+        }}
+        onConfirm={confirmDelete}
+        itemName={itemToDelete?.title || itemToDelete?.subject}
+        itemType={deleteType}
+      />
     </div>
   );
 };

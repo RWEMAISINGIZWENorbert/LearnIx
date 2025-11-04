@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import './teachers_management.css'
 import { FaArrowLeft } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
+import { DeleteConfirmation } from '../../shared/DeleteConfirmation';
 import { CiSearch } from 'react-icons/ci';
 import { LuNotebookText  } from 'react-icons/lu';
 import { IoTimeOutline } from 'react-icons/io5';
@@ -27,6 +28,8 @@ export const Teachers_management = () => {
   const [editingTeacher, setEditingTeacher] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedSubjects, setExpandedSubjects] = useState({}); // store which teacher's subjects are expanded
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [teacherToDelete, setTeacherToDelete] = useState(null);
 
   const handleAddClick = () => {
     setEditingTeacher(null);
@@ -38,8 +41,17 @@ export const Teachers_management = () => {
     setModalOpen(true);
   };
 
-  const handleDelete = (id) => {
-    setTeachers(teachers.filter(t => t.id !== id));
+  const handleDelete = (teacher) => {
+    setTeacherToDelete(teacher);
+    setShowDeleteConfirm(true);
+  };
+
+  const confirmDelete = () => {
+    if (teacherToDelete) {
+      setTeachers(teachers.filter(t => t.id !== teacherToDelete.id));
+      setShowDeleteConfirm(false);
+      setTeacherToDelete(null);
+    }
   };
 
   const handleSave = (teacher) => {
@@ -125,7 +137,7 @@ export const Teachers_management = () => {
                   )}
               <div className="down">
                 <button className='more' onClick={() => handleEditClick(teacher)}><span>Edit</span><div className="icon"><FaLongArrowAltRight/></div></button>
-                <button className='archive' onClick={() => handleDelete(teacher.id)}><span>Delete</span><div className="icon"><GoTrash/></div></button>
+                <button className='archive' onClick={() => handleDelete(teacher)}><span>Delete</span><div className="icon"><GoTrash/></div></button>
               </div>
             </div>
           ))}
@@ -195,6 +207,18 @@ export const Teachers_management = () => {
           </div>
         </div>
       )}
+
+      {/* Delete Confirmation Dialog */}
+      <DeleteConfirmation
+        isOpen={showDeleteConfirm}
+        onClose={() => {
+          setShowDeleteConfirm(false);
+          setTeacherToDelete(null);
+        }}
+        onConfirm={confirmDelete}
+        itemName={teacherToDelete?.name}
+        itemType="teacher"
+      />
 
     </div>
   );

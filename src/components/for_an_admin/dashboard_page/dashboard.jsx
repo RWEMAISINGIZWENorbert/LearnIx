@@ -3,12 +3,12 @@ import './dashboard.css';
 import { GiTeacher } from 'react-icons/gi';
 import { PiStudent  } from "react-icons/pi";
 import { SlPeople } from "react-icons/sl";
-import { IoMdArrowDropright } from "react-icons/io";
-import { RiUserForbidLine } from "react-icons/ri";
+import { IoMdArrowDropright, IoMdTrendingUp } from "react-icons/io";
 import { GrAnnounce } from 'react-icons/gr';
 import { IoChatbubblesOutline } from "react-icons/io5";
 import { FaRegBell } from 'react-icons/fa';
 import { CiCalendar } from "react-icons/ci";
+import { Link } from 'react-router-dom';
 
 
 export const Dashboard = () => {
@@ -32,34 +32,58 @@ export const Dashboard = () => {
             <div className="divisions">
               {/* Card 1 */}
               <div className="div1 all">
-                <div className="left">
-                  <h3>1287</h3>
-                  <p>Students</p>
-                </div>
-                <div className="rigth">
-                  <div className="icon"><PiStudent /></div>
+                <div className="card-content">
+                  <div className="card-top">
+                    <div className="left">
+                      <h3>1287</h3>
+                      <p>Students</p>
+                    </div>
+                    <div className="rigth">
+                      <div className="icon"><PiStudent /></div>
+                    </div>
+                  </div>
+                  <div className="card-trend">
+                    <IoMdTrendingUp className="trend-icon" />
+                    <span className="trend-text">+12% from last term</span>
+                  </div>
                 </div>
               </div>
 
               {/* Card 2 */}
               <div className="div2 all">
-                <div className="left">
-                  <h3>32</h3>
-                  <p>Teachers</p>
-                </div>
-                <div className="rigth">
-                  <div className="icon"><SlPeople/></div>
+                <div className="card-content">
+                  <div className="card-top">
+                    <div className="left">
+                      <h3>32</h3>
+                      <p>Teachers</p>
+                    </div>
+                    <div className="rigth">
+                      <div className="icon"><SlPeople/></div>
+                    </div>
+                  </div>
+                  <div className="card-trend">
+                    <IoMdTrendingUp className="trend-icon" />
+                    <span className="trend-text">+3% from last year</span>
+                  </div>
                 </div>
               </div>
 
               {/* Card 3 */}
               <div className="div3 all">
-                <div className="left">
-                  <h3>20</h3>
-                  <p>Active classes</p>
-                </div>
-                <div className="rigth">
-                  <div className="icon"><CiCalendar/></div>
+                <div className="card-content">
+                  <div className="card-top">
+                    <div className="left">
+                      <h3>20</h3>
+                      <p>Active classes</p>
+                    </div>
+                    <div className="rigth">
+                      <div className="icon"><CiCalendar/></div>
+                    </div>
+                  </div>
+                  <div className="card-trend">
+                    <IoMdTrendingUp className="trend-icon" />
+                    <span className="trend-text">+1% from last year</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -110,6 +134,9 @@ export const Dashboard = () => {
               <div className="lower">
                 <div className="up">
                   <h3>Recent applications</h3>
+                  <Link to="/admin/admissions" style={{ textDecoration: 'none' }}>
+                    <button style={{ padding: '8px 16px', background: 'none', color: 'var(--main-color)', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '13px', fontWeight: '600' }}>View More</button>
+                  </Link>
                 </div>
                 <div className="down">
                   <table>
@@ -193,7 +220,9 @@ export const Dashboard = () => {
               <div className="following">
                 <div className="up">
                   <p>Recent classes</p>
-                  <button>Manage</button>
+                  <Link to="/admin/classes" style={{ textDecoration: 'none' }}>
+                    <button>Manage</button>
+                  </Link>
                 </div>
                 <div className="down">
                   <div className="it">
@@ -230,40 +259,38 @@ export const Dashboard = () => {
                 <h4>User management quick access</h4>
               </div>
 
-              <div className="it students">
-                <div className="icon"><PiStudent/></div>
-                <div className="des">Students</div>
-              </div>
+              <Link to="/admin/students" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <div className="it students">
+                  <div className="icon"><PiStudent/></div>
+                  <div className="des">Students</div>
+                </div>
+              </Link>
 
+              <Link to="/admin/teachers" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className="it teachers">
                 <div className="icon"><GiTeacher/></div>
                 <div className="des">Teachers</div>
               </div>
-
-              <div className="it permissions">
-                <div className="icon"><RiUserForbidLine/></div>
-                <div className="des">Grant and revoke permissions</div>
-              </div>
+              </Link>
             </div>
             <div className="right">
               <div className="upper">
                 <h4>Communications</h4>
               </div>
 
-              <div className="it students">
+              <Link to='/admin/communications' style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div className="it announce">
                 <div className="icon"><GrAnnounce/></div>
                 <div className="des">Announce</div>
               </div>
+              </Link>
 
-              <div className="it teachers">
+              <Link to='/admin/communications' style={{textDecoration: 'none', color: 'inherit'}}>
+              <div className="it messaging">
                 <div className="icon"><IoChatbubblesOutline/></div>
                 <div className="des">Messaging center</div>
               </div>
-
-              <div className="it permissions">
-                <div className="icon"><FaRegBell/></div>
-                <div className="des">Parent notifications</div>
-              </div>
+              </Link>
             </div>
           </div>
         </div>

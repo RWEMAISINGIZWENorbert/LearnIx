@@ -10,8 +10,7 @@ import { IoMdCheckmarkCircleOutline } from "react-icons/io"
 
 export const Aadmissions = () => {
     const [selectedStatus, setSelectedStatus] = useState('all');
-
-  const applications = [
+    const [applications, setApplications] = useState([
     {
       id: 1,
       name: "Franco Nelly",
@@ -82,7 +81,19 @@ export const Aadmissions = () => {
       status: "approved",
       documents: ["Result slip"]
     }
-  ];
+  ]);
+
+  const handleApprove = (id) => {
+    setApplications(applications.map(app => 
+      app.id === id ? { ...app, status: 'approved' } : app
+    ));
+  };
+
+  const handleReject = (id) => {
+    setApplications(applications.map(app => 
+      app.id === id ? { ...app, status: 'rejected' } : app
+    ));
+  };
 
     const filteredApplications = selectedStatus === 'all' 
     ? applications 
@@ -129,9 +140,9 @@ export const Aadmissions = () => {
               <div className="filters">
                 <div className="filter_buttons">
                   <button className={selectedStatus === 'all' ? 'all active' : ''}  onClick={() => setSelectedStatus('all')}>All</button>
-                  <button className={selectedStatus === 'approved' ? 'approved active' : ''}  onClick={() => setSelectedStatus('all')}>approved</button>
-                  <button className={selectedStatus === 'pending' ? 'pending active' : ''}  onClick={() => setSelectedStatus('all')}>pending</button>
-                  <button className={selectedStatus === 'rejected' ? 'rejected active' : ''}  onClick={() => setSelectedStatus('all')}>rejected</button>
+                  <button className={selectedStatus === 'approved' ? 'approved active' : ''}  onClick={() => setSelectedStatus('approved')}>approved</button>
+                  <button className={selectedStatus === 'pending' ? 'pending active' : ''}  onClick={() => setSelectedStatus('pending')}>pending</button>
+                  <button className={selectedStatus === 'rejected' ? 'rejected active' : ''}  onClick={() => setSelectedStatus('rejected')}>rejected</button>
                 </div>
               </div>
               <div className="new">
@@ -182,10 +193,12 @@ export const Aadmissions = () => {
                     </div>
                   </div>
                   
-                  <div className="actions">
-                    <button className='view'><IoMdCheckmarkCircleOutline className="icon" /><span>Approve</span></button>
-                    <button className='delete'><FaTrash className="icon" /><span>Reject</span></button>
-                  </div>
+                  {application.status === 'pending' && (
+                    <div className="actions">
+                      <button className='view' onClick={() => handleApprove(application.id)}><IoMdCheckmarkCircleOutline className="icon" /><span>Approve</span></button>
+                      <button className='delete' onClick={() => handleReject(application.id)}><FaTrash className="icon" /><span>Reject</span></button>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import './students_management.css'
 import { FaArrowLeft } from 'react-icons/fa6';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { DeleteConfirmation } from '../../shared/DeleteConfirmation';
 import { CiSearch } from 'react-icons/ci';
 import { LuUser, LuUsers, LuGraduationCap } from 'react-icons/lu';
 import { IoTimeOutline } from 'react-icons/io5';
@@ -13,10 +14,14 @@ import { HiOutlineAcademicCap } from "react-icons/hi2";
 
 export const Students_management = () => {
   let navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const classFilter = searchParams.get('class');
   const [searchTerm, setSearchTerm] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editingStudent, setEditingStudent] = useState(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [studentToDelete, setStudentToDelete] = useState(null);
   const [students, setStudents] = useState([
     {
       id: 1,
@@ -109,12 +114,16 @@ export const Students_management = () => {
     subjects: []
   });
 
-  const filteredStudents = students.filter(student =>
-    student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    student.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    student.studentId.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    student.class.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredStudents = students.filter(student => {
+    const matchesSearch = student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      student.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      student.studentId.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      student.class.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    const matchesClass = classFilter ? student.class === classFilter : true;
+    
+    return matchesSearch && matchesClass;
+  });
 
   const handleAddStudent = () => {
     if (newStudent.name && newStudent.email && newStudent.studentId) {
@@ -155,9 +164,16 @@ export const Students_management = () => {
     }
   };
 
-  const handleDeleteStudent = (studentId) => {
-    if (window.confirm('Are you sure you want to delete this student?')) {
-      setStudents(students.filter(student => student.id !== studentId));
+  const handleDeleteStudent = (student) => {
+    setStudentToDelete(student);
+    setShowDeleteConfirm(true);
+  };
+
+  const confirmDelete = () => {
+    if (studentToDelete) {
+      setStudents(students.filter(student => student.id !== studentToDelete.id));
+      setShowDeleteConfirm(false);
+      setStudentToDelete(null);
     }
   };
 
@@ -173,8 +189,8 @@ export const Students_management = () => {
             </div>
           </div>
           <div className="upper">
-            <h4>Student Management</h4>
-            <p>Add, edit, and organize students with ease. Keep enrollment records up to date and maintain a clean, searchable student database.</p>
+            <h4>{classFilter ? `All students in ${classFilter}` : 'Student Management'}</h4>
+            <p>{classFilter ? `Showing ${filteredStudents.length} students available in ${classFilter}` : 'Add, edit, and organize students with ease. Keep enrollment records up to date and maintain a clean, searchable student database.'}</p>
           </div>
           <div className="mini_up">
             <div className="search_box">
@@ -225,7 +241,7 @@ export const Students_management = () => {
                 <button className='more' onClick={() => handleEditStudent(student)}>
                   <span>Edit</span><div className="icon"><BiEdit/></div>
                 </button>
-                <button className='archive' onClick={() => handleDeleteStudent(student.id)}>
+                <button className='archive' onClick={() => handleDeleteStudent(student)}>
                   <span>Delete</span><div className="icon"><GoTrash/></div>
                 </button>
               </div>
@@ -404,6 +420,18 @@ export const Students_management = () => {
           </div>
         </div>
       )}
+
+      {/* Delete Confirmation Dialog */}
+      <DeleteConfirmation
+        isOpen={showDeleteConfirm}
+        onClose={() => {
+          setShowDeleteConfirm(false);
+          setStudentToDelete(null);
+        }}
+        onConfirm={confirmDelete}
+        itemName={studentToDelete?.name}
+        itemType="student"
+      />
     </div>
   )
 }

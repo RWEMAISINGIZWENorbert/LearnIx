@@ -341,6 +341,179 @@
     margin-bottom: 25px;
 }
 
+/* Modal Styles */
+.modal_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+}
+
+.modal_content {
+    background: white;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+.modal_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.modal_header h3 {
+    font-size: 22px;
+    color: #1a1a1a;
+}
+
+.close_button {
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    border: none;
+    background: rgba(0,0,0,0.05);
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    color: #666;
+}
+
+.close_button:hover {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.modal_body {
+    padding: 25px;
+}
+
+.form_field {
+    margin-bottom: 20px;
+}
+
+.form_field label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.form_field input,
+.form_field select,
+.form_field textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid rgba(0,0,0,0.1);
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+.form_field input:focus,
+.form_field select:focus,
+.form_field textarea:focus {
+    outline: none;
+    border-color: var(--main_color);
+    box-shadow: 0 0 0 3px rgba(160, 90, 200, 0.1);
+}
+
+.form_field textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.type_selector {
+    display: flex;
+    gap: 10px;
+}
+
+.type_btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px;
+    background: rgba(0,0,0,0.03);
+    border: 2px solid rgba(0,0,0,0.1);
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.type_btn:hover {
+    background: rgba(160, 90, 200, 0.05);
+    border-color: var(--main_color);
+}
+
+.type_btn.active {
+    background: var(--main_color);
+    color: white;
+    border-color: var(--main_color);
+}
+
+.modal_footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 25px;
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+.cancel_btn,
+.send_btn {
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.cancel_btn {
+    background: rgba(0,0,0,0.05);
+    color: #666;
+}
+
+.cancel_btn:hover {
+    background: rgba(0,0,0,0.1);
+}
+
+.send_btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--main_color);
+    color: white;
+}
+
+.send_btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(160, 90, 200, 0.4);
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
     .communications_management {
@@ -359,5 +532,14 @@
     
     .communications_management_card_actions {
         align-self: flex-start;
+    }
+
+    .modal_content {
+        width: 95%;
+        max-height: 95vh;
+    }
+
+    .type_selector {
+        flex-direction: column;
     }
 }

@@ -48,12 +48,30 @@
     background: rgba(255,255,255,0.8);
     padding: 10px;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
     border-radius: 10px;
     border: none;
     backdrop-filter: blur(10px);
     box-shadow: var(--box-shadow);
+}
+.dash .box .mid_upper .divisions .all .card-content{
+    width: 100%;
+}
+.dash .box .mid_upper .divisions .all .card-top{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.dash .box .mid_upper .divisions .all .card-trend{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    color: rgb(2, 190, 2);
+    font-size: 14px;
+}
+.dash .box .mid_upper .divisions .all .card-trend .trend-icon{
+    font-size: 1.2rem;
 }
 .dash .box .middle {
     display: flex;
@@ -102,6 +120,8 @@
 }
 .dash .box .middle .lower .up{
     margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
 }
 .dash .box .middle .lower .down table{
     width: 100%;

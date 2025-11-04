@@ -7,6 +7,7 @@
 .teachers_management{
     transform: translateX(20vw);
     padding: 20px;
+    min-height: 90vh;
 }
 .teachers_management .up {
     margin-bottom: 20px;
@@ -254,7 +255,6 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(8px);
     display: flex;
     height: 100%;
