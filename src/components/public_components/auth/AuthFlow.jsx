@@ -410,9 +410,9 @@ export const AuthFlow = () => {
 
   const getRoleLabel = () => {
     switch (userType) {
-      case 'student': return '👨‍🎓 Student';
-      case 'teacher': return '👨‍🏫 Teacher';
-      case 'admin': return '👨‍💼 Admin';
+      case 'student': return 'Student';
+      case 'teacher': return 'Teacher';
+      case 'admin': return 'Admin';
       default: return 'User';
     }
   };

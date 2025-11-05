@@ -178,7 +178,6 @@ export const TeacherResources = () => {
                   <LuUpload className="icon" />
                   <span>Upload File</span>
                 </button>
-                <button className="filter_button">Filter</button>
               </div>
             </div>
             <div className="documents_list">
