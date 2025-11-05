@@ -1,10 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import './AuthFlow.css';
 import { FaUser, FaLock, FaEnvelope, FaPhone, FaIdCard, FaSchool, FaArrowRight, FaArrowLeft, FaCheckCircle, FaCamera } from 'react-icons/fa';
 import { MdPerson } from 'react-icons/md';
+import {
+  registerPersonalInfo,
+  verifyOtp,
+  confirmPassword,
+  login,
+  clearError,
+  clearSuccess,
+  selectLoading,
+  selectError,
+  selectSuccessMessage,
+  selectIsAuthenticated,
+  selectUser,
+  selectRole,
+  selectRegistrationStep,
+} from '../../../features/auth/authSlice';
 
 export const AuthFlow = () => {
+  // Redux hooks
+  const dispatch = useDispatch();
+  const loading = useSelector(selectLoading);
+  const error = useSelector(selectError);
+  const successMessage = useSelector(selectSuccessMessage);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const user = useSelector(selectUser);
+  const role = useSelector(selectRole);
+  const registrationStep = useSelector(selectRegistrationStep);
+
+  // Local state
   const [isLogin, setIsLogin] = useState(true);
   const [currentStep, setCurrentStep] = useState(0);
   const [userType, setUserType] = useState('');
@@ -18,7 +45,7 @@ export const AuthFlow = () => {
     department: '',
     guardianName: '',
     guardianPhone: '',
-    verificationCode: ['', '', '', '', '', ''],
+    verificationCode: ['', '', '', ''],
     password: '',
     confirmPassword: ''
   });
@@ -97,7 +124,7 @@ export const AuthFlow = () => {
       setFormData({ ...formData, verificationCode: newCode });
       
       // Auto-focus next input
-      if (value && index < 5) {
+      if (value && index < 3) {
         document.getElementById(`code-${index + 1}`)?.focus();
       }
     }
@@ -156,21 +183,222 @@ export const AuthFlow = () => {
 
   const steps = getSteps();
 
-  const handleNext = () => {
-    if (currentStep < steps.length - 1) {
-      setCurrentStep(currentStep + 1);
-    } else {
-      // Submit form
-      if (isLogin) {
-        const userId = formData.userId.toUpperCase();
-        if (userId.startsWith('STU')) navigate('/student/dashboard');
-        else if (userId.startsWith('TR')) navigate('/teacher/dashboard');
-        else if (userId.startsWith('AD')) navigate('/admin/dashboard');
-      } else {
-        alert('Registration successful!');
+  // Clear errors when switching between login/register
+  useEffect(() => {
+    dispatch(clearError());
+    dispatch(clearSuccess());
+  }, [isLogin, dispatch]);
+
+  // Redirect if already authenticated
+  useEffect(() => {
+     console.log('isAuthenticated', isAuthenticated);
+     console.log('user', user);
+     console.log('role', role);
+    if (isAuthenticated && user) {
+      if (role === 'student') navigate('/student/dashboard');
+      else if (role === 'teacher') navigate('/teacher/dashboard');
+      else if (role === 'admin') navigate('/admin/dashboard');
+    }
+  }, [isAuthenticated, user, role, navigate]);
+
+  // Handle successful registration step progression
+  useEffect(() => {
+    if (registrationStep === 'otp_verification' && !isLogin) {
+      // Move to verification step after successful personal info registration
+      const verificationStepIndex = steps.findIndex(s => s.title === 'Verification');
+      if (verificationStepIndex !== -1) {
+        setCurrentStep(verificationStepIndex);
+      }
+    }
+  }, [registrationStep, isLogin, steps]);
+
+  // Show error messages as popup alerts
+  useEffect(() => {
+    if (error && error.msg) {
+      alert(error.msg);
+      // Clear error after showing
+      dispatch(clearError());
+    }
+  }, [error, dispatch]);
+
+  // Show success messages as popup alerts
+  useEffect(() => {
+    if (successMessage) {
+      alert(successMessage);
+      // Clear success message after showing
+      dispatch(clearSuccess());
+    }
+  }, [successMessage, dispatch]);
+
+  const handleNext = async () => {
+    const stepTitle = steps[currentStep]?.title;
+
+    // Clear previous errors
+    dispatch(clearError());
+
+    // LOGIN FLOW
+    if (isLogin) {
+      if (currentStep === 0) {
+        // Email step - just move to next
+        if (!formData.email) {
+          alert('Please enter your email');
+          return;
+        }
+        setCurrentStep(currentStep + 1);
+      } else if (currentStep === 1) {
+        // Password step - Call login API
+        if (!formData.password) {
+          alert('Please enter your password');
+          return;
+        }
+
+        const result = await dispatch(login({
+          email: formData.email,
+          password: formData.password
+        }));
+
+        if (login.fulfilled.match(result)) {
+          // Login successful - redirect handled by useEffect
+          console.log('Login successful');
+        }
+        // Error will be displayed from Redux state
+      }
+      return;
+    }
+
+    // REGISTRATION FLOW
+    switch (stepTitle) {
+      case 'User ID':
+        // Step 0 - Validate User ID
+        if (!formData.userId || !userType) {
+          alert('Please enter a valid user ID');
+          return;
+        }
+        setCurrentStep(currentStep + 1);
+        break;
+
+      case 'Personal Info':
+        // Step 1 - Call registerPersonalInfo API
+        if (!formData.fullName || !formData.email || !formData.phone) {
+          alert('Please fill all required fields');
+          return;
+        }
+
+        const result = dispatch(registerPersonalInfo({
+          code: formData.userId,
+          name: formData.fullName,
+          email: formData.email,
+          tel: formData.phone
+        }));
+
+        if (registerPersonalInfo.fulfilled.match(result)) {
+          // Success - OTP sent, will move to verification step via useEffect
+          console.log('Personal info registered, OTP sent');
+        }
+        // Error will be displayed from Redux state
+        break;
+
+      case 'Guardian Info':
+        // Step 2 (Students only) - Just validate and move forward
+        if (!formData.guardianName || !formData.guardianPhone) {
+          alert('Please fill guardian information');
+          return;
+        }
+        setCurrentStep(currentStep + 1);
+        break;
+
+      case 'Verification':
+        // Step 3 - Call verifyOtp API
+        const otpCode = formData.verificationCode.join('');
+        if (otpCode.length !== 4) {
+          alert('Please enter the complete 4-digit verification code');
+          return;
+        }
+
+        const verifyResult = await dispatch(verifyOtp({ otp: otpCode }));
+
+        if (verifyOtp.fulfilled.match(verifyResult)) {
+          // OTP verified successfully
+          console.log('OTP verified successfully');
+          setCurrentStep(currentStep + 1);
+        }
+        // Error will be displayed from Redux state
+        break;
+
+      case 'Password':
+        // Step 4 - Call confirmPassword API
+        if (!formData.password || !formData.confirmPassword) {
+          alert('Please enter and confirm your password');
+          return;
+        }
+        if (formData.password !== formData.confirmPassword) {
+          alert('Passwords do not match');
+          return;
+        }
+        if (formData.password.length < 6) {
+          alert('Password must be at least 6 characters');
+          return;
+        }
+
+        const passwordResult = await dispatch(confirmPassword({
+          password: formData.password,
+          cPassword: formData.confirmPassword
+        }));
+
+        if (confirmPassword.fulfilled.match(passwordResult)) {
+          // Password confirmed successfully - account created
+          console.log('Password confirmed, account created');
+          
+          // Show success message and redirect to login
+          setTimeout(() => {
+            setIsLogin(true);
+            setCurrentStep(0);
+            // Reset form but keep email for login
+            setFormData({
+              userId: '',
+              fullName: '',
+              email: formData.email,
+              phone: '',
+              school: '',
+              department: '',
+              guardianName: '',
+              guardianPhone: '',
+              verificationCode: ['', '', '', ''],
+              password: '',
+              confirmPassword: ''
+            });
+          }, 500);
+        }
+        // Error will be displayed from Redux state
+        break;
+
+      case 'Profile Photo':
+        // Final step - Complete registration
+        alert('Registration completed successfully! Please login.');
         setIsLogin(true);
         setCurrentStep(0);
-      }
+        // Reset form
+        setFormData({
+          userId: '',
+          fullName: '',
+          email: '',
+          phone: '',
+          school: '',
+          department: '',
+          guardianName: '',
+          guardianPhone: '',
+          verificationCode: ['', '', '', ''],
+          password: '',
+          confirmPassword: ''
+        });
+        break;
+
+      default:
+        // Default behavior - move to next step
+        if (currentStep < steps.length - 1) {
+          setCurrentStep(currentStep + 1);
+        }
+        break;
     }
   };
 
@@ -380,7 +608,7 @@ export const AuthFlow = () => {
         return (
           <div className="step-content">
             <h3>Verify Your Account</h3>
-            <p className="step-desc">Enter the 6-digit code sent to your email and phone</p>
+            <p className="step-desc">Enter the 4-digit code sent to your email</p>
             <div className="verification-section">
               <p className="verify-label">Email: {formData.email}</p>
               <div className="code-inputs">
@@ -545,9 +773,15 @@ export const AuthFlow = () => {
                   <FaArrowLeft /> Back
                 </button>
               )}
-              <button onClick={handleNext} className="btn-next">
-                {currentStep === steps.length - 1 ? (isLogin ? 'Login' : 'Complete') : 'Next'}
-                <FaArrowRight />
+              <button onClick={handleNext} className="btn-next" disabled={loading}>
+                {loading ? (
+                  <span>Loading...</span>
+                ) : (
+                  <>
+                    {currentStep === steps.length - 1 ? (isLogin ? 'Login' : 'Complete') : 'Next'}
+                    <FaArrowRight />
+                  </>
+                )}
               </button>
             </div>
           </div>

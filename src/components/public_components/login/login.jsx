@@ -15,6 +15,9 @@ export const Login = () => {
   const [slide, setSlide] = useState(false);
   const navigate = useNavigate();
 
+  const [email, setEmail] = useState("");
+  const [tel, setTel] = useState("");
+
   const steps = [
     "School Name",
     "Contact Details",
@@ -25,7 +28,8 @@ export const Login = () => {
 
   const isStepCompleted = (stepIndex) => completedSteps.includes(stepIndex);
 
-  const handleCompleteStep = (stepIndex) => {
+  const handleCompleteStep = (stepIndex) => { 
+     (e) => setEmail(e.target.value);
     if (!completedSteps.includes(stepIndex)) {
       setCompletedSteps([...completedSteps, stepIndex]);
     }
@@ -226,7 +230,12 @@ export const Login = () => {
                             <div className="inputs">
                               <div className="text_area">
                                 <MdEmail className='icon'/>
-                                <input required type="email" placeholder='Please write school email...' onChange={() => handleCompleteStep(index)} />
+                                <input 
+                                required
+                                type="email" 
+                                placeholder='Please write school email...' 
+                                value={email}
+                                onChange={() => handleCompleteStep(index)} />
                               </div>
                               <div className="text_area">
                                 <MdPhone className='icon'/>
