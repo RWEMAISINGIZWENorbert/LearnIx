@@ -4,7 +4,26 @@ import './SchoolRegistration.css';
 import { FaSchool, FaLock, FaEnvelope, FaPhone, FaMapMarkerAlt, FaArrowRight, FaArrowLeft, FaCheckCircle, FaCamera, FaIdCard, FaGlobe, FaUsers } from 'react-icons/fa';
 import { MdBusiness } from 'react-icons/md';
 
+
+import { useDispatch, useSelector } from 'react-redux';
+import { 
+  registerSchoolNameAndType,
+  nextStep,
+  selectCurrentStep,
+  selectIsLoading,
+  selectError,
+  selectIsSuccess
+} from '../../../features/school/schoolSlice';
+
 export const SchoolRegistration = () => {
+  
+const dispatch = useDispatch();
+const currentSteprSelector = useSelector(selectCurrentStep);
+const isLoading = useSelector(selectIsLoading);
+const error = useSelector(selectError);
+const isSuccess = useSelector(selectIsSuccess);
+ 
+
   const [currentStep, setCurrentStep] = useState(0);
   const [profileImage, setProfileImage] = useState(null);
   const [formData, setFormData] = useState({
@@ -66,7 +85,30 @@ export const SchoolRegistration = () => {
     { title: 'School Logo', icon: <FaCamera /> }
   ];
 
-  const handleNext = () => {
+  const handleNext =  () => {
+    if(currentStep == 0){ 
+      try {
+      const resultAction =  dispatch(
+        registerSchoolNameAndType({
+          name: formData.schoolName,
+          type: formData.schoolType
+        })
+      );
+
+      if (registerSchoolNameAndType.fulfilled.match(resultAction)) {
+        alert('School registered successfully! Proceeding to the next step.');
+        dispatch(nextStep()); // Move to next step
+      } else if (registerSchoolNameAndType.rejected.match(resultAction)) {
+        // Error is already handled by the slice, but you can show a specific message
+        const errorMsg = resultAction.payload?.msg || 'Failed to register school';
+        alert(`Error: ${errorMsg}`);
+      }
+    } catch (err) {
+      console.error('Registration error:', err);
+      alert('An unexpected error occurred. Please try again.');
+    }
+    }
+    else{
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
@@ -74,6 +116,8 @@ export const SchoolRegistration = () => {
       alert('School registration successful! Your admin ID (AD001) has been sent to your email.');
       navigate('/login');
     }
+  }
+    
   };
 
   const handleBack = () => {
@@ -81,6 +125,7 @@ export const SchoolRegistration = () => {
       setCurrentStep(currentStep - 1);
     }
   };
+
 
   const renderStepContent = () => {
     const stepTitle = steps[currentStep]?.title;
@@ -388,8 +433,14 @@ export const SchoolRegistration = () => {
                 </button>
               )}
               <button onClick={handleNext} className="btn-next">
-                {currentStep === steps.length - 1 ? 'Complete Registration' : 'Next'}
-                <FaArrowRight />
+                {isLoading ? (
+                  <span>Loading...</span>
+                ) : (
+                  <>
+                  {currentStep === steps.length - 1 ? 'Complete Registration' : 'Next'}
+                  <FaArrowRight />
+                  </>
+                )}
               </button>
             </div>
           </div>
