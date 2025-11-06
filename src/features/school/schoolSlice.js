@@ -37,78 +37,390 @@ const initialState = {
 
 // Async Thunks
 export const registerSchoolNameAndType = createAsyncThunk(
-  'school/registerNameAndType',
+  'school/registerName',
   async ({ name, type }, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/school/register/name-type`, { name, type });
-      return response.data;
+      // Client-side validation
+      if (!name || !type) {
+        return rejectWithValue({
+          msg: 'Please provide both school name and type',
+          field: !name ? 'name' : 'type'
+        });
+      }
+
+      if (name.length < 3) {
+        return rejectWithValue({
+          msg: 'School name must be at least 3 characters long',
+          field: 'name'
+        });
+      }
+
+      const response = await axios.post(
+        `${API_BASE_URL}/schools/registerName`, 
+        { name, type },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          timeout: 10000 // 10 seconds timeout
+        }
+      );
+
+      if (response.status === 201 || response.status === 200) {
+         console.log(`The SChool Id ${response.data.data._id  }`);
+        localStorage.setItem('schoolId', response.data.data._id);
+        return {
+          status: response.data.status,
+          msg: response.data.msg,
+          data: response.data.data
+        };
+      }
+
+      return rejectWithValue({
+        msg: response.data?.msg || 'Failed to register school'
+      });
+
     } catch (error) {
-      return rejectWithValue(error.response?.data || 'Failed to register school');
+      console.error('School Registration Error:', error);
+      
+      if (error.response) {
+        return rejectWithValue({
+          msg: error.response.data?.msg || 'Registration failed',
+          status: error.response.status,
+          field: error.response.data?.field
+        });
+      } else if (error.request) {
+        return rejectWithValue({
+          msg: 'Network error. Please check your connection and try again.'
+        });
+      } else {
+        return rejectWithValue({
+          msg: error.message || 'An unexpected error occurred'
+        });
+      }
     }
   }
 );
 
 export const registerSchoolLocation = createAsyncThunk(
   'school/registerLocation',
-  async ({ schoolId, location }, { rejectWithValue }) => {
+  async ({ location }, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/school/register/location`, {
-        schoolId,
-        ...location
+      // Client-side validation
+       var schoolId = localStorage.getItem('schoolId');
+      if (!schoolId) {
+        return rejectWithValue({
+          msg: 'Invalid school reference. Please start the registration process again.',
+          field: 'schoolId'
+        });
+      }
+
+      const { country, province, district, sector } = location;
+      
+      if (!country || !province || !district || !sector) {
+        const missingField = !country ? 'country' : 
+                           !province ? 'province' :
+                           !district ? 'district' : 'sector';
+        
+        return rejectWithValue({
+          msg: 'Please fill in all location fields',
+          field: missingField
+        });
+      }
+
+      const response = await axios.post(
+        `${API_BASE_URL}/schools/registerLocation`,
+        { schoolId, ...location },
+        {
+          headers: { 'Content-Type': 'application/json' },
+          timeout: 10000
+        }
+      );
+
+      if (response.status === 200 || response.status === 201) {
+        return {
+          status: response.data.status,
+          msg: response.data.msg,
+          data: response.data.data
+        };
+      }
+
+      return rejectWithValue({
+        msg: response.data?.msg || 'Failed to save location information'
       });
-      return response.data;
+
     } catch (error) {
-      return rejectWithValue(error.response?.data || 'Failed to register location');
+      console.error('Location Registration Error:', error);
+      
+      if (error.response) {
+        return rejectWithValue({
+          msg: error.response.data?.msg || 'Failed to save location',
+          status: error.response.status,
+          field: error.response.data?.field
+        });
+      } else if (error.request) {
+        return rejectWithValue({
+          msg: 'Network error. Please check your connection.'
+        });
+      } else {
+        return rejectWithValue({
+          msg: error.message || 'Failed to process location information'
+        });
+      }
     }
   }
 );
 
 export const registerEmailAndTel = createAsyncThunk(
-  'school/registerEmailAndTel',
-  async ({ schoolId, email, tel }, { rejectWithValue }) => {
+  'school/registerEmail',
+  async ({email, tel }, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/school/register/contact`, {
-        schoolId,
-        email,
-        tel
+      // Client-side validation
+      var schoolId = localStorage.getItem('schoolId');
+      if (!schoolId) {
+        return rejectWithValue({
+          msg: 'Invalid school reference. Please start the registration process again.',
+          field: 'schoolId'
+        });
+      }
+
+      if (!email || !tel) {
+        return rejectWithValue({
+          msg: 'Please provide both email and telephone number',
+          field: !email ? 'email' : 'tel'
+        });
+      }
+
+      // Basic email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        return rejectWithValue({
+          msg: 'Please enter a valid email address',
+          field: 'email'
+        });
+      }
+
+      // Basic phone number validation (adjust regex as needed)
+      const phoneRegex = /^[0-9\-\+]{9,15}$/;
+      if (!phoneRegex.test(tel)) {
+        return rejectWithValue({
+          msg: 'Please enter a valid phone number',
+          field: 'tel'
+        });
+      }
+
+      const response = await axios.post(
+        `${API_BASE_URL}/school/register/contact`,
+        { schoolId, email, tel },
+        {
+          headers: { 'Content-Type': 'application/json' },
+          timeout: 10000
+        }
+      );
+
+      if (response.status === 200 || response.status === 201) {
+        // Store email in localStorage for verification step
+        localStorage.setItem('schoolEmail', email);
+        
+        return {
+          status: response.data.status,
+          msg: response.data.msg,
+          data: response.data.data
+        };
+      }
+
+      return rejectWithValue({
+        msg: response.data?.msg || 'Failed to save contact information'
       });
-      return response.data;
+
     } catch (error) {
-      return rejectWithValue(error.response?.data || 'Failed to register contact info');
+      console.error('Contact Registration Error:', error);
+      
+      if (error.response) {
+        return rejectWithValue({
+          msg: error.response.data?.msg || 'Failed to save contact information',
+          status: error.response.status,
+          field: error.response.data?.field
+        });
+      } else if (error.request) {
+        return rejectWithValue({
+          msg: 'Network error. Please check your connection.'
+        });
+      } else {
+        return rejectWithValue({
+          msg: error.message || 'Failed to process contact information'
+        });
+      }
     }
   }
 );
 
 export const verifyEmailOtp = createAsyncThunk(
-  'school/verifyEmailOtp',
-  async ({ schoolId, email, otp }, { rejectWithValue }) => {
+  'school/VerifyOtp',
+  async ({  email, otp }, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/school/verify-otp`, {
-        schoolId,
-        email,
-        otp
+       var schoolId = localStorage.getItem('schoolId');
+      // Client-side validation
+      if (!schoolId) {
+        return rejectWithValue({
+          msg: 'Invalid session. Please start the registration process again.',
+          field: 'schoolId'
+        });
+      }
+
+      if (!email) {
+        return rejectWithValue({
+          msg: 'Email is required for verification',
+          field: 'email'
+        });
+      }
+
+      if (!otp || otp.length !== 6) {
+        return rejectWithValue({
+          msg: 'Please enter a valid 6-digit verification code',
+          field: 'otp'
+        });
+      }
+
+      const response = await axios.post(
+        `${API_BASE_URL}/school/verify-otp`,
+        { schoolId, email, otp },
+        {
+          headers: { 'Content-Type': 'application/json' },
+          timeout: 15000 // 15 seconds for OTP verification
+        }
+      );
+
+      if (response.status === 200) {
+        return {
+          status: response.data.status,
+          msg: response.data.msg,
+          data: response.data.data
+        };
+      }
+
+      return rejectWithValue({
+        msg: response.data?.msg || 'OTP verification failed'
       });
-      return response.data;
+
     } catch (error) {
-      return rejectWithValue(error.response?.data || 'OTP verification failed');
+      console.error('OTP Verification Error:', error);
+      
+      if (error.response) {
+        const { status, data } = error.response;
+        let errorMessage = 'Verification failed';
+        
+        if (status === 400) {
+          errorMessage = data?.msg || 'Invalid OTP. Please try again.';
+        } else if (status === 401) {
+          errorMessage = 'Verification code has expired. Please request a new one.';
+        } else if (status >= 500) {
+          errorMessage = 'Server error. Please try again later.';
+        }
+        
+        return rejectWithValue({
+          msg: errorMessage,
+          status,
+          field: data?.field || 'otp'
+        });
+      } else if (error.request) {
+        return rejectWithValue({
+          msg: 'Network error. Please check your connection.'
+        });
+      } else {
+        return rejectWithValue({
+          msg: error.message || 'Failed to verify OTP'
+        });
+      }
     }
   }
 );
 
 export const confirmSchoolPassword = createAsyncThunk(
   'school/confirmPassword',
-  async ({ schoolId, name, email, password, cPassword }, { rejectWithValue }) => {
+  async ({ name, email, password, cPassword }, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/school/confirm-password`, {
-        schoolId,
-        name,
-        email,
-        password,
-        cPassword
+      // Client-side validation
+      var schoolId = localStorage.getItem('schoolId');
+      if (!schoolId || !email) {
+        return rejectWithValue({
+          msg: 'Session expired. Please start the registration process again.',
+          field: 'session'
+        });
+      }
+
+      if (!password || !cPassword) {
+        return rejectWithValue({
+          msg: 'Please enter and confirm your password',
+          field: !password ? 'password' : 'cPassword'
+        });
+      }
+
+      if (password.length < 8) {
+        return rejectWithValue({
+          msg: 'Password must be at least 8 characters long',
+          field: 'password'
+        });
+      }
+
+      if (password !== cPassword) {
+        return rejectWithValue({
+          msg: 'Passwords do not match',
+          field: 'cPassword'
+        });
+      }
+
+      // Password strength validation (at least one uppercase, one lowercase, one number)
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+      if (!passwordRegex.test(password)) {
+        return rejectWithValue({
+          msg: 'Password must contain at least one uppercase letter, one lowercase letter, and one number',
+          field: 'password'
+        });
+      }
+
+      const response = await axios.post(
+        `${API_BASE_URL}/school/confirm-password`,
+        { schoolId, name, email, password, cPassword },
+        {
+          headers: { 'Content-Type': 'application/json' },
+          timeout: 10000
+        }
+      );
+
+      if (response.status === 200 || response.status === 201) {
+        // Clear sensitive data from localStorage
+        localStorage.removeItem('schoolEmail');
+        
+        return {
+          status: response.data.status,
+          msg: response.data.msg || 'School registration completed successfully!',
+          data: response.data.data
+        };
+      }
+
+      return rejectWithValue({
+        msg: response.data?.msg || 'Failed to complete registration'
       });
-      return response.data;
+
     } catch (error) {
-      return rejectWithValue(error.response?.data || 'Password confirmation failed');
+      console.error('Password Confirmation Error:', error);
+      
+      if (error.response) {
+        return rejectWithValue({
+          msg: error.response.data?.msg || 'Failed to complete registration',
+          status: error.response.status,
+          field: error.response.data?.field
+        });
+      } else if (error.request) {
+        return rejectWithValue({
+          msg: 'Network error. Please check your connection.'
+        });
+      } else {
+        return rejectWithValue({
+          msg: error.message || 'An error occurred during registration'
+        });
+      }
     }
   }
 );
