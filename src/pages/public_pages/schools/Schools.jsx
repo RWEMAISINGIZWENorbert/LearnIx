@@ -50,8 +50,9 @@ export const Schools = () => {
   });
 
   return (
+    <>
+    <Navbar />
     <div className='schools-page'>
-      <Navbar />
       <div className="gradient"></div>
       <div className="container">
         <div className="header">
@@ -120,5 +121,6 @@ export const Schools = () => {
         </div>
       </div>
     </div>
+  </>
   );
 };
