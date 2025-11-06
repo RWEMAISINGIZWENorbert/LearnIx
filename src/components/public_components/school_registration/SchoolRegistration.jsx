@@ -15,6 +15,7 @@ export const SchoolRegistration = () => {
     schoolAddress: '',
     city: '',
     country: '',
+    sector: '',
     website: '',
     studentCapacity: '',
     establishedYear: '',
@@ -60,6 +61,7 @@ export const SchoolRegistration = () => {
 
   const steps = [
     { title: 'School Details', icon: <FaSchool /> },
+    { title: 'Location', icon: <FaMapMarkerAlt /> },
     { title: 'Contact Info', icon: <FaPhone /> },
     { title: 'Verification', icon: <FaCheckCircle /> },
     { title: 'Password', icon: <FaLock /> },
@@ -127,6 +129,79 @@ export const SchoolRegistration = () => {
           </div>
         );
 
+      case 'Location':
+        return (
+          <div className="step-content">
+            <h3>Location Information</h3>
+            <p className="step-desc">How can we reach your school?</p>
+            <div className="form-group">
+              <label>Country</label>
+              <div className="input-wrapper">
+                <FaGlobe className="input-icon" />
+                <input
+                  type="email"
+                  name="country"
+                  value={formData.country}
+                  onChange={handleInputChange}
+                  placeholder="ex : Rwanda, Japan, South Korea,..."
+                />
+              </div>
+            </div>
+            <div className="form-group">
+              <label>State or Province</label>
+              <div className="input-wrapper">
+                <FaMapMarkerAlt className="input-icon" />
+                <input
+                  type="text"
+                  name="state"
+                  value={formData.state}
+                  onChange={handleInputChange}
+                  placeholder="State or Province"
+                />
+              </div>
+            </div>
+            <div className="form-group">
+              <label>City</label>
+              <div className="input-wrapper">
+                <FaMapMarkerAlt className="input-icon" />
+                <input
+                  type="text"
+                  name="city"
+                  value={formData.city}
+                  onChange={handleInputChange}
+                  placeholder="City"
+                />
+              </div>
+            </div>
+            <div className="form-group">
+              <label>Sector</label>
+              <div className="input-wrapper">
+                <FaMapMarkerAlt className="input-icon" />
+                <input
+                  type="text"
+                  name="sector"
+                  value={formData.sector}
+                  onChange={handleInputChange}
+                  placeholder="Sector"
+                />
+              </div>
+            </div>
+            <div className="form-group">
+              <label>Website (Optional)</label>
+              <div className="input-wrapper">
+                <FaGlobe className="input-icon" />
+                <input
+                  type="url"
+                  name="website"
+                  value={formData.website}
+                  onChange={handleInputChange}
+                  placeholder="https://www.yourschool.com"
+                />
+              </div>
+            </div>
+          </div>
+        );
+
       case 'Contact Info':
         return (
           <div className="step-content">
@@ -155,45 +230,6 @@ export const SchoolRegistration = () => {
                   value={formData.schoolPhone}
                   onChange={handleInputChange}
                   placeholder="+250 788 123 456"
-                />
-              </div>
-            </div>
-            <div className="form-group">
-              <label>City</label>
-              <div className="input-wrapper">
-                <FaMapMarkerAlt className="input-icon" />
-                <input
-                  type="text"
-                  name="city"
-                  value={formData.city}
-                  onChange={handleInputChange}
-                  placeholder="City"
-                />
-              </div>
-            </div>
-            <div className="form-group">
-              <label>Province</label>
-              <div className="input-wrapper">
-                <FaMapMarkerAlt className="input-icon" />
-                <input
-                  type="text"
-                  name="province"
-                  value={formData.province}
-                  onChange={handleInputChange}
-                  placeholder="Province"
-                />
-              </div>
-            </div>
-            <div className="form-group">
-              <label>Website (Optional)</label>
-              <div className="input-wrapper">
-                <FaGlobe className="input-icon" />
-                <input
-                  type="url"
-                  name="website"
-                  value={formData.website}
-                  onChange={handleInputChange}
-                  placeholder="https://www.yourschool.com"
                 />
               </div>
             </div>
