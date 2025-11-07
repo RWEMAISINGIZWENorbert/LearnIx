@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './SchoolRegistration.css';
 import { FaSchool, FaLock, FaEnvelope, FaPhone, FaMapMarkerAlt, FaArrowRight, FaArrowLeft, FaCheckCircle, FaCamera, FaIdCard, FaGlobe, FaUsers } from 'react-icons/fa';
@@ -8,75 +8,203 @@ import { MdBusiness } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { 
   registerSchoolNameAndType,
-  nextStep,
-  selectCurrentStep,
+  registerSchoolLocation,
+  registerEmailAndTel,
+  verifyEmailOtp,
+  confirmSchoolPassword,
+  selectCurrentStep as selectSchoolStep,
   selectIsLoading,
   selectError,
-  selectIsSuccess
+  selectIsSuccess,
+  nextStep,
+  prevStep,
+  uploadSchoolLogo,
+  updateFormData
 } from '../../../features/school/schoolSlice';
 
 export const SchoolRegistration = () => {
+   
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   
-const dispatch = useDispatch();
-const currentSteprSelector = useSelector(selectCurrentStep);
-const isLoading = useSelector(selectIsLoading);
-const error = useSelector(selectError);
-const isSuccess = useSelector(selectIsSuccess);
- 
-
-  const [currentStep, setCurrentStep] = useState(0);
+  // Selectors from Redux
+  const currentStep = useSelector(selectSchoolStep);
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
+  const isSuccess = useSelector(selectIsSuccess);
   const [profileImage, setProfileImage] = useState(null);
+
+   
+  // const [formData, setFormData] = useState({
+  //   schoolName: '',
+  //   schoolType: '',
+  //   schoolEmail: '',
+  //   schoolPhone: '',
+  //   schoolAddress: '',
+  //   city: '',
+  //   country: '',
+  //   sector: '',
+  //   website: '',
+  //   studentCapacity: '',
+  //   establishedYear: '',
+  //   adminName: '',
+  //   adminEmail: '',
+  //   adminPhone: '',
+  //   verificationCode: ['', '', '', '', '', ''],
+  //   password: '',
+  //   confirmPassword: ''
+  // });
+
   const [formData, setFormData] = useState({
+    // Step 1: School Info
     schoolName: '',
     schoolType: '',
-    schoolEmail: '',
-    schoolPhone: '',
-    schoolAddress: '',
-    city: '',
-    country: '',
-    sector: '',
-    website: '',
-    studentCapacity: '',
-    establishedYear: '',
-    adminName: '',
-    adminEmail: '',
-    adminPhone: '',
-    verificationCode: ['', '', '', '', '', ''],
+    // Step 2: Location
+    location: {
+      country: '',
+      province: '',
+      district: '',
+      sector: ''
+    },
+    // Step 3: Contact
+    contact: {
+      email: '',
+      tel: ''
+    },
+    // Step 4: Verification
+    otp: '',
+    verificationCode: ['', '', '', ''], // 4-digit verification code
+    // Step 5: Password
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    // Step 6: Logo
+    logo: null
   });
-  const navigate = useNavigate();
 
-  const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+   const [localError, setLocalError] = useState(null);
+
+  // Handle navigation on success
+   useEffect(() => {
+    if (isSuccess && currentStep < steps.length - 1) {
+      dispatch(nextStep());
+    } else if (isSuccess && currentStep === steps.length - 1) {
+      // Final step completed
+      alert('School registration successful! Your admin ID has been sent to your email.');
+      navigate('/login');
+    }
+  }, [isSuccess, currentStep, dispatch, navigate]);
+
+  // Handle errors
+  useEffect(() => {
+    if (error) {
+      setLocalError(error.msg || 'An error occurred. Please try again.');
+      alert(error.msg || 'An error occurred. Please try again.');
+    }
+  }, [error]);
+
+
+
+
+  // const handleInputChange = (e) => {
+  //   setFormData({
+  //     ...formData,
+  //     [e.target.name]: e.target.value
+  //   });
+  // };
+
+   
+    const handleInputChange = (e) => {
+    const { name, value } = e.target;
+      console.log(`The Handle Input Change ${name} ${value}`);
+    // Handle nested state for location and contact
+    if (name.startsWith('location')) {
+      const field = name.split('.')[1];
+      setFormData(prev => ({
+        ...prev,
+        location: {
+          ...prev.location,
+          [field]: value
+        }
+      }));
+    } else if (name.startsWith('contact')) {
+      const field = name.split('.')[1];
+      setFormData(prev => ({
+        ...prev,
+        contact: {
+          ...prev.contact,
+          [field]: value
+        }
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
+    
+    // Clear error when user types
+    if (localError) setLocalError(null);
   };
 
-  const handleCodeChange = (index, value) => {
-    if (value.length <= 1) {
+ const handleCodeChange = (index, value) => {
+    if (/^\d?$/.test(value) && value.length <= 1) {
+       console.log(`The Value There I have ${value}`);
       const newCode = [...formData.verificationCode];
       newCode[index] = value;
-      setFormData({ ...formData, verificationCode: newCode });
       
-      // Auto-focus next input
-      if (value && index < 5) {
+      setFormData(prev => ({
+        ...prev,
+        verificationCode: newCode,
+        otp: newCode.join('') // Also update the otp string
+      }));
+      
+      // Auto-focus next input if a digit was entered
+      if (value && index < 3) {
         document.getElementById(`code-${index + 1}`)?.focus();
       }
     }
-  };
+  }
 
+  // const handleImageUpload = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setProfileImage(reader.result);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
+   
   const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfileImage(reader.result);
-      };
-      reader.readAsDataURL(file);
+  const file = e.target.files[0];
+  if (file) {
+     console.log(`The File Loaded There ${file}`);
+    // Validate file type
+    if (!file.type.match('image/.*')) {
+      alert('Please upload a valid image file');
+      setLocalError('Please upload a valid image file');
+      return;
     }
-  };
+
+    // Validate file size (e.g., 2MB max)
+    if (file.size > 2 * 1024 * 1024) {
+      alert('Image size should be less than 2MB');
+      setLocalError('Image size should be less than 2MB');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setFormData(prev => ({
+        ...prev,
+        logo: reader.result  // This will be a base64 string of the image
+      }));
+    };
+    reader.readAsDataURL(file);
+  }
+};
+
 
   const steps = [
     { title: 'School Details', icon: <FaSchool /> },
@@ -87,44 +215,167 @@ const isSuccess = useSelector(selectIsSuccess);
     { title: 'School Logo', icon: <FaCamera /> }
   ];
 
-  const handleNext =  () => {
-    if(currentStep == 0){ 
-      try {
-      const resultAction =  dispatch(
-        registerSchoolNameAndType({
-          name: formData.schoolName,
-          type: formData.schoolType
-        })
-      );
+  // const handleNext =  () => {
+  //   if(currentStep == 0){ 
+  //     try {
+  //     const resultAction =  dispatch(
+  //       registerSchoolNameAndType({
+  //         name: formData.schoolName,
+  //         type: formData.schoolType
+  //       })
+  //     );
 
-      if (registerSchoolNameAndType.fulfilled.match(resultAction)) {
-        alert('School registered successfully! Proceeding to the next step.');
-        dispatch(nextStep()); // Move to next step
-      } else if (registerSchoolNameAndType.rejected.match(resultAction)) {
-        // Error is already handled by the slice, but you can show a specific message
-        const errorMsg = resultAction.payload?.msg || 'Failed to register school';
-        alert(`Error: ${errorMsg}`);
-      }
-    } catch (err) {
-      console.error('Registration error:', err);
-      alert('An unexpected error occurred. Please try again.');
-    }
-    }
-    else{
-    if (currentStep < steps.length - 1) {
-      setCurrentStep(currentStep + 1);
-    } else {
-      // Submit form
-      alert('School registration successful! Your admin ID (AD001) has been sent to your email.');
-      navigate('/login');
-    }
-  }
+  //     if (registerSchoolNameAndType.fulfilled.match(resultAction)) {
+  //       alert('School registered successfully! Proceeding to the next step.');
+  //       dispatch(nextStep()); // Move to next step
+  //     } else if (registerSchoolNameAndType.rejected.match(resultAction)) {
+  //       // Error is already handled by the slice, but you can show a specific message
+  //       const errorMsg = resultAction.payload?.msg || 'Failed to register school';
+  //       alert(`Error: ${errorMsg}`);
+  //     }
+  //   } catch (err) {
+  //     console.error('Registration error:', err);
+  //     alert('An unexpected error occurred. Please try again.');
+  //   }
+  //   }
+  //   else{
+  //   if (currentStep < steps.length - 1) {
+  //     setCurrentStep(currentStep + 1);
+  //   } else {
+  //     // Submit form
+  //     alert('School registration successful! Your admin ID (AD001) has been sent to your email.');
+  //     navigate('/login');
+  //   }
+  // }
     
+  // };
+
+   
+  const handleSubmitStep = async () => {
+    try {
+      setLocalError(null);
+       console.log(`Chek The Current Step ${currentStep}`);
+       console.log(`Check The Form Data ${formData}`);
+      switch (currentStep) {
+        case 0: // School Details
+          if (!formData.schoolName || !formData.schoolType) {
+            setLocalError('Please fill in all required fields');
+            alert('Please fill in all required fields');
+            return;
+          }
+          await dispatch(registerSchoolNameAndType({
+            name: formData.schoolName,
+            type: formData.schoolType
+          })).unwrap();
+          break;
+
+        case 1: // Location
+          if (!formData.location.country || !formData.location.province) {
+            alert('Please provide location details');
+            setLocalError('Please provide location details');
+            alert('Please provide location details');
+            return;
+          }
+          
+          await dispatch(registerSchoolLocation({
+            // schoolId: /* get from Redux store if needed */,
+            ...formData.location
+          })).unwrap();
+          break;
+
+        case 2: // Contact Info
+          if (!formData.contact.email || !formData.contact.tel) {
+            setLocalError('Please provide all contact information');
+            alert('Please provide all contact information');
+            return;
+          }
+          await dispatch(registerEmailAndTel({
+            // schoolId: /* get from Redux store if needed */
+            ...formData.contact
+          })).unwrap();
+          break;
+
+        case 3: // Verification
+          if (formData.otp.length !== 4) {
+            setLocalError('Please enter the 4-digit verification code');
+            alert('Please enter the 4-digit verification code');
+            return;
+          }
+          await dispatch(verifyEmailOtp({
+            // schoolId: /* get from Redux store if needed */,
+            email: formData.contact.email,
+            otp: formData.verificationCode.join('') // Join array into a single string without commas
+          })).unwrap();
+          break;
+
+        case 4: // Password
+          if (formData.password !== formData.confirmPassword) {
+            setLocalError('Passwords do not match');
+            alert('Passwords do not match');
+            return;
+          }
+          if (formData.password.length < 8) {
+            setLocalError('Password must be at least 8 characters long');
+            alert('Password must be at least 8 characters long');
+            return;
+          }
+          await dispatch(confirmSchoolPassword({
+            // schoolId: /* get from Redux store if needed */,
+            name: formData.schoolName,
+            email: formData.contact.email,
+            password: formData.password,
+            cPassword: formData.confirmPassword
+          })).unwrap();
+          break;
+
+        case 5: // Logo (optional)
+          // Handle logo upload if needed
+          if (formData.logo) {
+          const schoolId = localStorage.getItem('schoolId');
+          if (!schoolId) {
+            throw new Error('School ID not found. Please start the registration process again.');
+          }
+          
+          // Convert base64 to file object
+          const file = await fetch(formData.logo)
+            .then(res => res.blob())
+            .then(blob => {
+              const file = new File([blob], 'school-logo.jpg', { type: 'image/jpeg' });
+              return file;
+            });
+
+          await dispatch(uploadSchoolLogo({ 
+            schoolId, 
+            logo: file 
+          })).unwrap();
+        }
+        // Proceed to next step even if no logo was uploaded
+        dispatch(nextStep());
+        break;
+
+        default:
+          break;
+      }
+    } catch (error) { 
+       alert(`Error Occured, ${error}`);
+      console.error('Step submission error:', error);
+      // Error is already handled by the Redux slice
+    }
+  };
+
+  const handleNext = () => {
+    console.log(`[HandleNext] Check The Current Step ${currentStep}`);
+    if (currentStep < steps.length - 1) {
+      handleSubmitStep();
+    } else {
+      // Handle final submission
+      handleSubmitStep();
+    }
   };
 
   const handleBack = () => {
     if (currentStep > 0) {
-      setCurrentStep(currentStep - 1);
+      dispatch(prevStep());
     }
   };
 
@@ -145,7 +396,7 @@ const isSuccess = useSelector(selectIsSuccess);
                 <input
                   type="text"
                   name="schoolName"
-                  value={formData.schoolName}
+                  value={formData.schoolName || ''}
                   onChange={handleInputChange}
                   placeholder="Enter your school name"
                   autoFocus
@@ -158,7 +409,7 @@ const isSuccess = useSelector(selectIsSuccess);
                 <MdBusiness className="input-icon" />
                 <select
                   name="schoolType"
-                  value={formData.schoolType}
+                  value={formData.schoolType || ''}
                   onChange={handleInputChange}
                 >
                   <option value="" hidden>Select school type</option>
@@ -185,8 +436,8 @@ const isSuccess = useSelector(selectIsSuccess);
                 <FaGlobe className="input-icon" />
                 <input
                   type="email"
-                  name="country"
-                  value={formData.country}
+                  name="location.country"
+                  value={formData.location?.country || ''}
                   onChange={handleInputChange}
                   placeholder="ex : Rwanda, Japan, South Korea,..."
                 />
@@ -198,8 +449,8 @@ const isSuccess = useSelector(selectIsSuccess);
                 <FaMapMarkerAlt className="input-icon" />
                 <input
                   type="text"
-                  name="state"
-                  value={formData.state}
+                  name="location.province"
+                  value={formData.location?.province || ''}
                   onChange={handleInputChange}
                   placeholder="State or Province"
                 />
@@ -211,8 +462,8 @@ const isSuccess = useSelector(selectIsSuccess);
                 <FaMapMarkerAlt className="input-icon" />
                 <input
                   type="text"
-                  name="city"
-                  value={formData.city}
+                  name="location.district"
+                  value={formData.location?.district || ''}
                   onChange={handleInputChange}
                   placeholder="City"
                 />
@@ -224,8 +475,8 @@ const isSuccess = useSelector(selectIsSuccess);
                 <FaMapMarkerAlt className="input-icon" />
                 <input
                   type="text"
-                  name="sector"
-                  value={formData.sector}
+                  name="location.sector"
+                  value={formData.location?.sector || ''}
                   onChange={handleInputChange}
                   placeholder="Sector"
                 />
@@ -258,8 +509,8 @@ const isSuccess = useSelector(selectIsSuccess);
                 <FaEnvelope className="input-icon" />
                 <input
                   type="email"
-                  name="schoolEmail"
-                  value={formData.schoolEmail}
+                  name="contact.email"
+                  value={formData.contact?.email || ''}
                   onChange={handleInputChange}
                   placeholder="school@example.com"
                 />
@@ -271,8 +522,8 @@ const isSuccess = useSelector(selectIsSuccess);
                 <FaPhone className="input-icon" />
                 <input
                   type="tel"
-                  name="schoolPhone"
-                  value={formData.schoolPhone}
+                  name="contact.tel"
+                  value={formData.contact?.tel || ''}
                   onChange={handleInputChange}
                   placeholder="+250 788 123 456"
                 />
@@ -357,8 +608,8 @@ const isSuccess = useSelector(selectIsSuccess);
             <p className="step-desc">Upload your school logo (optional)</p>
             <div className="profile-upload">
               <div className="profile-preview">
-                {profileImage ? (
-                  <img src={profileImage} alt="School Logo" />
+                {formData.logo ? (
+                  <img src={formData.logo} alt="School Logo" />
                 ) : (
                   <div className="placeholder">
                     <FaSchool />
