@@ -3,12 +3,14 @@ import authReducer from "../features/auth/authSlice"
 import schoolReducer from "../features/school/schoolSlice"
 import adminDashboardReducer from "../features/dashboard/admin/adminDashboardSlice"
 import studentsReducer from "../features/students/studentsSlice"
+import teachersReducer from "../features/teachers/teachersSlice"
  export const store = configureStore({
      reducer: {
         auth: authReducer,
         school: schoolReducer,
         adminDashboard: adminDashboardReducer,
         students: studentsReducer,
+        teachers: teachersReducer,
      }
  })
 

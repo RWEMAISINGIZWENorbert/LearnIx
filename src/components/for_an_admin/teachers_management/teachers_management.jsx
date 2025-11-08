@@ -1,5 +1,3 @@
-
-import React, { useState } from 'react'; 
 import './teachers_management.css'
 import { FaArrowLeft } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
@@ -11,18 +9,47 @@ import { FaLongArrowAltRight,FaWhatsapp  } from "react-icons/fa";
 import { BiEdit } from "react-icons/bi";
 import { GoTrash } from "react-icons/go";
 import { MdOutlinePhone } from "react-icons/md";
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { 
+  fetchTeachers, 
+  selectAllTeachers, 
+  selectTeachersLoading, 
+  selectTeachersError 
+} from '../../../features/teachers/teachersSlice';
+import format from 'date-fns/format';
 
 export const Teachers_management = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const [teachers, setTeachers] = useState([
-    { id: "TR001", name: "SHEMA Valentin", email: "valentinshema@gmail.com", phone: "+250 795 207 569", status: "active", subjects: ["Mathematics","Mobile application development","NoSQL database development","Extra lesson 1"], created: "Mon, August 12, 2025 8:34:12 a.m", avatar: "shema.jpeg" },
-    { id: "TR002", name: "Franco Nelly", email: "franconelly@gmail.com", phone: "+250 795 207 569", status: "active", subjects: ["Physics","Python development","Chemistry"], created: "Mon, August 12, 2025 8:34:12 a.m", avatar: "franco.png" },
-    { id: "TR003", name: "RWEMA Norbert", email: "rwemanobii@gmail.com", phone: "+250 795 207 569", status: "active", subjects: ["Computer science","Basics of networking","NoSQL database development","Extra lesson 2","Extra lesson 3"], created: "Mon, August 12, 2025 8:34:12 a.m", avatar: "rwema.jpg" },
-    { id: "TR004", name: "SHEMA Valentin", email: "valentinshema@gmail.com", phone: "+250 795 207 569", status: "active", subjects: ["Mathematics","Mobile application development","NoSQL database development","Extra lesson 1"], created: "Mon, August 12, 2025 8:34:12 a.m", avatar: "shema.jpeg" },
-    { id: "TR005", name: "Franco Nelly", email: "franconelly@gmail.com", phone: "+250 795 207 569", status: "active", subjects: ["Physics","Python development","Chemistry"], created: "Mon, August 12, 2025 8:34:12 a.m", avatar: "franco.png" },
-    { id: "TR006", name: "RWEMA Norbert", email: "rwemanobii@gmail.com", phone: "+250 795 207 569", status: "active", subjects: ["Computer science","Basics of networking","NoSQL database development","Extra lesson 2","Extra lesson 3"], created: "Mon, August 12, 2025 8:34:12 a.m", avatar: "rwema.jpg" },
- ]);
+
+  // Fetching teachers from Redux
+  const teachersData = useSelector(selectAllTeachers);
+  const loading = useSelector(selectTeachersLoading);
+  const error = useSelector(selectTeachersError);
+
+//   const [teachers, setTeachers] = useState([
+//     { id: "TR001", name: "SHEMA Valentin", email: "valentinshema@gmail.com", phone: "+250 795 207 569", status: "active", subjects: ["Mathematics","Mobile application development","NoSQL database development","Extra lesson 1"], created: "Mon, August 12, 2025 8:34:12 a.m", avatar: "shema.jpeg" },
+//     { id: "TR002", name: "Franco Nelly", email: "franconelly@gmail.com", phone: "+250 795 207 569", status: "active", subjects: ["Physics","Python development","Chemistry"], created: "Mon, August 12, 2025 8:34:12 a.m", avatar: "franco.png" },
+//     { id: "TR003", name: "RWEMA Norbert", email: "rwemanobii@gmail.com", phone: "+250 795 207 569", status: "active", subjects: ["Computer science","Basics of networking","NoSQL database development","Extra lesson 2","Extra lesson 3"], created: "Mon, August 12, 2025 8:34:12 a.m", avatar: "rwema.jpg" },
+//     { id: "TR004", name: "SHEMA Valentin", email: "valentinshema@gmail.com", phone: "+250 795 207 569", status: "active", subjects: ["Mathematics","Mobile application development","NoSQL database development","Extra lesson 1"], created: "Mon, August 12, 2025 8:34:12 a.m", avatar: "shema.jpeg" },
+//     { id: "TR005", name: "Franco Nelly", email: "franconelly@gmail.com", phone: "+250 795 207 569", status: "active", subjects: ["Physics","Python development","Chemistry"], created: "Mon, August 12, 2025 8:34:12 a.m", avatar: "franco.png" },
+//     { id: "TR006", name: "RWEMA Norbert", email: "rwemanobii@gmail.com", phone: "+250 795 207 569", status: "active", subjects: ["Computer science","Basics of networking","NoSQL database development","Extra lesson 2","Extra lesson 3"], created: "Mon, August 12, 2025 8:34:12 a.m", avatar: "rwema.jpg" },
+//  ]);
+  
+  const teachers = teachersData.map(teacher => ({
+    id: teacher._id || `TR${Math.floor(100 + Math.random() * 900)}`, // Generate ID if not present
+    name: teacher.name || 'Unnamed Teacher',
+    email: teacher.email || '',
+    phone: teacher.phone || teacher.tel || '+250 795 000 000', // Default phone number
+    status: 'active', // Default status
+    subjects: teacher.subjects || ['No subjects assigned'], // Default subjects
+    created: teacher.createdAt 
+      ? format(new Date(teacher.createdAt), 'EEE, MMMM d, yyyy h:mm:ss a') 
+      : 'Unknown date',
+    avatar: teacher.profileImage || 'default-avatar.png' // Default avatar
+  }));
 
   const [modalOpen, setModalOpen] = useState(false);
   const [editingTeacher, setEditingTeacher] = useState(null);
@@ -30,6 +57,20 @@ export const Teachers_management = () => {
   const [expandedSubjects, setExpandedSubjects] = useState({}); // store which teacher's subjects are expanded
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [teacherToDelete, setTeacherToDelete] = useState(null);
+   
+  useEffect(() => {
+    dispatch(fetchTeachers());
+  }, [dispatch]);
+
+  // Loading and error states
+  if (loading) {
+    return <div>Loading teachers...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
 
   const handleAddClick = () => {
     setEditingTeacher(null);
@@ -111,7 +152,8 @@ export const Teachers_management = () => {
         </div>
 
         <div className="middle">
-          {filteredTeachers.map(teacher => (
+          {
+          filteredTeachers.length > 0 ?  filteredTeachers.map(teacher => (
             <div className="teacher" key={teacher.id}>
               <div className="up">
                 <div className="profile">
@@ -147,7 +189,9 @@ export const Teachers_management = () => {
                 <button className='archive' onClick={() => handleDelete(teacher)}><span>Delete</span><div className="icon"><GoTrash/></div></button>
               </div>
             </div>
-          ))}
+          )): (
+            <p>No teachers found</p>
+          )}
         </div>
       </div>
 
