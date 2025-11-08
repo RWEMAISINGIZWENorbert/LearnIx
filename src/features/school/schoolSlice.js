@@ -7,6 +7,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const initialState = {
   currentStep: 0,
   totalSteps: 5,
+  schools: [],
   loading: false,
   error: null,
   success: false,
@@ -37,6 +38,22 @@ const initialState = {
 };
 
 // Async Thunks
+export const fetchAllSchools = createAsyncThunk(
+  'schools/fetchAll',
+  async (_, { rejectWithValue }) => {
+    try {
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+      const response = await axios.get(`${API_BASE_URL}/schools/`);
+       console.log(`The Responde Data${response.data.data}, The Response Status ${response.status}`);
+      return response.data.data; 
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || 'Failed to fetch schools'
+      );
+    }
+  }
+);
+
 export const registerSchoolNameAndType = createAsyncThunk(
   'school/registerName',
   async ({ name, type }, { rejectWithValue }) => {
@@ -595,6 +612,20 @@ const schoolSlice = createSlice({
       .addCase(confirmSchoolPassword.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload;
+      })
+      .addCase(fetchAllSchools.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAllSchools.fulfilled, (state, action) => {
+         console.log(`The Action Payload ${action.payload}`);
+        state.loading = false;
+        state.schools = action.payload;
+        console.log(`The Action Schools ${state.schools}`);
+      })
+      .addCase(fetchAllSchools.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   }
 });
@@ -610,5 +641,10 @@ export const selectIsLoading = (state) => state.school.loading;
 export const selectError = (state) => state.school.error;
 export const selectIsSuccess = (state) => state.school.success;
 export const selectSchoolId = (state) => state.school.schoolId;
+
+
+export const selectAllSchools = (state) => state.school.schools;
+export const selectSchoolsLoading = (state) => state.school.loading;
+export const selectSchoolsError = (state) => state.school.error;
 
 export default schoolSlice.reducer;
