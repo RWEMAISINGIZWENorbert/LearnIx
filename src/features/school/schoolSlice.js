@@ -5,7 +5,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 // Initial state
 const initialState = {
-  currentStep: 1,
+  currentStep: 0,
   totalSteps: 5,
   loading: false,
   error: null,
@@ -31,7 +31,8 @@ const initialState = {
     otp: '',
     // Step 5
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    logo: ''
   }
 };
 
@@ -104,7 +105,7 @@ export const registerSchoolNameAndType = createAsyncThunk(
 
 export const registerSchoolLocation = createAsyncThunk(
   'school/registerLocation',
-  async ({ location }, { rejectWithValue }) => {
+  async (location , { rejectWithValue }) => {
     try {
       // Client-side validation
        var schoolId = localStorage.getItem('schoolId');
@@ -150,7 +151,7 @@ export const registerSchoolLocation = createAsyncThunk(
       });
 
     } catch (error) {
-      console.error('Location Registration Error:', error);
+      console.log('Location Registration Error:', error);
       
       if (error.response) {
         return rejectWithValue({
@@ -210,17 +211,16 @@ export const registerEmailAndTel = createAsyncThunk(
       }
 
       const response = await axios.post(
-        `${API_BASE_URL}/school/register/contact`,
+        `${API_BASE_URL}/schools/registerEmail`,
         { schoolId, email, tel },
         {
           headers: { 'Content-Type': 'application/json' },
           timeout: 10000
         }
       );
-
       if (response.status === 200 || response.status === 201) {
         // Store email in localStorage for verification step
-        localStorage.setItem('schoolEmail', email);
+        localStorage.setItem('email', email);
         
         return {
           status: response.data.status,
@@ -234,7 +234,7 @@ export const registerEmailAndTel = createAsyncThunk(
       });
 
     } catch (error) {
-      console.error('Contact Registration Error:', error);
+      console.log('Contact Registration Error:', error);
       
       if (error.response) {
         return rejectWithValue({
@@ -256,9 +256,10 @@ export const registerEmailAndTel = createAsyncThunk(
 );
 
 export const verifyEmailOtp = createAsyncThunk(
-  'school/VerifyOtp',
+  'schools/VerifyOtp',
   async ({  email, otp }, { rejectWithValue }) => {
     try {
+       console.log(`The OTP Code to verify ${otp}`);
        var schoolId = localStorage.getItem('schoolId');
       // Client-side validation
       if (!schoolId) {
@@ -267,15 +268,16 @@ export const verifyEmailOtp = createAsyncThunk(
           field: 'schoolId'
         });
       }
-
+      email = localStorage.getItem('schoolEmail') ?? localStorage.getItem('email');
+      console.log(`The Email Adress There ${email}`);
       if (!email) {
         return rejectWithValue({
           msg: 'Email is required for verification',
           field: 'email'
         });
       }
-
-      if (!otp || otp.length !== 6) {
+      console.log(`The OtP ${otp}`);
+      if (!otp || otp.length < 4) {
         return rejectWithValue({
           msg: 'Please enter a valid 6-digit verification code',
           field: 'otp'
@@ -283,7 +285,7 @@ export const verifyEmailOtp = createAsyncThunk(
       }
 
       const response = await axios.post(
-        `${API_BASE_URL}/school/verify-otp`,
+        `${API_BASE_URL}/schools/VerifyOtp`,
         { schoolId, email, otp },
         {
           headers: { 'Content-Type': 'application/json' },
@@ -291,7 +293,7 @@ export const verifyEmailOtp = createAsyncThunk(
         }
       );
 
-      if (response.status === 200) {
+      if (response.status === 200 || response.status == 201) {
         return {
           status: response.data.status,
           msg: response.data.msg,
@@ -336,6 +338,51 @@ export const verifyEmailOtp = createAsyncThunk(
   }
 );
 
+// Upload school logo
+export const uploadSchoolLogo = createAsyncThunk(
+  'school/uploadLogo',
+  async ({ schoolId, logo }, { rejectWithValue }) => {
+    try {
+      // Create FormData to send the image
+      const formData = new FormData();
+      formData.append('image', logo);
+      formData.append('data', JSON.stringify({ schoolId }));
+
+      const response = await axios.post(
+        `${API_BASE_URL}/schools/uploadSchoolLogo`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+
+      if (response.status === 201) {
+        return {
+          logoUrl: response.data.data.schoolLogo,
+          msg: response.data.msg
+        };
+      }
+
+      return rejectWithValue({
+        msg: response.data?.msg || 'Failed to upload logo'
+      });
+    } catch (error) {
+      console.error('Logo upload error:', error);
+      if (error.response) {
+        return rejectWithValue({
+          msg: error.response.data?.msg || 'Failed to upload logo',
+          status: error.response.status
+        });
+      }
+      return rejectWithValue({
+        msg: error.message || 'Network error. Please check your connection.'
+      });
+    }
+  }
+);
+
 export const confirmSchoolPassword = createAsyncThunk(
   'school/confirmPassword',
   async ({ name, email, password, cPassword }, { rejectWithValue }) => {
@@ -372,15 +419,22 @@ export const confirmSchoolPassword = createAsyncThunk(
 
       // Password strength validation (at least one uppercase, one lowercase, one number)
       const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-      if (!passwordRegex.test(password)) {
-        return rejectWithValue({
-          msg: 'Password must contain at least one uppercase letter, one lowercase letter, and one number',
-          field: 'password'
-        });
-      }
+       /////////////////////////        TEST MODE: This wiil be ntegrated later   //////////////////////
+       /////////////////////////////////////////////////////////////////////////////////////////////////////////
+       /////////////////////////////////////////////////////////////////////////////////////////////////////////
+       ////////////////////////////////////////////////////////////////////////////////////////////////////////
+      // if (!passwordRegex.test(password)) {
+      //   return rejectWithValue({
+      //     msg: 'Password must contain at least one uppercase letter, one lowercase letter, and one number',
+      //     field: 'password'
+      //   });
+      // }
+      ///////////////////////////////////////////////////////////////////////////////////////////
+      ///////////////////////////////////////////////////////////////////////////////////////////
+      ///////////////////////////////////////////////////////////////////////////////////////////
 
       const response = await axios.post(
-        `${API_BASE_URL}/school/confirm-password`,
+        `${API_BASE_URL}/schools/confirmPassword`,
         { schoolId, name, email, password, cPassword },
         {
           headers: { 'Content-Type': 'application/json' },
@@ -390,7 +444,7 @@ export const confirmSchoolPassword = createAsyncThunk(
 
       if (response.status === 200 || response.status === 201) {
         // Clear sensitive data from localStorage
-        localStorage.removeItem('schoolEmail');
+        localStorage.removeItem('email');
         
         return {
           status: response.data.status,
@@ -455,8 +509,23 @@ const schoolSlice = createSlice({
     resetForm: () => initialState
   },
   extraReducers: (builder) => {
-    // Handle registerSchoolNameAndType
     builder
+      // Handle uploadSchoolLogo
+      .addCase(uploadSchoolLogo.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(uploadSchoolLogo.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.success = true;
+        state.schoolData.logo = payload.logoUrl;
+      })
+      .addCase(uploadSchoolLogo.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
+      })
+
+      // Handle registerSchoolNameAndType
       .addCase(registerSchoolNameAndType.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -464,7 +533,7 @@ const schoolSlice = createSlice({
       .addCase(registerSchoolNameAndType.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.schoolId = payload.data._id;
-        state.currentStep = 2;
+        state.currentStep = 1;
       })
       .addCase(registerSchoolNameAndType.rejected, (state, { payload }) => {
         state.loading = false;
@@ -478,7 +547,7 @@ const schoolSlice = createSlice({
       })
       .addCase(registerSchoolLocation.fulfilled, (state) => {
         state.loading = false;
-        state.currentStep = 3;
+        state.currentStep = 2;
       })
       .addCase(registerSchoolLocation.rejected, (state, { payload }) => {
         state.loading = false;
@@ -492,7 +561,7 @@ const schoolSlice = createSlice({
       })
       .addCase(registerEmailAndTel.fulfilled, (state) => {
         state.loading = false;
-        state.currentStep = 4;
+        state.currentStep += 1;
       })
       .addCase(registerEmailAndTel.rejected, (state, { payload }) => {
         state.loading = false;
@@ -506,7 +575,7 @@ const schoolSlice = createSlice({
       })
       .addCase(verifyEmailOtp.fulfilled, (state) => {
         state.loading = false;
-        state.currentStep = 5;
+        state.currentStep += 1;
       })
       .addCase(verifyEmailOtp.rejected, (state, { payload }) => {
         state.loading = false;
@@ -520,7 +589,8 @@ const schoolSlice = createSlice({
       })
       .addCase(confirmSchoolPassword.fulfilled, (state) => {
         state.loading = false;
-        state.success = true;
+        // state.success = true;
+        state.currentStep += 1;
       })
       .addCase(confirmSchoolPassword.rejected, (state, { payload }) => {
         state.loading = false;
