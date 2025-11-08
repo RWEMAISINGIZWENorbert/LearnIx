@@ -1,11 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "../features/auth/authSlice"
 import schoolReducer from "../features/school/schoolSlice"
-
+import adminDashboardReducer from "../features/dashboard/admin/adminDashboardSlice"
  export const store = configureStore({
      reducer: {
         auth: authReducer,
-        school: schoolReducer
+        school: schoolReducer,
+        adminDashboard: adminDashboardReducer
      }
  })
 

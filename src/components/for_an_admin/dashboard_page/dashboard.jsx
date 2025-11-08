@@ -1,4 +1,3 @@
-import React from 'react';
 import './dashboard.css';
 import { GiTeacher } from 'react-icons/gi';
 import { PiStudent  } from "react-icons/pi";
@@ -9,9 +8,36 @@ import { IoChatbubblesOutline } from "react-icons/io5";
 import { FaRegBell } from 'react-icons/fa';
 import { CiCalendar } from "react-icons/ci";
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+
+import { 
+  fetchAdminDashboardSummary, 
+  selectDashboardSummary,
+  selectDashboardLoading,
+  selectDashboardError,
+  clearDashboardError
+} from '../../../features/dashboard/admin/adminDashboardSlice';
 
 
 export const Dashboard = () => {
+
+   const dispatch = useDispatch();
+   const summary = useSelector(selectDashboardSummary);
+   const loading = useSelector(selectDashboardLoading);
+   const error = useSelector(selectDashboardError);
+
+useEffect(() => {
+    dispatch(fetchAdminDashboardSummary());
+    return () => {
+      // Clear any errors when component unmounts
+      dispatch(clearDashboardError());
+    };
+  }, [dispatch]);
+
+  if (loading) return <div>Loading dashboard data...</div>;
+  if (error) return <div className="error">{error}</div>;
+
   return (
     <div className='dashboard'>
 
@@ -35,7 +61,7 @@ export const Dashboard = () => {
                 <div className="card-content">
                   <div className="card-top">
                     <div className="left">
-                      <h3>1287</h3>
+                      <h3>{summary.students}</h3>
                       <p>Students</p>
                     </div>
                     <div className="rigth">
@@ -54,7 +80,7 @@ export const Dashboard = () => {
                 <div className="card-content">
                   <div className="card-top">
                     <div className="left">
-                      <h3>32</h3>
+                      <h3>{summary.teachers}</h3>
                       <p>Teachers</p>
                     </div>
                     <div className="rigth">
@@ -73,7 +99,7 @@ export const Dashboard = () => {
                 <div className="card-content">
                   <div className="card-top">
                     <div className="left">
-                      <h3>20</h3>
+                      <h3>{summary.classes}</h3>
                       <p>Active classes</p>
                     </div>
                     <div className="rigth">
@@ -149,7 +175,7 @@ export const Dashboard = () => {
                         <th>Status</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    {/* <tbody>
                       <tr>
                         <td>1</td>
                         <td>Franco Nelly</td>
@@ -171,6 +197,36 @@ export const Dashboard = () => {
                         <td>4d ago</td>
                         <td><span className='rejected'>Rejected</span></td>
                       </tr>
+                    </tbody> */}
+                    <tbody>
+                      {summary.recentApplications.length > 0 ? (
+                        summary.recentApplications.map((app, index) => (
+                          <tr key={app._id}>
+                            <td>{index + 1}</td>
+                            <td>{app.studentName || 'N/A'}</td>
+                            <td>{app.className || 'N/A'}</td>
+                            <td>
+                              {app.createdAt 
+                                ? new Date(app.createdAt).toLocaleDateString('en-US', { 
+                                    month: 'short', 
+                                    day: 'numeric' 
+                                  }) 
+                                : 'N/A'}
+                            </td>
+                            <td>
+                              <span className={app.status?.toLowerCase()}>
+                                {app.status || 'Pending'}
+                              </span>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="5" style={{ textAlign: 'center', padding: '1rem' }}>
+                            No recent applications
+                          </td>
+                        </tr>
+                      )}
                     </tbody>
                   </table>
                 </div>
@@ -188,7 +244,7 @@ export const Dashboard = () => {
                 <div style={{ marginTop: 12 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
                     <div style={{ color: '#64748b' }}>Approved</div>
-                    <div style={{ fontWeight: 800 }}>342</div>
+                    <div style={{ fontWeight: 800 }}>{summary.admissionSnapshot.approved || 0}</div>
                   </div>
                   <div style={{ height: 8, background: 'rgba(15,23,42,0.06)', borderRadius: 8, overflow: 'hidden' }}>
                     <div style={{ width: '72%', height: '100%', background: 'green' }} />
@@ -197,7 +253,7 @@ export const Dashboard = () => {
 
                 <div style={{marginTop: 12, display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
                   <div style={{ color: '#64748b' }}>Pending</div>
-                  <div style={{ fontWeight: 800 }}>12</div>
+                  <div style={{ fontWeight: 800 }}>{summary.admissionSnapshot.pending || 0}</div>
                 </div>
                 <div style={{ height: 8, background: 'rgba(15,23,42,0.06)', borderRadius: 8, overflow: 'hidden' }}>
                   <div style={{ width: '24%', height: '100%', background: 'orange' }} />
@@ -207,7 +263,7 @@ export const Dashboard = () => {
                 <div style={{ marginTop: 12 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
                     <div style={{ color: '#64748b' }}>Rejected</div>
-                    <div style={{ fontWeight: 800 }}>24</div>
+                    <div style={{ fontWeight: 800 }}>{summary.admissionSnapshot.rejected || 0}</div>
                   </div>
                   <div style={{ height: 8, background: 'rgba(15,23,42,0.06)', borderRadius: 8, overflow: 'hidden' }}>
                     <div style={{ width: '34%', height: '100%', background: 'red' }} />
@@ -224,7 +280,7 @@ export const Dashboard = () => {
                     <button>Manage</button>
                   </Link>
                 </div>
-                <div className="down">
+                {/* <div className="down">
                   <div className="it">
                     <div className="div">
                       <h4>L5 SOD A</h4>
@@ -248,6 +304,32 @@ export const Dashboard = () => {
                     </div>
                     <div className="icon"><IoMdArrowDropright/></div>
                   </div>
+                </div> */}
+                <div className="down">
+                    {summary.recentClasses && summary.recentClasses.length > 0 ? (
+                        summary.recentClasses.slice(0, 3).map((classItem) => (
+                            <div className="it" key={classItem._id}>
+                                <div className="div">
+                                    <h4>{classItem.name || 'Unnamed Class'}</h4>
+                                    <p className="count">
+                                        {classItem.studentCount || 0} student
+                                        {classItem.studentCount !== 1 ? 's' : ''}
+                                    </p>
+                                </div>
+                                <div className="icon"><IoMdArrowDropright/></div>
+                            </div>
+                        ))
+                    ) : (
+                        <p style={{ 
+                            textAlign: 'center', 
+                            color: '#666', 
+                            padding: '1rem', 
+                            fontStyle: 'italic',
+                            margin: '0 auto'
+                        }}>
+                            No recent classes found
+                        </p>
+                    )}
                 </div>
               </div>
             </div>
