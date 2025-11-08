@@ -4,6 +4,7 @@ import schoolReducer from "../features/school/schoolSlice"
 import adminDashboardReducer from "../features/dashboard/admin/adminDashboardSlice"
 import studentsReducer from "../features/students/studentsSlice"
 import teachersReducer from "../features/teachers/teachersSlice"
+import classesReducer from "../features/classes/classesSlice"
  export const store = configureStore({
      reducer: {
         auth: authReducer,
@@ -11,6 +12,7 @@ import teachersReducer from "../features/teachers/teachersSlice"
         adminDashboard: adminDashboardReducer,
         students: studentsReducer,
         teachers: teachersReducer,
+        classes: classesReducer,
      }
  })
 
