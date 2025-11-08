@@ -2,8 +2,10 @@ import React from 'react';
 import './Schools.css';
 import { Navbar } from '../../../components/public_components/navbar/navbar';
 import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaGraduationCap } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 export const Schools = () => {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = React.useState('');
   const [selectedLocation, setSelectedLocation] = React.useState('all');
 
@@ -36,6 +38,36 @@ export const Schools = () => {
       phone: '+250 788 345 678',
       email: 'contact@rivierahs.rw',
       students: '1,200+',
+      description: 'Modern educational institution focusing on technology integration and holistic student development.'
+    },
+    {
+      id: 1,
+      name: 'Green Hills Academy',
+      image: `${import.meta.env.BASE_URL}assets/greenhills.png`,
+      location: 'Kigali, Rwanda',
+      phone: '+250 788 123 456',
+      email: 'info@greenhills.ac.rw',
+      students: '1,500+',
+      description: 'Leading international school offering Cambridge and IB curriculum with state-of-the-art facilities.'
+    },
+    {
+      id: 2,
+      name: 'Lycée de Kigali',
+      image: `${import.meta.env.BASE_URL}assets/LearnIx.png`,
+      location: 'Nyarugenge, Kigali',
+      phone: '+250 788 234 567',
+      email: 'info@lyceekigali.rw',
+      students: '2,000+',
+      description: 'Prestigious public school known for academic excellence and strong STEM programs.'
+    },
+    {
+      id: 3,
+      name: 'Ecole Secondaire Technique de Gisenyi',
+      image: `${import.meta.env.BASE_URL}assets/LearnIx.png`,
+      location: 'Rubavu, Gisenyi',
+      phone: '+250 788 345 678',
+      email: 'contact@estg.rw',
+      students: '500+',
       description: 'Modern educational institution focusing on technology integration and holistic student development.'
     }
   ];
@@ -110,7 +142,12 @@ export const Schools = () => {
                     <span>{school.students} Students</span>
                   </div>
                 </div>
-                <button className="visit-btn">Visit School</button>
+                <button 
+                  className="visit-btn" 
+                  onClick={() => navigate('/student-application', { state: { school } })}
+                >
+                  Apply Now
+                </button>
               </div>
             </div>
           )) : (

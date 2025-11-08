@@ -10,11 +10,11 @@ export const DevTeam = () => {
       name: 'IRADUKUNDA Franco Nelly',
       role: 'Design & Frontend Lead',
       image: `${import.meta.env.BASE_URL}assets/franco.png`,
-      email: 'franco.iradukunda@learnix.dev',
-      instagram: '@franco_nelly',
+      email: 'franconellyiradukunda@gmail.com',
+      instagram: '@franco__nelly',
       github: 'franco-nelly',
-      whatsapp: '+250788123456',
-      skills: ['React', 'UI/UX Design', 'CSS3', 'TailwindCSS', 'Responsive Design', 'JavaScript'],
+      whatsapp: '+250 795 207 569',
+      skills: ['React', 'UI/UX Design', 'CSS', 'Flutter', 'Responsive Design', 'JavaScript'],
       bio: 'Creative designer and frontend developer who crafted the entire design layout and frontend architecture of LearnIx, bringing beautiful and intuitive user experiences to life.'
     },
     {
@@ -76,7 +76,6 @@ export const DevTeam = () => {
                 <div className="dev-header">
                   <div className="dev-image">
                     <img src={dev.image} alt={dev.name} />
-                    <div className="status-dot"></div>
                   </div>
                   <div className="dev-info">
                     <h2>{dev.name}</h2>

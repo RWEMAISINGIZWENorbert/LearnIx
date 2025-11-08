@@ -23,6 +23,7 @@ import { AccessDenied } from './pages/public_pages/access_denied/AccessDenied';
 import { Admin_profile } from './pages/admin/admin_profile/admin_profile';
 import { Email_Verification_Page } from './pages/public_pages/email_verification/email_verification';
 import { School_Registration_Page } from './pages/public_pages/school_registration/school_registration';
+import { StudentApplication } from './pages/public_pages/student_application/StudentApplication';
 
 // Student Pages
 import { Student_Dashboard_Page } from './pages/student/student_dashboard/student_dashboard';
@@ -70,6 +71,7 @@ function App() {
         <Route path='/login' element={<AuthFlow/>}/>
         <Route path='/school-registration' element={<School_Registration_Page/>}/>
         <Route path='/email-verification' element={<Email_Verification_Page/>}/>
+        <Route path='/student-application' element={<StudentApplication/>}/>
 
         {/* Admin page routes */}
         <Route path='/admin'>
