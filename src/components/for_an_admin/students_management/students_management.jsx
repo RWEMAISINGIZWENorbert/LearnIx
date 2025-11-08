@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './students_management.css'
 import { FaArrowLeft } from 'react-icons/fa6';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -11,8 +11,21 @@ import { BiEdit } from "react-icons/bi";
 import { GoTrash } from "react-icons/go";
 import { MdOutlinePhone, MdOutlineEmail } from "react-icons/md";
 import { HiOutlineAcademicCap } from "react-icons/hi2";
+import { useDispatch, useSelector } from "react-redux";
+import { 
+  selectAllStudents, 
+  selectStudentsError,
+  selectStudentsLoading,
+  fetchStudents } from "../../../features/students/studentsSlice";
 
 export const Students_management = () => {
+   
+  const dispatch = useDispatch();
+  const students = useSelector(selectAllStudents);
+  const loading = useSelector(selectStudentsLoading);
+  const error = useSelector(selectStudentsError);
+
+
   let navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const classFilter = searchParams.get('class');
@@ -22,108 +35,129 @@ export const Students_management = () => {
   const [editingStudent, setEditingStudent] = useState(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [studentToDelete, setStudentToDelete] = useState(null);
-  const [students, setStudents] = useState([
-    {
-      id: 1,
-      name: "John Doe",
-      email: "john.doe@student.com",
-      guardian_name: "John Doe",
-      guardian_phone: "+250 795 123 456",
-      whatsapp: "+250 795 123 456",
-      studentId: "STU001",
-      class: "L3 SOD A",
-      status: "active",
-      enrollmentDate: "Mon, August 12, 2025 8:34:12 a.m",
-      profilePic: "profile_pic_blank.png"
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      email: "jane.smith@student.com",
-      guardian_name: "Jane Smith",
-      guardian_phone: "+250 795 234 567",
-      whatsapp: "+250 795 234 567",
-      studentId: "STU002",
-      class: "L3 SOD B",
-      status: "active",
-      enrollmentDate: "Mon, August 12, 2025 8:34:12 a.m",
-      profilePic: "profile_pic_blank.png"
-    },
-    {
-      id: 3,
-      name: "Mike Johnson",
-      email: "mike.johnson@student.com",
-      guardian_name: "Mike Johnson",
-      guardian_phone: "+250 795 345 678",
-      whatsapp: "+250 795 345 678",
-      studentId: "STU003",
-      class: "L4 SOD A",
-      status: "inactive",
-      enrollmentDate: "Mon, August 12, 2025 8:34:12 a.m",
-      profilePic: "profile_pic_blank.png"
-    },
-    {
-      id: 4,
-      name: "Sarah Wilson",
-      email: "sarah.wilson@student.com",
-      guardian_name: "Sarah Wilson",
-      guardian_phone: "+250 795 456 789",
-      whatsapp: "+250 795 456 789",
-      studentId: "STU004",
-      class: "L3 SOD A",
-      status: "active",
-      enrollmentDate: "Mon, August 12, 2025 8:34:12 a.m",
-      profilePic: "profile_pic_blank.png"
-    },
-    {
-      id: 5,
-      name: "David Brown",
-      email: "david.brown@student.com",
-      guardian_name: "David Brown",
-      guardian_phone: "+250 795 567 890",
-      whatsapp: "+250 795 567 890",
-      studentId: "STU005",
-      class: "L4 SOD B",
-      status: "active",
-      enrollmentDate: "Mon, August 12, 2025 8:34:12 a.m",
-      profilePic: "profile_pic_blank.png"
-    },
-    {
-      id: 6,
-      name: "Emily Davis",
-      email: "emily.davis@student.com",
-      guardian_name: "Emily Davis",
-      guardian_phone: "+250 795 678 901",
-      whatsapp: "+250 795 678 901",
-      studentId: "STU006",
-      class: "L5 SOD A",
-      status: "active",
-      enrollmentDate: "Mon, August 12, 2025 8:34:12 a.m",
-      profilePic: "profile_pic_blank.png"
-    }
-  ]);
+    // const [students, setStudents] = useState([
+  //   {
+  //     id: 1,
+  //     name: "John Doe",
+  //     email: "john.doe@student.com",
+  //     guardian_name: "John Doe",
+  //     guardian_phone: "+250 795 123 456",
+  //     whatsapp: "+250 795 123 456",
+  //     studentId: "STU001",
+  //     class: "L3 SOD A",
+  //     status: "active",
+  //     enrollmentDate: "Mon, August 12, 2025 8:34:12 a.m",
+  //     profilePic: "profile_pic_blank.png"
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Jane Smith",
+  //     email: "jane.smith@student.com",
+  //     guardian_name: "Jane Smith",
+  //     guardian_phone: "+250 795 234 567",
+  //     whatsapp: "+250 795 234 567",
+  //     studentId: "STU002",
+  //     class: "L3 SOD B",
+  //     status: "active",
+  //     enrollmentDate: "Mon, August 12, 2025 8:34:12 a.m",
+  //     profilePic: "profile_pic_blank.png"
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Mike Johnson",
+  //     email: "mike.johnson@student.com",
+  //     guardian_name: "Mike Johnson",
+  //     guardian_phone: "+250 795 345 678",
+  //     whatsapp: "+250 795 345 678",
+  //     studentId: "STU003",
+  //     class: "L4 SOD A",
+  //     status: "inactive",
+  //     enrollmentDate: "Mon, August 12, 2025 8:34:12 a.m",
+  //     profilePic: "profile_pic_blank.png"
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "Sarah Wilson",
+  //     email: "sarah.wilson@student.com",
+  //     guardian_name: "Sarah Wilson",
+  //     guardian_phone: "+250 795 456 789",
+  //     whatsapp: "+250 795 456 789",
+  //     studentId: "STU004",
+  //     class: "L3 SOD A",
+  //     status: "active",
+  //     enrollmentDate: "Mon, August 12, 2025 8:34:12 a.m",
+  //     profilePic: "profile_pic_blank.png"
+  //   },
+  //   {
+  //     id: 5,
+  //     name: "David Brown",
+  //     email: "david.brown@student.com",
+  //     guardian_name: "David Brown",
+  //     guardian_phone: "+250 795 567 890",
+  //     whatsapp: "+250 795 567 890",
+  //     studentId: "STU005",
+  //     class: "L4 SOD B",
+  //     status: "active",
+  //     enrollmentDate: "Mon, August 12, 2025 8:34:12 a.m",
+  //     profilePic: "profile_pic_blank.png"
+  //   },
+  //   {
+  //     id: 6,
+  //     name: "Emily Davis",
+  //     email: "emily.davis@student.com",
+  //     guardian_name: "Emily Davis",
+  //     guardian_phone: "+250 795 678 901",
+  //     whatsapp: "+250 795 678 901",
+  //     studentId: "STU006",
+  //     class: "L5 SOD A",
+  //     status: "active",
+  //     enrollmentDate: "Mon, August 12, 2025 8:34:12 a.m",
+  //     profilePic: "profile_pic_blank.png"
+  //   }
+  // ]);
 
-  const [newStudent, setNewStudent] = useState({
-    name: '',
-    email: '',
-    guardian_name: '',
-    guardian_phone: '',
-    whatsapp: '',
-    studentId: '',
-    class: '',
-    subjects: []
-  });
+  // const [newStudent, setNewStudent] = useState({
+  //   name: '',
+  //   email: '',
+  //   guardian_name: '',
+  //   guardian_phone: '',
+  //   whatsapp: '',
+  //   studentId: '',
+  //   class: '',
+  //   subjects: []
+  // });
+    
+  useEffect(() => {
+    dispatch(fetchStudents());
+  }, [dispatch])
+
+  // const filteredStudents = students.filter(student => {
+  //   const matchesSearch = student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //     student.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //     student.studentId.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //     student.class.toLowerCase().includes(searchTerm.toLowerCase());
+    
+  //   const matchesClass = classFilter ? student.class === classFilter : true;
+    
+  //   return matchesSearch && matchesClass;
+  // });
 
   const filteredStudents = students.filter(student => {
-    const matchesSearch = student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      student.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      student.studentId.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      student.class.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    const matchesClass = classFilter ? student.class === classFilter : true;
-    
+    const matchesSearch = student.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                         student.email.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesClass = !classFilter || student.class === classFilter;
     return matchesSearch && matchesClass;
   });
+
+   // Add loading and error states at the top of your JSX
+  if (loading) {
+    return <div>Loading students...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
 
   const generateStudentId = () => {
     const existingIds = students.map(s => parseInt(s.studentId.replace('STU', '')));
@@ -225,7 +259,7 @@ export const Students_management = () => {
           </div>
         </div>
         <div className="middle">
-          {filteredStudents.map(student => (
+          { filteredStudents.length > 0 ? filteredStudents.map(student => (
             <div key={student.id} className="student">
               <div className="up">
                 <div className="profile">
@@ -254,7 +288,9 @@ export const Students_management = () => {
                 </button>
               </div>
             </div>
-          ))}
+          )) : (
+            <p>No students found</p>
+          )}
         </div>
       </div>
 
