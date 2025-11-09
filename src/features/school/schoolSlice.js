@@ -44,7 +44,6 @@ export const fetchAllSchools = createAsyncThunk(
     try {
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
       const response = await axios.get(`${API_BASE_URL}/schools/`);
-       console.log(`The Responde Data${response.data.data}, The Response Status ${response.status}`);
       return response.data.data; 
     } catch (error) {
       return rejectWithValue(
@@ -618,10 +617,8 @@ const schoolSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchAllSchools.fulfilled, (state, action) => {
-         console.log(`The Action Payload ${action.payload}`);
         state.loading = false;
         state.schools = action.payload;
-        console.log(`The Action Schools ${state.schools}`);
       })
       .addCase(fetchAllSchools.rejected, (state, action) => {
         state.loading = false;

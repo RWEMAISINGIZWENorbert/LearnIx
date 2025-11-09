@@ -4,28 +4,173 @@ import { Navbar } from '../../../components/public_components/navbar/navbar';
 import { FaFileUpload, FaCheckCircle, FaTimes } from 'react-icons/fa';
 import { useLocation } from 'react-router-dom';
 import { FiAlertTriangle } from 'react-icons/fi';
+import { useDispatch, useSelector } from 'react-redux';
+import { submitApplication } from '../../../features/applications/applicationsSlice';
+import { useNavigate } from 'react-router-dom';
 
 export const StudentApplication = () => {
   const location = useLocation();
   const selectedSchool = location.state?.school || null;
+  const applicationSuccess = useSelector((state) => state.applications.success);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate(); 
+  const { loading, error, success } = useSelector((state) => state.applications);
 
   const [formData, setFormData] = useState({
+    schoolId: selectedSchool?._id || selectedSchool?.id || '',
+    // firstName: '',
+    // lastName: '',
+    // email: '',
+    // phone: '',
+    // dateOfBirth: '',
+    // nationality: '',
+    // city: '',
+    // country: '',
+    // previousSchool: '',
+    // grade: '',
+    // guardianName: '',
+    // guardianPhone: '',
+    // guardianEmail: '',
+    // schoolChoice: selectedSchool?.name || '',
+    // additionalInfo: ''
     firstName: '',
     lastName: '',
-    email: '',
-    phone: '',
+    studentEmail: '',
+    studentTel: '',
     dateOfBirth: '',
-    nationality: '',
-    city: '',
-    country: '',
-    previousSchool: '',
-    grade: '',
+    currentSchool: '',
+    reasonForTransfer: '',
+    applyingClass: '',
     guardianName: '',
-    guardianPhone: '',
+    guardianTel: '',
     guardianEmail: '',
     schoolChoice: selectedSchool?.name || '',
-    additionalInfo: ''
+    progressReport: null,
+    resultSlip: null
   });
+
+
+  const handleSubmit = async (e) => {
+  e.preventDefault();  
+  
+  const formDataToSend = new FormData();
+
+   // First, add all non-file form data
+  const { progressReport, resultSlip, ...formFields } = formData;
+  Object.entries(formFields).forEach(([key, value]) => {
+    if (value !== null && value !== undefined) {
+      formDataToSend.append(key, value);
+    }
+  });
+  // // Append all form data
+  // Object.keys(formData).forEach(key => {
+  //   if (formData[key] !== null && formData[key] !== undefined) {
+  //     formDataToSend.append(key, formData[key]);
+  //   }
+  // });
+
+  // Append non-file fields
+  // Object.entries(otherData).forEach(([key, value]) => {
+  //   if (value !== null && value !== undefined) {
+  //     formDataToSend.append(key, value);
+  //   }
+  // });
+
+  // Add files from uploadedFiles state if they exist
+  if (uploadedFiles.progressReport) {
+    formDataToSend.append('progressReport', uploadedFiles.progressReport);
+  }
+  if (uploadedFiles.resultSlip) {
+    formDataToSend.append('resultSlip', uploadedFiles.resultSlip);
+  }
+
+  try {
+    const result = dispatch(submitApplication(formDataToSend));
+     console.log(`The result ${result}`);
+    if (applicationSuccess) {
+      alert('Application submitted successfully!');
+      
+      // Reset form
+      setFormData({
+        schoolId: selectedSchool?._id || selectedSchool?.id || '',
+        firstName: '',
+        lastName: '',
+        studentEmail: '',
+        studentTel: '',
+        dateOfBirth: '',
+        currentSchool: '',
+        reasonForTransfer: '',
+        applyingClass: '',
+        guardianName: '',
+        guardianTel: '',
+        guardianEmail: '',
+        schoolChoice: selectedSchool?.name || '',
+        progressReport: null,
+        resultSlip: null
+      });
+      
+      // Reset file inputs
+      document.querySelectorAll('input[type="file"]').forEach(input => {
+        input.value = '';
+      });
+      
+      // Navigate back to schools page
+      navigate('/schools');
+    }
+  } catch (error) {
+    console.error('Error submitting application:', error);
+  }
+};
+
+  
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  // const handleFileChange = (e) => {
+  //   const { name, files } = e.target;
+  //   setFormData(prev => ({
+  //     ...prev,
+  //     [name]: files[0]
+  //   }));
+  // };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   const result = await dispatch(submitApplication(formData));
+  //   if (result.meta.requestStatus === 'fulfilled') {
+  //     alert('The Application sent successfully');
+  //     // Optionally redirect or show success message
+  //     navigate('/schools');
+  //   }
+  // };
+
+  
+//   const handleFileChange = (e) => {
+//   const { name, files } = e.target;
+//   if (files && files[0]) {
+//     setFormData(prev => ({
+//       ...prev,
+//       [name]: files[0]
+//     }));
+//   }
+// };
+
+const handleFileChange = (e, fieldName) => {
+  const file = e.target.files[0];
+  if (file) {
+    setFormData(prev => ({
+      ...prev,
+      [fieldName]: file
+    }));
+  }
+};
+
 
   const [uploadedFiles, setUploadedFiles] = useState({
     resultSlip: null,
@@ -34,14 +179,15 @@ export const StudentApplication = () => {
 
   const [submitted, setSubmitted] = useState(false);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
+  // const handleChange = (e) => {
+  //   setFormData({
+  //     ...formData,
+  //     [e.target.name]: e.target.value
+  //   });
+  // };
 
   const handleFileUpload = (e, fileType) => {
+     console.log(`Call The Handle File Upload ${fileType}`);
     const file = e.target.files[0];
     if (file) {
       // Check file size (max 5MB)
@@ -59,6 +205,10 @@ export const StudentApplication = () => {
         ...uploadedFiles,
         [fileType]: file
       });
+    //   setUploadedFiles(prev => ({
+    //   ...prev,
+    //   [fileType]: file
+    // }));
     }
   };
 
@@ -69,39 +219,39 @@ export const StudentApplication = () => {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Here you would typically send the data to your backend
-    console.log('Application submitted:', formData);
-    console.log('Uploaded files:', uploadedFiles);
-    setSubmitted(true);
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   // Here you would typically send the data to your backend
+  //   console.log('Application submitted:', formData);
+  //   console.log('Uploaded files:', uploadedFiles);
+  //   setSubmitted(true);
     
-    // Reset form after 3 seconds
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormData({
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        dateOfBirth: '',
-        nationality: '',
-        city: '',
-        country: '',
-        previousSchool: '',
-        grade: '',
-        guardianName: '',
-        guardianPhone: '',
-        guardianEmail: '',
-        schoolChoice: selectedSchool?.name || '',
-        additionalInfo: ''
-      });
-      setUploadedFiles({
-        resultSlip: null,
-        progressReport: null
-      });
-    }, 3000);
-  };
+  //   // Reset form after 3 seconds
+  //   setTimeout(() => {
+  //     setSubmitted(false);
+  //     setFormData({
+  //       firstName: '',
+  //       lastName: '',
+  //       email: '',
+  //       phone: '',
+  //       dateOfBirth: '',
+  //       nationality: '',
+  //       city: '',
+  //       country: '',
+  //       previousSchool: '',
+  //       grade: '',
+  //       guardianName: '',
+  //       guardianPhone: '',
+  //       guardianEmail: '',
+  //       schoolChoice: selectedSchool?.name || '',
+  //       additionalInfo: ''
+  //     });
+  //     setUploadedFiles({
+  //       resultSlip: null,
+  //       progressReport: null
+  //     });
+  //   }, 3000);
+  // };
 
   return (
     <div>
@@ -155,8 +305,8 @@ export const StudentApplication = () => {
                     <label>Email *</label>
                     <input
                       type="email"
-                      name="email"
-                      value={formData.email}
+                      name="studentEmail"
+                      value={formData.studentEmail}
                       onChange={handleChange}
                       required
                       placeholder="student@example.com"
@@ -166,8 +316,8 @@ export const StudentApplication = () => {
                     <label>Phone *</label>
                     <input
                       type="tel"
-                      name="phone"
-                      value={formData.phone}
+                      name="studentTel"
+                      value={formData.studentTel}
                       onChange={handleChange}
                       required
                       placeholder="+250 788 123 456"
@@ -265,8 +415,8 @@ export const StudentApplication = () => {
                   <label>Previous School</label>
                   <input
                     type="text"
-                    name="previousSchool"
-                    value={formData.previousSchool}
+                    name="currentSchool"
+                    value={formData.currentSchool}
                     onChange={handleChange}
                     placeholder="Name of previous school"
                   />
@@ -304,8 +454,8 @@ export const StudentApplication = () => {
                     <label>Guardian Phone *</label>
                     <input
                       type="tel"
-                      name="guardianPhone"
-                      value={formData.guardianPhone}
+                      name="guardianTel"
+                      value={formData.guardianTel}
                       onChange={handleChange}
                       required
                       placeholder="+250 788 123 456"
@@ -405,8 +555,9 @@ export const StudentApplication = () => {
                 <div className="form-group">
                   <label>Tell us more about yourself (Optional)</label>
                   <textarea
-                    name="additionalInfo"
-                    value={formData.additionalInfo}
+                    // name="additionalInfo"
+                    name="reasonForTransfer"
+                    value={formData.reasonForTransfer}
                     onChange={handleChange}
                     rows="4"
                     placeholder="Academic achievements, extracurricular activities, interests, etc."
@@ -414,9 +565,19 @@ export const StudentApplication = () => {
                 </div>
               </div>
 
-              <button type="submit" className="submit-btn">
-                Submit Application
+              <button 
+                type="submit" 
+                className="submit-btn"
+                disabled={loading}
+              >
+                {loading ? 'Submitting...' : 'Submit Application'}
               </button>
+              {error && (
+                <div className="error-message">
+                  <FiAlertTriangle className="error-icon" />
+                  {error}
+                </div>
+              )}
             </form>
           )}
         </div>
