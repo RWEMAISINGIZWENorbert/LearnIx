@@ -1,134 +1,115 @@
-import React,{useState} from 'react'
-import './admissions.css'
-import { FaArrowLeft, FaCircleXmark, FaEye, FaTrash } from 'react-icons/fa6'
-import { CiSearch } from 'react-icons/ci'
-import { AiOutlineUsergroupAdd } from "react-icons/ai"
-import { MdEmail, MdOutlinePhone } from 'react-icons/md'
-import { LuCalendar, LuClock, LuFileText } from 'react-icons/lu'
-import { FaCheckCircle } from 'react-icons/fa'
-import { IoMdCheckmarkCircleOutline } from "react-icons/io"
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import './admissions.css';
+import { FaArrowLeft, FaCircleXmark, FaEye, FaTrash } from 'react-icons/fa6';
+import { CiSearch } from 'react-icons/ci';
+import { AiOutlineUsergroupAdd } from "react-icons/ai";
+import { MdEmail, MdOutlinePhone } from 'react-icons/md';
+import { LuCalendar, LuClock, LuFileText } from 'react-icons/lu';
+import { FaCheckCircle } from 'react-icons/fa';
+import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+import { 
+  fetchApplicationsBySchool, 
+  selectApplications, 
+  selectApplicationsLoading, 
+  selectApplicationsError,
+  acceptApplication,
+  rejectApplication
+} from '../../../features/applications/applicationsSlice';
 
 export const Aadmissions = () => {
+    const dispatch = useDispatch();
+    const applicationsData = useSelector(selectApplications);
+    const loading = useSelector(selectApplicationsLoading);
+    const error = useSelector(selectApplicationsError);
+    
     const [selectedStatus, setSelectedStatus] = useState('all');
-    const [applications, setApplications] = useState([
-    {
-      id: 1,
-      name: "Franco Nelly",
-      email: "franconelly@gmail.com",
-      phone: "+250 795 207 569",
-      class: "L5 SOD",
-      submitted: "2 days ago",
-      status: "approved",
-      documents: ["Result slip"]
-    },
-    {
-      id: 2,
-      name: "RWEMA Nobii",
-      email: "rwemanobii@gmail.com",
-      phone: "+250 795 207 569",
-      class: "L5 ELT",
-      submitted: "1 day ago",
-      status: "pending",
-      documents: ["Result slip"]
-    },
-    {
-      id: 3,
-      name: "SHEMA Valentin",
-      email: "valentinshema@gmail.com",
-      phone: "+250 795 207 569",
-      class: "S4 MCB",
-      submitted: "4 days ago",
-      status: "rejected",
-      documents: ["Result slip"]
-    },
-    {
-      id: 4,
-      name: "MUKAMANA Grace",
-      email: "mukamanagrace@gmail.com",
-      phone: "+250 795 207 569",
-      class: "S5 PCB",
-      submitted: "3 days ago",
-      status: "pending",
-      documents: ["Result slip"]
-    },
-    {
-      id: 5,
-      name: "UWIMANA Jean",
-      email: "uwimanajean@gmail.com",
-      phone: "+250 795 207 569",
-      class: "L5 PCM",
-      submitted: "5 days ago",
-      status: "approved",
-      documents: ["Result slip"]
-    },
-    {
-      id: 6,
-      name: "UWIMANA Jean",
-      email: "uwimanajean@gmail.com",
-      phone: "+250 795 207 569",
-      class: "L3 SOD",
-      submitted: "5 days ago",
-      status: "approved",
-      documents: ["Result slip"]
-    },
-    {
-      id: 7,
-      name: "UWIMANA Jean",
-      email: "uwimanajean@gmail.com",
-      phone: "+250 795 207 569",
-      class: "S6 MEG",
-      submitted: "5 days ago",
-      status: "approved",
-      documents: ["Result slip"]
-    }
-  ]);
+    const [searchTerm, setSearchTerm] = useState('');
+    
+    useEffect(() => {
+        // Fetch applications when component mounts
+        // You might want to pass a specific school ID here if needed
+        dispatch(fetchApplicationsBySchool());
+    }, [dispatch]);
+      // console.log(`The applicationsData ${applicationsData.length}`);
+    // Transform the API data to match your UI structure
+    const transformedApplications = applicationsData.map(app => ({
+        id: app._id,
+        name: `${app.firstName || ''} ${app.lastName || ''}`.trim() || 'N/A',
+        email: app.studentEmail || app.guardianEmail || 'N/A',
+        phone: app.stutendTel || app.guardianTel || 'N/A',
+        class: app.applyingClass || 'N/A',
+        submitted: new Date(app.createdAt).toLocaleDateString(),
+        status: app.status || 'pending',
+        documents: [
+            app.progressReport ? 'Progress Report' : null,
+            app.resultSlip ? 'Result Slip' : null
+        ].filter(Boolean)
+    }));
+      
+    // Filter applications based on status and search term
+    const filteredApplications = transformedApplications.filter(app => {
+        const matchesStatus = selectedStatus === 'all' || app.status === selectedStatus;
+        const matchesSearch = app.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                            app.email.toLowerCase().includes(searchTerm.toLowerCase());
+        return matchesStatus && (searchTerm === '' || matchesSearch);
+    });
+    
+    if (loading) return <div>Loading applications...</div>;
+    if (error) return <div>Error loading applications: {error}</div>;
 
-  const handleApprove = (id) => {
-    setApplications(applications.map(app => 
-      app.id === id ? { ...app, status: 'approved' } : app
-    ));
-  };
+    const handleApprove = async (id) => {
+        try {
+            await dispatch(acceptApplication(id)).unwrap();
+            // Show success message or update UI as needed
+            alert('Application approved successfully');
+        } catch (error) {
+            console.error('Failed to approve application:', error);
+            alert(`Failed to approve application: ${error}`);
+        }
+    };
 
-  const handleReject = (id) => {
-    setApplications(applications.map(app => 
-      app.id === id ? { ...app, status: 'rejected' } : app
-    ));
-  };
+    const handleReject = async (id) => {
+        if (window.confirm('Are you sure you want to reject this application?')) {
+            try {
+                await dispatch(rejectApplication(id)).unwrap();
+                // Show success message or update UI as needed
+                alert('Application rejected successfully');
+            } catch (error) {
+                console.error('Failed to reject application:', error);
+                alert(`Failed to reject application: ${error}`);
+            }
+        }
+    };
 
-    const filteredApplications = selectedStatus === 'all' 
-    ? applications 
-    : applications.filter(app => app.status === selectedStatus);
+    const getStatusIcon = (status) => {
+        switch(status) {
+          case 'approved': return <FaCheckCircle className="icon approved" />;
+          case 'rejected': return <FaCircleXmark className="icon rejected" />;
+          case 'pending': return <LuClock className="icon pending" />;
+          default: return <LuClock className="icon pending" />;
+        }
+    };
 
-  const getStatusIcon = (status) => {
-    switch(status) {
-      case 'approved': return <FaCheckCircle className="icon approved" />;
-      case 'rejected': return <FaCircleXmark className="icon rejected" />;
-      case 'pending': return <LuClock className="icon pending" />;
-      default: return <LuClock className="icon pending" />;
-    }
-  };
+    const getStatusColor = (status) => {
+        switch(status) {
+          case 'approved': return 'approved';
+          case 'rejected': return 'rejected';
+          case 'pending': return 'pending';
+          default: return 'pending';
+        }
+    };
 
-  const getStatusColor = (status) => {
-    switch(status) {
-      case 'approved': return 'approved';
-      case 'rejected': return 'rejected';
-      case 'pending': return 'pending';
-      default: return 'pending';
-    }
-  };
-
-
-  return (
-
-    <div className='admissions_management'>
-        <div className="box">
-            <div className="whole_up">
-            <div className="upper">
-              <h4>Admissions & Registration Management</h4>
-              <p>Manage student applications, review documents, and process admissions. Track application status and maintain enrollment records.</p>
-            </div>
-            <div className="mini_up">
-              <div className="search_box">
+    return (
+        <div className='admissions_management'>
+            <div className="box">
+                <div className="whole_up">
+                <div className="upper">
+                  <h4>Admissions & Registration Management</h4>
+                  <p>Manage student applications, review documents, and process admissions. Track application status and maintain enrollment records.</p>
+                </div>
+                <div className="mini_up">
+                  <div className="search_box">
                 <div className="search">
                   <div className="icon"><CiSearch /></div>
                   <input type="text" placeholder='Search applications...' />
@@ -148,7 +129,7 @@ export const Aadmissions = () => {
               <div className="new">
                 <div className="left"><div className="icon"><AiOutlineUsergroupAdd/></div></div>
                 <div className="right">
-                  <span> {applications.length}</span>
+                  <span> {applicationsData.length}</span>
                   <p>applications</p>
                 </div>
               </div>

@@ -60,15 +60,70 @@ export const submitApplication = createAsyncThunk(
 
 export const fetchApplicationsBySchool = createAsyncThunk(
   'applications/fetchBySchool',
-  async (schoolId, { rejectWithValue }) => {
+  async (_, { getState, rejectWithValue }) => {
     try {
+      const { auth } = getState();
       const response = await axios.get(
-        `${API_BASE_URL}/applications/school/${schoolId}`
+        `${API_BASE_URL}/applications/`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${auth.token}`,
+          },
+        }
       );
       return response.data;
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.message || 'Failed to fetch applications'
+      );
+    }
+  }
+);
+
+export const acceptApplication = createAsyncThunk(
+  'applications/accept',
+  async (applicationId, { getState, rejectWithValue }) => {
+    try {
+      const { auth } = getState();
+      const response = await axios.put(
+        `${API_BASE_URL}/applications/accept?applicationId=${applicationId}`,
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${auth.token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || 'Failed to accept application'
+      );
+    }
+  }
+);
+
+export const rejectApplication = createAsyncThunk(
+  'applications/reject',
+  async (applicationId, { getState, rejectWithValue }) => {
+    try {
+      const { auth } = getState();
+      const response = await axios.put(
+        `${API_BASE_URL}/applications/reject?applicationId=${applicationId}`,
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${auth.token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || 'Failed to reject application'
       );
     }
   }
@@ -98,15 +153,50 @@ const applicationsSlice = createSlice({
       .addCase(submitApplication.fulfilled, (state, action) => {
         state.loading = false;
         state.success = true;
-        console.log(`The action Success ${state.success}`);
         state.currentApplication = action.payload.data;
-        // state.applications.push(action.payload.data);
       })
       .addCase(submitApplication.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
         state.success = false;
       })
+      
+      // Accept Application
+      .addCase(acceptApplication.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(acceptApplication.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+        const updatedApp = action.payload.data;
+        state.applications = state.applications.map(app => 
+          app._id === updatedApp._id ? updatedApp : app
+        );
+      })
+      .addCase(acceptApplication.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      
+      // Reject Application
+      .addCase(rejectApplication.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(rejectApplication.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+        const updatedApp = action.payload.data;
+        state.applications = state.applications.map(app => 
+          app._id === updatedApp._id ? updatedApp : app
+        );
+      })
+      .addCase(rejectApplication.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      
       // Fetch Applications by School
       .addCase(fetchApplicationsBySchool.pending, (state) => {
         state.loading = true;
