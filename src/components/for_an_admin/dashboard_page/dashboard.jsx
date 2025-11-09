@@ -200,10 +200,11 @@ useEffect(() => {
                     </tbody> */}
                     <tbody>
                       {summary.recentApplications.length > 0 ? (
+                        console.log(`Recent Application Summary: ${summary.recentApplications.length}`),
                         summary.recentApplications.map((app, index) => (
                           <tr key={app._id}>
                             <td>{index + 1}</td>
-                            <td>{app.studentName || 'N/A'}</td>
+                            <td>{app.studentName || app.firstName + ' ' + app.lastName || 'N/A'}</td>
                             <td>{app.className || 'N/A'}</td>
                             <td>
                               {app.createdAt 
