@@ -6,7 +6,9 @@ import studentsReducer from "../features/students/studentsSlice"
 import teachersReducer from "../features/teachers/teachersSlice"
 import classesReducer from "../features/classes/classesSlice"
 import applicationsReducer from "../features/applications/applicationsSlice"
- export const store = configureStore({
+import resourcesReducer from "../features/resources/resourcesSlice"
+
+export const store = configureStore({
      reducer: {
         auth: authReducer,
         school: schoolReducer,
@@ -14,13 +16,10 @@ import applicationsReducer from "../features/applications/applicationsSlice"
         students: studentsReducer,
         teachers: teachersReducer,
         classes: classesReducer,
-        applications: applicationsReducer
+        applications: applicationsReducer,
+        resources: resourcesReducer
      }
  })
-
-
-
-
 
 
 

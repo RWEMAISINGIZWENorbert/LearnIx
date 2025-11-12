@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { formatDistanceToNow } from 'date-fns';
 import './TeacherResources.css';
 import { DeleteConfirmation } from '../../shared/DeleteConfirmation';
 import { LuBookOpen, LuFileText, LuDownload, LuUpload, LuEye, LuTrash, LuPlus } from 'react-icons/lu';
 import { MdOutlineSubject } from 'react-icons/md';
 import { FaFilePdf, FaFileWord, FaFileImage, FaFileVideo } from "react-icons/fa";
+import { fetchAllResources, createResource, selectResources, selectResourcesLoading, selectResourcesError } from '../../../features/resources/resourcesSlice';
 
 export const TeacherResources = () => {
   const [activeTab, setActiveTab] = useState('documents');
@@ -15,53 +18,39 @@ export const TeacherResources = () => {
   const [fileCategory, setFileCategory] = useState('');
   const [fileDescription, setFileDescription] = useState('');
   
-  const [documents, setDocuments] = useState([
-    {
-      id: 1,
-      name: "Web Development Lecture 1",
-      type: "pdf",
-      size: "2.4 MB",
-      uploaded: "2 days ago",
-      downloads: 156,
-      category: "Lecture Notes"
-    },
-    {
-      id: 2,
-      name: "React Tutorial Guide",
-      type: "pdf",
-      size: "1.8 MB",
-      uploaded: "1 week ago",
-      downloads: 89,
-      category: "Tutorial"
-    },
-    {
-      id: 3,
-      name: "Database Design Notes",
-      type: "docx",
-      size: "3.2 MB",
-      uploaded: "3 days ago",
-      downloads: 234,
-      category: "Lecture Notes"
-    },
-    {
-      id: 4,
-      name: "SQL Cheat Sheet",
-      type: "png",
-      size: "456 KB",
-      uploaded: "5 days ago",
-      downloads: 78,
-      category: "Reference"
-    },
-    {
-      id: 5,
-      name: "Software Engineering Video",
-      type: "mp4",
-      size: "45.6 MB",
-      uploaded: "1 week ago",
-      downloads: 123,
-      category: "Tutorial"
-    }
-  ]);
+  const dispatch = useDispatch();
+  const resources = useSelector(selectResources);
+  const loading = useSelector(selectResourcesLoading);
+  const error = useSelector(selectResourcesError);
+  
+  // Transform API data to match the UI structure
+  const documents = (resources || []).map(resource => ({
+    id: resource?._id,
+    name: resource?.title || 'Untitled',
+    // type: getFileTypeFromUrl(resource?.fileUrl),
+    type: '.pdf',
+    size: "N/A", // This would need to come from the server
+    uploaded: resource?.createdAt ? formatDistanceToNow(new Date(resource.createdAt), { addSuffix: true }) : 'Unknown',
+    downloads: 0, // This would need to come from the server
+    category: resource?.category || 'Other',
+    description: resource?.description || '',
+    fileUrl: resource?.fileUrl
+  }));
+  
+  useEffect(() => {
+    dispatch(fetchAllResources());
+  }, [dispatch]);
+  
+  // Helper function to get file type from URL
+  const getFileTypeFromUrl = (url) => {
+    if (!url) return 'file';
+    const extension = url.split('.').pop().toLowerCase();
+    if (['pdf'].includes(extension)) return 'pdf';
+    if (['doc', 'docx'].includes(extension)) return 'docx';
+    if (['jpg', 'jpeg', 'png', 'gif'].includes(extension)) return 'image';
+    if (['mp4', 'webm', 'ogg'].includes(extension)) return 'video';
+    return 'file';
+  };
 
   const categories = [
     { name: "Lecture Notes", count: 45, color: "#3b82f6" },
@@ -89,72 +78,157 @@ export const TeacherResources = () => {
   };
 
   const confirmDelete = () => {
-    setDocuments(documents.filter(doc => doc.id !== itemToDelete.id));
+    // Here you would call your delete API endpoint
+    // For now, we'll just remove it from the local state
+    // In a real app, you would dispatch a delete action here
+    // dispatch(deleteResource(itemToDelete.id));
+    
     setShowDeleteConfirm(false);
     setItemToDelete(null);
     setDeleteType('');
   };
 
+
+
+  // const handleFileSelect = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     // Reset form
+  //     setFileName('');
+  //     setFileCategory('');
+  //     setFileDescription('');
+      
+  //     // Set the file name for display
+  //     setFileName(file.name);
+      
+  //     // You can add file validation here if needed
+  //     const formData = new FormData();
+  //     formData.append('image', file);
+  //     formData.append('title', file.name.split('.')[0]); // Use filename as title
+  //     if (fileCategory) formData.append('category', fileCategory);
+  //     if (fileDescription) formData.append('description', fileDescription);
+      
+  //     // Dispatch the createResource action
+  //     dispatch(createResource(formData))
+  //       .unwrap()
+  //       .then(() => {
+  //         // Refresh the resources list
+  //         dispatch(fetchAllResources());
+  //         // Reset form
+  //         setFileName('');
+  //         setFileCategory('');
+  //         setFileDescription('');
+  //         setUploadedFile(null);
+  //       })
+  //       .catch(error => {
+  //         console.error('Error uploading file:', error);
+  //         // Handle error (show error message to user)
+  //       });
+  //     setUploadedFile(file);
+  //     setFileName(file.name);
+  //   }
+  // };
+   
+  
+  // Handle file selection
   const handleFileSelect = (e) => {
     const file = e.target.files[0];
     if (file) {
       setUploadedFile(file);
-      setFileName(file.name);
+      // Set the file name if no title is entered
+      if (!fileName) {
+        setFileName(file.name.split('.')[0]);
+      }
     }
   };
 
-  const handleFileUpload = () => {
-    if (uploadedFile && fileName && fileCategory) {
-      const newDocument = {
-        id: documents.length + 1,
-        name: fileName,
-        type: uploadedFile.name.split('.').pop(),
-        size: `${(uploadedFile.size / (1024 * 1024)).toFixed(2)} MB`,
-        uploaded: 'Just now',
-        downloads: 0,
-        category: fileCategory,
-        file: uploadedFile
-      };
+  // Handle form submission
+  const handleFileUpload = async () => {
+    if (!uploadedFile || !fileName || !fileCategory) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append('image', uploadedFile);
+      formData.append('title', fileName);
+      formData.append('category', fileCategory);
       
-      setDocuments([newDocument, ...documents]);
+      if (fileDescription) {
+        formData.append('description', fileDescription);
+      }
+
+      // Log the data being sent
+      console.group('Sending Resource Data');
+      console.log('File:', uploadedFile);
+      console.log('Title:', fileName);
+      console.log('Category:', fileCategory);
+      console.log('Description:', fileDescription || 'Not provided');
+      console.log('FormData entries:');
+      for (let pair of formData.entries()) {
+        console.log(pair[0] + ': ', pair[1]);
+      }
+      console.groupEnd();
+
+      const resultAction = await dispatch(createResource(formData));
       
-      setUploadedFile(null);
-      setFileName('');
-      setFileCategory('');
-      setFileDescription('');
-      
-      setActiveTab('documents');
-      
-      alert('File uploaded successfully!');
-    } else {
-      alert('Please fill in all required fields and select a file.');
+      if (createResource.fulfilled.match(resultAction)) {
+        // Refresh the resources list
+        await dispatch(fetchAllResources());
+        
+        // Show success message
+        alert('Resource uploaded successfully!');
+        
+        // Reset the form
+        setFileName('');
+        setFileCategory('');
+        setFileDescription('');
+        setUploadedFile(null);
+        
+        // Reset file input
+        const fileInput = document.querySelector('input[type="file"]');
+        if (fileInput) fileInput.value = '';
+      } else {
+        // throw new Error(resultAction.error?.message || 'Failed to upload resource');
+      }
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      alert(`Error: ${error.message}`);
     }
   };
+
+  // The form submission is now handled by the handleFileUpload function above
+      
+  //     setActiveTab('documents');
+      
+  //     alert('File uploaded successfully!');
+  //   } else {
+  //     alert('Please fill in all required fields and select a file.');
+  //   }
+  // };
 
   const handleViewDocument = (document) => {
-    if (document.file) {
-      const fileURL = URL.createObjectURL(document.file);
-      window.open(fileURL, '_blank');
+    if (document.fileUrl) {
+       console.log(`The Document File ${document.fileUrl}`);
+      // const fileURL = URL.createObjectURL(document.fileUrl);
+      window.open(document.fileUrl, '_blank');
     } else {
       alert(`Viewing: ${document.name}\nThis would open the document in a viewer.`);
     }
   };
 
   const handleDownloadDocument = (doc) => {
-    if (doc.file) {
-      const fileURL = URL.createObjectURL(doc.file);
+    console.log(`The Document Data ${doc}`)
+    if (doc.fileUrl) {
+      // const fileURL = URL.createObjectURL(doc.fileUrl);
       const link = window.document.createElement('a');
-      link.href = fileURL;
-      link.download = doc.name;
+      link.href = doc.fileUrl;
+      link.download = doc.title;
       window.document.body.appendChild(link);
       link.click();
       window.document.body.removeChild(link);
       
-      setDocuments(documents.map(d => 
-        d.id === doc.id 
-          ? { ...d, downloads: d.downloads + 1 }
-          : d
-      ));
     } else {
       alert(`Downloading: ${doc.name}`);
     }
