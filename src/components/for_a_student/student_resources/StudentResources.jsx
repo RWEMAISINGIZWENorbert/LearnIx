@@ -1,30 +1,51 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './StudentResources.css';
 import { GrResources } from 'react-icons/gr';
 import { BiDownload, BiFile } from 'react-icons/bi';
 import { HiOutlineBookOpen } from 'react-icons/hi';
 import { MdOutlineVideoLibrary } from 'react-icons/md';
 import { LuFileText, LuVideo, LuFolder } from 'react-icons/lu';
+import { useSelector, useDispatch } from 'react-redux'; 
+import { fetchAllResources, selectResources, selectResourcesLoading, selectResourcesError } from '../../../features/resources/resourcesSlice';
 
 export const StudentResources = () => {
   const [filter, setFilter] = useState('all');
 
-  const resources = [
-    { id: 1, title: 'Calculus Lecture Notes', course: 'Advanced Mathematics', type: 'PDF', size: '2.4 MB', date: '2025-10-20' },
-    { id: 2, title: 'Physics Lab Manual', course: 'Physics Laboratory', type: 'PDF', size: '5.1 MB', date: '2025-10-18' },
-    { id: 3, title: 'Web Development Tutorial', course: 'Software Development', type: 'Video', size: '125 MB', date: '2025-10-15' },
-    { id: 4, title: 'Database Design Guide', course: 'Database Management', type: 'PDF', size: '3.2 MB', date: '2025-10-12' },
-    { id: 5, title: 'Shakespeare Analysis', course: 'English Literature', type: 'PDF', size: '1.8 MB', date: '2025-10-10' },
-    { id: 6, title: 'HTML/CSS Workshop', course: 'Web Technologies', type: 'Video', size: '98 MB', date: '2025-10-08' }
-  ];
+  const dispatch = useDispatch();
+  const resources = useSelector(selectResources);
+  const loading = useSelector(selectResourcesLoading);
+  const error = useSelector(selectResourcesError);
 
-  const filteredResources = filter === 'all' 
-    ? resources 
-    : resources.filter(r => r.type.toLowerCase() === filter);
+  useEffect(() => {
+      dispatch(fetchAllResources());
+    }, [dispatch]);
+
+  // const resources = [
+  //   { id: 1, title: 'Calculus Lecture Notes', course: 'Advanced Mathematics', type: 'PDF', size: '2.4 MB', date: '2025-10-20' },
+  //   { id: 2, title: 'Physics Lab Manual', course: 'Physics Laboratory', type: 'PDF', size: '5.1 MB', date: '2025-10-18' },
+  //   { id: 3, title: 'Web Development Tutorial', course: 'Software Development', type: 'Video', size: '125 MB', date: '2025-10-15' },
+  //   { id: 4, title: 'Database Design Guide', course: 'Database Management', type: 'PDF', size: '3.2 MB', date: '2025-10-12' },
+  //   { id: 5, title: 'Shakespeare Analysis', course: 'English Literature', type: 'PDF', size: '1.8 MB', date: '2025-10-10' },
+  //   { id: 6, title: 'HTML/CSS Workshop', course: 'Web Technologies', type: 'Video', size: '98 MB', date: '2025-10-08' }
+  // ];
+
+  // const filteredResources = filter === 'all' 
+  //   ? resources 
+  //   : resources.filter(r => r.type.toLowerCase() === filter);
+  const filteredResources = resources;
 
   const totalResources = resources.length;
   const pdfCount = resources.filter(r => r.type === 'PDF').length;
   const videoCount = resources.filter(r => r.type === 'Video').length;
+
+  const handleViewDocument = (document) => {
+     console.log(`The Document File Url ${document.fileUrl}`);
+    if (document.fileUrl) {
+      window.open(document.fileUrl, '_blank');
+    } else {
+      // alert(`Viewing: ${document.title}\nThis would open the document in a viewer.`);
+    }
+  };
 
   return (
     <div className='studentResources'>
@@ -83,7 +104,7 @@ export const StudentResources = () => {
                   <span className="date">{new Date(resource.date).toLocaleDateString()}</span>
                 </div>
               </div>
-              <button className="download-btn">
+              <button className="download-btn" onClick={() => handleViewDocument(resource)}>
                 <BiDownload className="icon" />
                 Download
               </button>
