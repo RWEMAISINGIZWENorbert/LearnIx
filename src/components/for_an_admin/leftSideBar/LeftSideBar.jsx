@@ -10,13 +10,16 @@ import { FaRegBell , FaRegUser, FaChevronDown, FaChevronUp } from "react-icons/f
 import { HiOutlineMail } from "react-icons/hi";
 import { CiGlobe } from "react-icons/ci";
 import { NavLink, useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../../features/auth/authSlice';
+import { getSchoolProfile } from '../../../features/school/schoolSlice';
+import { useSelector, useDispatch } from 'react-redux';
 
 export const LeftSideBar = () => {
   const location = useLocation();
+  const dispatch  = useDispatch()
   const [userManagementOpen, setUserManagementOpen] = useState(false);
+  const { school, loading, error } = useSelector((state) => state.school);
 
   // Check if current path is any user management route
   const isUserManagementRoute = location.pathname.includes('/admin/students') || 
@@ -28,9 +31,13 @@ export const LeftSideBar = () => {
     if (isUserManagementRoute) {
       setUserManagementOpen(true);
     }
-  }, [isUserManagementRoute]);
+    dispatch(getSchoolProfile());
+  }, [isUserManagementRoute, dispatch]);
+
+  // useEffect(() => {
+  //   dispatch(getSchoolProfile());
+  //  }, [dispatch]);
   
-  const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleLogout = async (e) => {
@@ -89,10 +96,13 @@ export const LeftSideBar = () => {
             <div className="lowerSection">
                 <div className="profile">
                     <div className="img">
-                        <img src={`${import.meta.env.BASE_URL}assets/greenhills.png`} alt="LearnIX logo" />
+                        <img  
+                        src={school?.schoolLogo || `${import.meta.env.BASE_URL}assets/greenhills.png`} 
+                        alt= {school?.name || "School Logo" }
+                         />
                     </div>
                     <div className="info">
-                        <h3 className="name">Green Hills Academy</h3>
+                        <h3 className="name">{school?.name || "N/A"}</h3>
                         <p className="role">Administrator</p>
                     </div>
                 </div>

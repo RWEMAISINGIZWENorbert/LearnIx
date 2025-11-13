@@ -495,6 +495,44 @@ export const confirmSchoolPassword = createAsyncThunk(
   }
 );
 
+
+export const getSchoolProfile = createAsyncThunk(
+  'school/getProfile',
+  async (_, { rejectWithValue }) => {
+    try {
+      const schoolId = localStorage.getItem('schoolId');
+      
+      if (!schoolId) {
+        return rejectWithValue('No school ID found in local storage');
+      }
+
+      const response = await axios.get(
+        `${API_BASE_URL}/schools/school?schoolId=${schoolId}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        }
+      );
+
+      return response.data.data; // Return the school data from the response
+    } catch (error) {
+      // Handle different types of errors
+      if (error.response) {
+        // Server responded with a status code outside 2xx
+        return rejectWithValue(error.response.data.msg || 'Failed to fetch school profile');
+      } else if (error.request) {
+        // Request was made but no response received
+        return rejectWithValue('No response from server');
+      } else {
+        // Something else went wrong
+        return rejectWithValue(error.message);
+      }
+    }
+  }
+);
+
 const schoolSlice = createSlice({
   name: 'school',
   initialState,
@@ -623,9 +661,24 @@ const schoolSlice = createSlice({
       .addCase(fetchAllSchools.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      })
+      .addCase(getSchoolProfile.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(getSchoolProfile.fulfilled, (state, action) => {
+      state.loading = false;
+      state.school = action.payload; // Assuming you have a school field in your state
+      state.error = null;
+    })
+    .addCase(getSchoolProfile.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload || 'Failed to fetch school profile';
+    });;
   }
 });
+
+
 
 // Export actions
 export const { updateFormData, goToStep, nextStep, prevStep, resetForm } = schoolSlice.actions;
