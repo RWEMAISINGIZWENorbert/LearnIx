@@ -376,21 +376,65 @@ export const login = createAsyncThunk(
 );
 
 
+// export const logout = createAsyncThunk(
+//   'auth/logout',
+//   async (_, { rejectWithValue }) => {
+//     try {
+//       // Optional: Call backend logout endpoint if you have one
+//       // await axios.post(`${API_BASE_URL}/auth/logout`);
+
+//       // Clear all stored data
+//       localStorage.removeItem('token');
+//       localStorage.removeItem('userId');
+//       localStorage.removeItem('email');
+//       localStorage.removeItem('name');
+//       localStorage.removeItem('role');
+//       localStorage.removeItem('schoolId');
+//       localStorage.removeItem('tel');
+
+//       return {
+//         msg: 'Logged out successfully'
+//       };
+
+//     } catch (error) {
+//       console.error('Logout Error:', error);
+      
+//       // Even if logout fails, clear local data
+//       localStorage.clear();
+      
+//       return rejectWithValue({
+//         msg: error.message || 'Logout failed'
+//       });
+//     }
+//   }
+// );
+
 export const logout = createAsyncThunk(
   'auth/logout',
   async (_, { rejectWithValue }) => {
     try {
-      // Optional: Call backend logout endpoint if you have one
-      // await axios.post(`${API_BASE_URL}/auth/logout`);
+      // Call backend logout endpoint to clear cookies
+      try {
+        await axios.post(
+          `${API_BASE_URL}/auth/logout`,
+          {},
+          {
+            withCredentials: true, // Important for cookies
+            headers: {
+              'Content-Type': 'application/json',
+              // Include the current token in the request
+              'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+          }
+        );
+      } catch (error) {
+        console.warn('Logout API call failed, but proceeding with client-side cleanup', error);
+        // Continue with client-side cleanup even if API call fails
+      }
 
       // Clear all stored data
-      localStorage.removeItem('token');
-      localStorage.removeItem('userId');
-      localStorage.removeItem('email');
-      localStorage.removeItem('name');
-      localStorage.removeItem('role');
-      localStorage.removeItem('schoolId');
-      localStorage.removeItem('tel');
+      localStorage.clear();
+      sessionStorage.clear(); // Clear session storage as well
 
       return {
         msg: 'Logged out successfully'
@@ -401,14 +445,15 @@ export const logout = createAsyncThunk(
       
       // Even if logout fails, clear local data
       localStorage.clear();
+      sessionStorage.clear();
       
       return rejectWithValue({
         msg: error.message || 'Logout failed'
       });
     }
   }
-);
-
+)
+ 
 
 const authSlice = createSlice({
   name: 'auth',

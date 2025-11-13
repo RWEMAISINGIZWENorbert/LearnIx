@@ -10,6 +10,9 @@ import { FaRegBell , FaRegUser, FaChevronDown, FaChevronUp } from "react-icons/f
 import { HiOutlineMail } from "react-icons/hi";
 import { CiGlobe } from "react-icons/ci";
 import { NavLink, useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { logout } from '../../../features/auth/authSlice';
 
 export const LeftSideBar = () => {
   const location = useLocation();
@@ -26,6 +29,20 @@ export const LeftSideBar = () => {
       setUserManagementOpen(true);
     }
   }, [isUserManagementRoute]);
+  
+  const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const handleLogout = async (e) => {
+      e.preventDefault();
+      try {
+        await dispatch(logout()).unwrap();
+        navigate('/');
+      } catch (error) {
+        console.error('Logout failed:', error);
+      }
+    };
+
   return (
     <div className='leftSideBar'>
         <div className="box">
@@ -91,11 +108,16 @@ export const LeftSideBar = () => {
                         </NavLink>
                     </div>
                     <div className="separator"></div>
-                    <div className="logout">
+                    {/* <div className="logout">
                         <NavLink to='/' style={{textDecoration:'none'}}>
                             <button><span>Sign out</span><MdLogout className="icon" /></button>
                         </NavLink>
-                    </div>
+                    </div> */}
+                    <div className="logout">
+                        <button onClick={handleLogout} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+                            <span>Sign out</span><MdLogout className="icon" />
+                        </button>
+                    </div> 
                 </div>
             </div>
         </div>
