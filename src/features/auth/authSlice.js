@@ -452,13 +452,48 @@ export const logout = createAsyncThunk(
       });
     }
   }
-)
+);
+
+export const fetchUserProfile = createAsyncThunk(
+  'auth/fetchProfile',
+  async (_, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        return rejectWithValue('No authentication token found');
+      }
+
+      const response = await axios.get(
+        `${API_BASE_URL}/auth/profile`, // Adjust the endpoint if needed
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      return response.data.data; // The user data from your API
+    } catch (error) {
+      if (error.response) {
+        return rejectWithValue(error.response.data.msg || 'Failed to fetch profile');
+      } else if (error.request) {
+        return rejectWithValue('No response from server');
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  }
+);
  
 
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
     user: null,
+    userProfile: null,
+    profileLoading: false,
+    profileError: null,
     token: localStorage.getItem('token') || null,
     isAuthenticated: false,
     role: localStorage.getItem('role') || null,
@@ -612,7 +647,21 @@ const authSlice = createSlice({
         state.token = null;
         state.role = null;
         state.error = action.payload;
-      });
+      })
+      .addCase(fetchUserProfile.pending, (state) => {
+        state.profileLoading = true;
+        state.profileError = null;
+      })
+      .addCase(fetchUserProfile.fulfilled, (state, action) => {
+        state.profileLoading = false;
+        state.userProfile = action.payload;
+        state.profileError = null;
+      })
+      .addCase(fetchUserProfile.rejected, (state, action) => {
+        state.profileLoading = false;
+        state.profileError = action.payload;
+        state.userProfile = null;
+      });;
   },
 });
 

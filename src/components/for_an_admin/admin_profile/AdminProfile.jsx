@@ -1,26 +1,85 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getSchoolProfile } from '../../../features/school/schoolSlice';
+import { fetchUserProfile } from '../../../features/auth/authSlice';
 import './AdminProfile.css';
 import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaCalendar, FaCamera, FaEdit, FaSave, FaGlobe } from 'react-icons/fa';
 import { MdSchool, MdSecurity } from 'react-icons/md';
 
 export const AdminProfile = () => {
+  const dispatch = useDispatch();
+  const { school, loading } = useSelector((state) => state.school);
   const [isEditing, setIsEditing] = useState(false);
+  const { userProfile, profileLoading, profileError } = useSelector((state) => state.auth);
+  // const [profileData, setProfileData] = useState({
+  //   schoolName: 'Green Hills Academy',
+  //   adminId: 'ADGHA001',
+  //   email: 'info@greenhillsacademy.edu',
+  //   phone: '+250 788 123 456',
+  //   website: 'www.greenhillsacademy.rw',
+  //   address: 'KN 5 Rd, Kigali, Rwanda',
+  //   established: '2005',
+  //   schoolType: 'International School',
+  //   curriculum: 'Cambridge & IB',
+  //   totalStudents: '1,500+',
+  //   totalTeachers: '120+',
+  //   adminName: 'John Smith',
+  //   adminRole: 'School Administrator',
+  //   profileImage: `${import.meta.env.BASE_URL}assets/greenhills.png`
+  // });
   const [profileData, setProfileData] = useState({
-    schoolName: 'Green Hills Academy',
-    adminId: 'ADGHA001',
-    email: 'info@greenhillsacademy.edu',
-    phone: '+250 788 123 456',
-    website: 'www.greenhillsacademy.rw',
-    address: 'KN 5 Rd, Kigali, Rwanda',
-    established: '2005',
-    schoolType: 'International School',
-    curriculum: 'Cambridge & IB',
-    totalStudents: '1,500+',
-    totalTeachers: '120+',
-    adminName: 'John Smith',
+    schoolName: '',
+    email: '',
+    phone: '',
+    website: '',
+    address: '',
+    established: '',
+    schoolType: '',
+    curriculum: '',
+    totalStudents: '',
+    totalTeachers: '',
+    adminName: 'Admin', // I will replace this with the real na,e from the user prfofilr onw implmented
     adminRole: 'School Administrator',
-    profileImage: `${import.meta.env.BASE_URL}assets/greenhills.png`
+    profileImage: ''
   });
+
+   useEffect(() => {
+    if (school || userProfile) {
+    setProfileData(prevData => {
+      const updatedData = {
+        ...prevData,
+        // Update school-related fields if school exists
+        ...(school ? {
+          schoolName: school.name || '',
+          website: school.website || '',
+          address: school.address || '',
+          established: school.establishedYear || '',
+          schoolType: school.type || '',
+          curriculum: school.curriculum || '',
+          totalStudents: school.totalStudents || '',
+          totalTeachers: school.totalTeachers || '',
+          profileImage: school.schoolLogo || `${import.meta.env.BASE_URL}assets/greenhills.png`
+        } : {}),
+        // Update user-related fields if userProfile exists
+        ...(userProfile ? {
+          email: userProfile.email || '',  // Changed from userProfile.name to userProfile.email
+          phone: userProfile.tel || '',
+        } : {})
+      };
+      return updatedData;
+    });
+  }
+  }, [school,userProfile]);
+  
+   useEffect(() => {
+    dispatch(getSchoolProfile());
+    dispatch(fetchUserProfile());
+  }, [dispatch]);
+
+   if (loading) {
+    return <div>Loading school profile...</div>;
+  }
+ 
 
   const handleInputChange = (e) => {
     setProfileData({
@@ -47,6 +106,12 @@ export const AdminProfile = () => {
     setIsEditing(false);
     alert('Profile updated successfully!');
   };
+
+   if(profileLoading){
+    return <div>Loading profile...</div>;
+   }
+  //  console.log(`User Profile ${userProfile.email}`)
+  console.log(`The Profile Email is ${userProfile.email}`)
 
   return (
     <div className='admin-profile-page'>
@@ -191,11 +256,12 @@ export const AdminProfile = () => {
               <div className="details-grid">
                 <div className="detail-item">
                   <label>Email Address</label>
+                  {/* { console.log(`The Profile Email is ${userProfile.tel}`)} */}
                   {isEditing ? (
                     <input
                       type="email"
                       name="email"
-                      value={profileData.email}
+                      value= {profileData.email}
                       onChange={handleInputChange}
                     />
                   ) : (

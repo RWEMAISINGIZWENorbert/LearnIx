@@ -13,6 +13,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../../features/auth/authSlice';
 import { getSchoolProfile } from '../../../features/school/schoolSlice';
+import { fetchUserProfile } from '../../../features/auth/authSlice';
 import { useSelector, useDispatch } from 'react-redux';
 
 export const LeftSideBar = () => {
@@ -20,6 +21,7 @@ export const LeftSideBar = () => {
   const dispatch  = useDispatch()
   const [userManagementOpen, setUserManagementOpen] = useState(false);
   const { school, loading, error } = useSelector((state) => state.school);
+  const { userProfile, profileLoading, profileError } = useSelector((state) => state.auth);
 
   // Check if current path is any user management route
   const isUserManagementRoute = location.pathname.includes('/admin/students') || 
@@ -32,6 +34,7 @@ export const LeftSideBar = () => {
       setUserManagementOpen(true);
     }
     dispatch(getSchoolProfile());
+    dispatch(fetchUserProfile());
   }, [isUserManagementRoute, dispatch]);
 
   // useEffect(() => {
@@ -49,6 +52,14 @@ export const LeftSideBar = () => {
         console.error('Logout failed:', error);
       }
     };
+
+    if (profileLoading) {
+    return <div>Loading profile...</div>;
+  }
+
+  if (profileError) {
+    return <div>Error: {profileError}</div>;
+  }
 
   return (
     <div className='leftSideBar'>
@@ -107,9 +118,9 @@ export const LeftSideBar = () => {
                     </div>
                 </div>
                 <div className="contact">
-                    <div className="phone all"><MdOutlineLocalPhone className="icon" /><span>+1 234 567 890</span></div>
-                    <div className="email all"><HiOutlineMail className="icon" /><span>info@greenhillsacademy.edu</span></div>
-                    <div className="website all"><CiGlobe className="icon" /><span><a href="https://www.greenhillsacademy.rw" target='_blank'>www.greenhillsacademy.rw</a></span></div>
+                    {userProfile?.tel && <div className="phone all"><MdOutlineLocalPhone className="icon" /><span>{userProfile?.tel}</span></div>}
+                    {userProfile?.email && <div className="email all"><HiOutlineMail className="icon" /><span>{userProfile?.email}</span></div>}
+                    {/* {school?.website && <div className="website all"><CiGlobe className="icon" /><span><a href={`${school?.website}`}` target='_blank'>{school?.website}</a></span></div>} */}
                 </div>
                 <div className="lower">
                     <div className="prof">
