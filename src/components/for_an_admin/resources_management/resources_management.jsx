@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './resources_management.css'
 import { FaArrowLeft } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
@@ -6,6 +6,8 @@ import { DeleteConfirmation } from '../../shared/DeleteConfirmation';
 import { LuBookOpen, LuFileText, LuDownload, LuUpload, LuEye, LuTrash, LuPlus } from 'react-icons/lu';
 import { MdOutlineSubject } from 'react-icons/md';
 import { FaFilePdf, FaFileWord, FaFileImage, FaFileVideo } from "react-icons/fa";
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchAllResources } from '../../../features/resources/resourcesSlice';
 
 export const Resources_management = () => {
   let navigate = useNavigate();
@@ -17,53 +19,60 @@ export const Resources_management = () => {
   const [fileName, setFileName] = useState('');
   const [fileCategory, setFileCategory] = useState('');
   const [fileDescription, setFileDescription] = useState('');
-  const [documents, setDocuments] = useState([
-    {
-      id: 1,
-      name: "Mathematics Past Papers 2023",
-      type: "pdf",
-      size: "2.4 MB",
-      uploaded: "2 days ago",
-      downloads: 156,
-      category: "Past Papers"
-    },
-    {
-      id: 2,
-      name: "Our school new rules and regulations",
-      type: "pdf",
-      size: "1.8 MB",
-      uploaded: "1 week ago",
-      downloads: 89,
-      category: "Rules and regulations"
-    },
-    {
-      id: 3,
-      name: "English Literature Notes",
-      type: "docx",
-      size: "3.2 MB",
-      uploaded: "3 days ago",
-      downloads: 234,
-      category: "Learning notes"
-    },
-    {
-      id: 4,
-      name: "Chemistry Periodic Table",
-      type: "png",
-      size: "456 KB",
-      uploaded: "5 days ago",
-      downloads: 78,
-      category: "other"
-    },
-    {
-      id: 5,
-      name: "Mathematics notes",
-      type: "mp4",
-      size: "45.6 MB",
-      uploaded: "1 week ago",
-      downloads: 123,
-      category: "Learning notes"
-    }
-  ]);
+
+  const dispatch = useDispatch();
+const { resources: documents = [], loading, error } = useSelector((state) => state.resources);
+
+useEffect(() => {
+  dispatch(fetchAllResources());
+}, [dispatch]);
+  // const [documents, setDocuments] = useState([
+  //   {
+  //     id: 1,
+  //     name: "Mathematics Past Papers 2023",
+  //     type: "pdf",
+  //     size: "2.4 MB",
+  //     uploaded: "2 days ago",
+  //     downloads: 156,
+  //     category: "Past Papers"
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Our school new rules and regulations",
+  //     type: "pdf",
+  //     size: "1.8 MB",
+  //     uploaded: "1 week ago",
+  //     downloads: 89,
+  //     category: "Rules and regulations"
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "English Literature Notes",
+  //     type: "docx",
+  //     size: "3.2 MB",
+  //     uploaded: "3 days ago",
+  //     downloads: 234,
+  //     category: "Learning notes"
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "Chemistry Periodic Table",
+  //     type: "png",
+  //     size: "456 KB",
+  //     uploaded: "5 days ago",
+  //     downloads: 78,
+  //     category: "other"
+  //   },
+  //   {
+  //     id: 5,
+  //     name: "Mathematics notes",
+  //     type: "mp4",
+  //     size: "45.6 MB",
+  //     uploaded: "1 week ago",
+  //     downloads: 123,
+  //     category: "Learning notes"
+  //   }
+  // ]);
 
   const categories = [
     { name: "Learning notes", count: 45, color: "#3b82f6" },
@@ -74,15 +83,37 @@ export const Resources_management = () => {
     { name: "Other", count: 2, color: "#e45cf6ff" }
   ];
 
-  const getFileIcon = (type) => {
-    switch(type) {
-      case 'pdf': return <FaFilePdf className="icon pdf" />;
-      case 'docx': return <FaFileWord className="icon word" />;
-      case 'png': case 'jpg': case 'jpeg': return <FaFileImage className="icon image" />;
-      case 'mp4': case 'avi': return <FaFileVideo className="icon video" />;
-      default: return <LuFileText className="icon default" />;
-    }
-  };
+  // const getFileIcon = (type) => {
+  //   switch(type) {
+  //     case 'pdf': return <FaFilePdf className="icon pdf" />;
+  //     case 'docx': return <FaFileWord className="icon word" />;
+  //     case 'png': case 'jpg': case 'jpeg': return <FaFileImage className="icon image" />;
+  //     case 'mp4': case 'avi': return <FaFileVideo className="icon video" />;
+  //     default: return <LuFileText className="icon default" />;
+  //   }
+  // };
+
+  const formatFileSize = (bytes) => {
+  if (bytes === 0) return '0 Bytes';
+  const k = 1024;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+};
+
+const getFileIcon = (type) => {
+  switch(type) {
+    case 'pdf': return <FaFilePdf className="icon pdf" />;
+    case 'docx': 
+    case 'doc': return <FaFileWord className="icon word" />;
+    case 'png': 
+    case 'jpg': 
+    case 'jpeg': return <FaFileImage className="icon image" />;
+    case 'mp4': 
+    case 'avi': return <FaFileVideo className="icon video" />;
+    default: return <LuFileText className="icon default" />;
+  }
+};
 
   const getFileColor = (type) => {
     switch(type) {
@@ -92,7 +123,7 @@ export const Resources_management = () => {
       case 'mp4': case 'avi': return '#8b5cf6';
       default: return '#6b7280';
     }
-  };
+  };  
 
   const handleDelete = (item, type) => {
     setItemToDelete(item);
@@ -102,11 +133,11 @@ export const Resources_management = () => {
 
   const confirmDelete = () => {
     // Handle actual deletion logic here
-    setDocuments(documents.filter(doc => doc.id !== itemToDelete.id));
-    console.log(`Deleting ${deleteType}:`, itemToDelete);
-    setShowDeleteConfirm(false);
-    setItemToDelete(null);
-    setDeleteType('');
+    // setDocuments(documents.filter(doc => doc.id !== itemToDelete.id));
+    // console.log(`Deleting ${deleteType}:`, itemToDelete);
+    // setShowDeleteConfirm(false);
+    // setItemToDelete(null);
+    // setDeleteType('');
   };
 
   const handleFileSelect = (e) => {
@@ -147,33 +178,29 @@ export const Resources_management = () => {
     }
   };
 
-  const handleViewDocument = (document) => {
-    // In a real application, this would open the document in a new tab or modal
-    if (document.file) {
-      const fileURL = URL.createObjectURL(document.file);
-      window.open(fileURL, '_blank');
+   const handleViewDocument = (document) => {
+     console.log(`Call To View Document ${document.fileUrl}`);
+    if (document.fileUrl) {
+       console.log(`The Document File ${document.fileUrl}`);
+      // const fileURL = URL.createObjectURL(document.fileUrl);
+      window.open(document.fileUrl, '_blank');
     } else {
-      alert(`Viewing: ${document.name}\nThis would open the document in a viewer.`);
+      alert(`Viewing: ${document.title || document.name}\nThis would open the document in a viewer.`);
     }
   };
 
   const handleDownloadDocument = (doc) => {
     // In a real application, this would trigger a file download
-    if (doc.file) {
-      const fileURL = URL.createObjectURL(doc.file);
+    console.log(`The Document Data ${doc}`)
+    if (doc.fileUrl) {
+      // const fileURL = URL.createObjectURL(doc.fileUrl);
       const link = window.document.createElement('a');
-      link.href = fileURL;
-      link.download = doc.name;
+      link.href = doc.fileUrl;
+      link.download = doc.title;
       window.document.body.appendChild(link);
       link.click();
       window.document.body.removeChild(link);
       
-      // Update download count
-      setDocuments(documents.map(d => 
-        d.id === doc.id 
-          ? { ...d, downloads: d.downloads + 1 }
-          : d
-      ));
     } else {
       alert(`Downloading: ${doc.name}`);
     }
@@ -184,6 +211,28 @@ export const Resources_management = () => {
     { id: 'categories', label: 'Categories', icon: <MdOutlineSubject /> },
     { id: 'uploads', label: 'Upload', icon: <LuUpload /> },
   ];
+
+
+
+  const filteredDocuments = documents?.filter(doc => {
+  if (!doc) return false;
+  if (activeTab === 'all') return true;
+  const fileType = doc.fileUrl?.split('.').pop().toLowerCase();
+  
+  switch (activeTab) {
+    case 'pdf':
+      return fileType === 'pdf';
+    case 'docx':
+    case 'doc':
+      return fileType === 'docx' || fileType === 'doc';
+    case 'images':
+      return ['jpg', 'jpeg', 'png', 'gif'].includes(fileType);
+    case 'videos':
+      return ['mp4', 'webm', 'ogg'].includes(fileType);
+    default:
+      return true;
+  }
+}) || [];
 
   const renderContent = () => {
     switch(activeTab) {
@@ -200,26 +249,27 @@ export const Resources_management = () => {
               </div>
             </div>
             <div className="documents_list">
-              {documents.map(document => (
-                <div key={document.id} className="document_card">
+              {filteredDocuments.map(doc => (
+                <div key={doc._id} className="document_card">
                   <div className="document_icon">
-                    {getFileIcon(document.type)}
+                    {/* {getFileIcon(document.type)} */}
+                    {getFileIcon(doc.fileUrl?.split('.').pop() || '')}
                   </div>
                   <div className="document_info">
-                    <h4>{document.name}</h4>
+                    <h4>{doc.title || doc.name}</h4>
                     <div className="document_meta">
-                      <span className="category">{document.category}</span>
-                      <span className="size">{document.size}</span>
-                      <span className="uploaded">{document.uploaded}</span>
+                      <span className="category">{(doc.fileUrl?.split('.').pop() || '').toUpperCase()}</span>
+                      <span className="size">{formatFileSize(doc.fileSize || 0)}</span>
+                      <span className="uploaded">{new Date(doc.createdAt).toLocaleDateString()}</span>
                     </div>
                     <div className="document_stats">
-                      <span className="downloads">{document.downloads} downloads</span>
+                      <span className="downloads">{doc.downloads} downloads</span>
                     </div>
                   </div>
                   <div className="document_actions">
-                    <button className="view" onClick={() => handleViewDocument(document)} title="View document"><LuEye /></button>
-                    <button className="download" onClick={() => handleDownloadDocument(document)} title="Download document"><LuDownload /></button>
-                    <button className="delete" onClick={() => handleDelete(document, 'document')} title="Delete document"><LuTrash /></button>
+                    <button className="view" onClick={() => handleViewDocument(doc)} title="View document"><LuEye /></button>
+                    <button className="download" onClick={() => handleDownloadDocument(doc)} title="Download document"><LuDownload /></button>
+                    <button className="delete" onClick={() => handleDelete(doc, 'document')} title="Delete document"><LuTrash /></button>
                   </div>
                 </div>
               ))}
