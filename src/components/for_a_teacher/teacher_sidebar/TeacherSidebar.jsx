@@ -19,11 +19,10 @@ export const TeacherSidebar = () => {
    const navigate = useNavigate();
    const { school, loading, error } = useSelector((state) => state.school);
    const { userProfile, profileLoading, profileError } = useSelector((state) => state.auth);
-   
     useEffect(() => {
       dispatch(getSchoolProfile());
-      dispatch(fetchUserProfile());
-    }, [dispatch]); 
+      dispatch(fetchUserProfile(navigate));
+    }, [dispatch, navigate]); 
     
     if (profileLoading) {
           return <div>Loading profile...</div>;

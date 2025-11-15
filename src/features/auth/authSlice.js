@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 console.log(` API_BASE_URL: ${API_BASE_URL}`);
 
@@ -456,11 +456,13 @@ export const logout = createAsyncThunk(
 
 export const fetchUserProfile = createAsyncThunk(
   'auth/fetchProfile',
-  async (_, { rejectWithValue }) => {
+  async (navigate, { rejectWithValue }) => {
     try {
+      // const navigate = useNavigate();
       const token = localStorage.getItem('token');
       if (!token) {
-        return rejectWithValue('No authentication token found');
+           navigate('/signUp');
+        // return rejectWithValue('No authentication token found');
       }
 
       const response = await axios.get(

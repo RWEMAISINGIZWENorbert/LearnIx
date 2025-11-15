@@ -5,6 +5,7 @@ import { fetchUserProfile } from '../../../features/auth/authSlice';
 import './AdminProfile.css';
 import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaCalendar, FaCamera, FaEdit, FaSave, FaGlobe } from 'react-icons/fa';
 import { MdSchool, MdSecurity } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
 
 export const AdminProfile = () => {
   const dispatch = useDispatch();
@@ -70,11 +71,11 @@ export const AdminProfile = () => {
     });
   }
   }, [school,userProfile]);
-  
+  const navigate = useNavigate();
    useEffect(() => {
     dispatch(getSchoolProfile());
-    dispatch(fetchUserProfile());
-  }, [dispatch]);
+    dispatch(fetchUserProfile(navigate));
+  }, [dispatch, navigate]);
 
    if (loading) {
     return <div>Loading school profile...</div>;

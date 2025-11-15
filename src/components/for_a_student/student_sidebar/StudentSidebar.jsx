@@ -30,8 +30,8 @@ export const StudentSidebar = () => {
     
     useEffect(() => {
         dispatch(getSchoolProfile());
-        dispatch(fetchUserProfile());
-      }, [dispatch]);
+        dispatch(fetchUserProfile(navigate));
+      }, [dispatch, navigate]);
 
        if (profileLoading) {
           return <div>Loading profile...</div>;

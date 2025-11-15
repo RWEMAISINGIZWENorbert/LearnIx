@@ -1,27 +1,82 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './TeacherProfile.css';
 import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaCalendar, FaUser, FaCamera, FaEdit, FaSave, FaGraduationCap } from 'react-icons/fa';
 import { MdSchool, MdPerson } from 'react-icons/md';
+import { useDispatch, useSelector } from 'react-redux';
+import { getSchoolProfile } from '../../../features/school/schoolSlice';
+import { fetchUserProfile } from '../../../features/auth/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 export const TeacherProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
-  const [profileData, setProfileData] = useState({
-    name: 'Dr. Sarah Johnson',
-    teacherId: 'TRGHASOD042',
-    email: 'sarah.johnson@learnix.edu',
-    phone: '+250 788 654 321',
-    department: 'Software Development',
-    school: 'Green Hills Academy',
-    specialization: 'Computer Science',
-    qualification: 'PhD in Computer Science',
-    address: 'Kigali, Rwanda',
-    dateOfBirth: '1985-07-22',
-    joinDate: 'January 10, 2019',
-    employmentType: 'Full-time',
-    subjects: ['Advanced Programming', 'Data Structures', 'Web Development'],
+  const dispatch = useDispatch();
+  const { userProfile, profileLoading, profileError } = useSelector((state) => state.auth);
+  const { school, loading: schoolLoading } = useSelector((state) => state.school);
+  // const [profileData, setProfileData] = useState({
+  //   name: 'Dr. Sarah Johnson',
+  //   teacherId: 'TRGHASOD042',
+  //   email: 'sarah.johnson@learnix.edu',
+  //   phone: '+250 788 654 321',
+  //   department: 'Software Development',
+  //   school: 'Green Hills Academy',
+  //   specialization: 'Computer Science',
+  //   qualification: 'PhD in Computer Science',
+  //   address: 'Kigali, Rwanda',
+  //   dateOfBirth: '1985-07-22',
+  //   joinDate: 'January 10, 2019',
+  //   employmentType: 'Full-time',
+  //   subjects: ['Advanced Programming', 'Data Structures', 'Web Development'],
+  //   profileImage: `${import.meta.env.BASE_URL}assets/profile_pic_blank.png`
+  // });
+   const [profileData, setProfileData] = useState({
+    name: '',
+    teacherId: '',
+    email: '',
+    phone: '',
+    department: '',
+    school: '',
+    specialization: '',
+    qualification: '',
+    address: '',
+    dateOfBirth: '',
+    joinDate: '',
+    employmentType: '',
+    subjects: [],
     profileImage: `${import.meta.env.BASE_URL}assets/profile_pic_blank.png`
   });
+ const navigate = useNavigate();
+  useEffect(() => {
+    dispatch(fetchUserProfile(navigate));
+    dispatch(getSchoolProfile());
+  }, [dispatch, navigate]);
 
+   useEffect(() => {
+    if (userProfile || school) {
+      setProfileData(prevData => ({
+        ...prevData,
+        // Update user-related fields
+        ...(userProfile ? {
+          name: userProfile.name || '',
+          email: userProfile.email || '',
+          phone: userProfile.tel || '',
+          teacherId: userProfile.teacherId || '',
+          specialization: userProfile.specialization || '',
+          qualification: userProfile.qualification || '',
+          dateOfBirth: userProfile.dateOfBirth || '',
+          joinDate: userProfile.joinDate ? new Date(userProfile.joinDate).toLocaleDateString() : '',
+          address: userProfile.address || '',
+          profileImage: userProfile.profileImage || `${import.meta.env.BASE_URL}assets/profile_pic_blank.png`
+        } : {}),
+        // Update school-related fields
+        ...(school ? {
+          school: school.name || '',
+          department: school.department || ''
+        } : {})
+      }));
+    }
+  }, [userProfile, school]);
+
+  
   const handleInputChange = (e) => {
     setProfileData({
       ...profileData,
@@ -47,6 +102,14 @@ export const TeacherProfile = () => {
     setIsEditing(false);
     alert('Profile updated successfully!');
   };
+
+  if (profileLoading || schoolLoading) {
+    return <div className="loading">Loading profile...</div>;
+  }
+
+  if (profileError) {
+    return <div className="error">Error: {profileError}</div>;
+  }
 
   return (
     <div className='teacher-profile-page'>

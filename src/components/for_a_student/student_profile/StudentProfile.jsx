@@ -1,22 +1,79 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './StudentProfile.css';
 import { FaCalendar } from 'react-icons/fa';
 import { MdSchool } from 'react-icons/md';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUserProfile } from '../../../features/auth/authSlice';
+import { getSchoolProfile } from '../../../features/school/schoolSlice'
+import { useNavigate } from 'react-router-dom';
 
 export const StudentProfile = () => {
-  const [profileData] = useState({
-    name: 'John Doe',
-    studentId: 'STU001',
-    email: 'john.doe@student.com',
-    phone: '+250 788 123 456',
-    class: 'L5 SOD A',
-    school: 'Green Hills Academy',
-    guardianName: 'Jane Doe',
-    guardianPhone: '+250 788 987 654',
-    address: 'Kigali, Rwanda',
-    enrollmentDate: 'August 12, 2022',
-    profileImage: `${import.meta.env.BASE_URL}assets/profile_pic_blank.png`
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { userProfile, profileLoading, profileError } = useSelector((state) => state.auth);
+  const { school, loading: schoolLoading } = useSelector((state) => state.school);
+  // const [profileData] = useState({
+  //   name: 'John Doe',
+  //   studentId: 'STU001',
+  //   email: 'john.doe@student.com',
+  //   phone: '+250 788 123 456',
+  //   class: 'L5 SOD A',
+  //   school: 'Green Hills Academy',
+  //   guardianName: 'Jane Doe',
+  //   guardianPhone: '+250 788 987 654',
+  //   address: 'Kigali, Rwanda',
+  //   enrollmentDate: 'August 12, 2022',
+  //   profileImage: `${import.meta.env.BASE_URL}assets/profile_pic_blank.png`
+  // });
+  const [profileData, setProfileData] = useState({
+    name: '',
+    studentId: '',
+    email: '',
+    phone: '',
+    class: '',
+    school: '',
+    guardianName: '',
+    guardianPhone: '',
+    address: '',
+    enrollmentDate: '',
+    profileImage: ``
   });
+
+   useEffect(() => {
+    dispatch(fetchUserProfile(navigate));
+    dispatch(getSchoolProfile());
+  }, [dispatch, navigate])
+
+
+  useEffect(() => {
+    if (userProfile || school) {
+      setProfileData(prevData => ({
+        ...prevData,
+        // Update user-related fields
+        ...(userProfile ? {
+          name: userProfile.name || '',
+          email: userProfile.email || '',
+          phone: userProfile.tel || '',
+          studentId: userProfile.studentId || '',
+          className: userProfile.className || userProfile.class || '',
+          address: userProfile.address || '',
+          enrollmentDate: userProfile.enrollmentDate 
+            ? new Date(userProfile.enrollmentDate).toLocaleDateString() 
+            : '',
+          profileImage: userProfile.profileImage || `${import.meta.env.BASE_URL}assets/profile_pic_blank.png`,
+          // Guardian information might be in a nested object or separate fields
+          ...(userProfile.guardian ? {
+            guardianName: userProfile.guardian.name || '',
+            guardianPhone: userProfile.guardian.phone || ''
+          } : {})
+        } : {}),
+        // Update school-related fields
+        ...(school ? {
+          school: school.name || ''
+        } : {})
+      }));
+    }
+  }, [userProfile, school]);
 
   return (
     <div className='student-profile-page'>

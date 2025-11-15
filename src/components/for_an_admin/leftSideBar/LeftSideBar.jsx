@@ -29,20 +29,19 @@ export const LeftSideBar = () => {
                                   location.pathname.includes('/admin/classes');
 
   // Keep dropdown open if on any user management page
+  const navigate = useNavigate();
   useEffect(() => {
     if (isUserManagementRoute) {
       setUserManagementOpen(true);
     }
     dispatch(getSchoolProfile());
-    dispatch(fetchUserProfile());
-  }, [isUserManagementRoute, dispatch]);
+    dispatch(fetchUserProfile(navigate));
+  }, [isUserManagementRoute, dispatch, navigate]);
 
   // useEffect(() => {
   //   dispatch(getSchoolProfile());
   //  }, [dispatch]);
   
-    const navigate = useNavigate();
-
     const handleLogout = async (e) => {
       e.preventDefault();
       try {
