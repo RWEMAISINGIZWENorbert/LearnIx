@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './TeacherSidebar.css';
 import { RxDashboard } from "react-icons/rx";
 import { MdLogout, MdOutlineAssignment } from "react-icons/md";
@@ -8,13 +8,30 @@ import { HiOutlineMail, HiOutlineAcademicCap } from "react-icons/hi";
 import { GrResources, GrAnnounce } from "react-icons/gr";
 import { PiStudentBold } from "react-icons/pi";
 import { NavLink } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../../features/auth/authSlice';
+import { getSchoolProfile } from '../../../features/school/schoolSlice';
+import { fetchUserProfile } from '../../../features/auth/authSlice';
+import { useSelector, useDispatch } from 'react-redux';
 
 export const TeacherSidebar = () => {
-  const dispatch = useDispatch();
-    const navigate = useNavigate();
+   const dispatch = useDispatch();
+   const navigate = useNavigate();
+   const { school, loading, error } = useSelector((state) => state.school);
+   const { userProfile, profileLoading, profileError } = useSelector((state) => state.auth);
+   
+    useEffect(() => {
+      dispatch(getSchoolProfile());
+      dispatch(fetchUserProfile());
+    }, [dispatch]); 
+    
+    if (profileLoading) {
+          return <div>Loading profile...</div>;
+        }
+      
+        if (profileError) {
+          return <div>Error: {profileError}</div>;
+        }
 
     const handleLogout = async (e) => {
       e.preventDefault();
@@ -62,15 +79,15 @@ export const TeacherSidebar = () => {
                         <img src={`${import.meta.env.BASE_URL}assets/profile_pic_blank.png`} alt="Teacher profile" />
                     </div>
                     <div className="info">
-                        <h3 className="name">Dr. Sarah Johnson</h3>
+                        <h3 className="name">{userProfile?.name || userProfile?.firstName + ' ' + userProfile?.lastName}</h3>
                         <p className="role">Teacher</p>
-                        <p className="id">ID: TCHR042</p>
-                        <p className="school">Green Hills Academy</p>
+                        {/* <p className="id">ID: TCHR042</p> */}
+                        <p className="school">{school?.name}</p>
                     </div>
                 </div>
                 <div className="contact">
-                    <div className="email all"><HiOutlineMail className="icon" /><span>sarah.johnson@learnix.edu</span></div>
-                    <div className="dept all"><HiOutlineAcademicCap className="icon" /><span>Software Development Dept.</span></div>
+                    <div className="email all"><HiOutlineMail className="icon" /><span>{userProfile?.email}</span></div>
+                    {/* <div className="dept all"><HiOutlineAcademicCap className="icon" /><span>Software Development Dept.</span></div> */}
                 </div>
                 <div className="lower">
                     <div className="prof">
