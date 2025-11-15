@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './StudentSidebar.css';
 import { RxDashboard } from "react-icons/rx";
 import { MdLogout, MdOutlineAssignment } from "react-icons/md";
@@ -7,13 +7,16 @@ import { FaRegBell, FaRegUser } from "react-icons/fa";
 import { HiOutlineMail, HiOutlineAcademicCap } from "react-icons/hi";
 import { GrResources, GrAnnounce } from "react-icons/gr";
 import { NavLink } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { logout } from '../../../features/auth/authSlice';
+import { logout, fetchUserProfile } from '../../../features/auth/authSlice';
+import { getSchoolProfile } from '../../../features/school/schoolSlice';
+import { useSelector, useDispatch } from 'react-redux';
 
 export const StudentSidebar = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { userProfile, profileLoading, profileError } = useSelector((state) => state.auth);
+    const { school, loading, error } = useSelector((state) => state.school);
 
     const handleLogout = async (e) => {
       e.preventDefault();
@@ -24,6 +27,20 @@ export const StudentSidebar = () => {
         console.error('Logout failed:', error);
       }
     };
+    
+    useEffect(() => {
+        dispatch(getSchoolProfile());
+        dispatch(fetchUserProfile());
+      }, [dispatch]);
+
+       if (profileLoading) {
+          return <div>Loading profile...</div>;
+        }
+      
+        if (profileError) {
+          return <div>Error: {profileError}</div>;
+        }
+
   return (
     <div className='studentSidebar'>
         <div className="box">
@@ -61,15 +78,16 @@ export const StudentSidebar = () => {
                         <img src={`${import.meta.env.BASE_URL}assets/profile_pic_blank.png`} alt="Student profile" />
                     </div>
                     <div className="info">
-                        <h3 className="name">John Doe</h3>
-                        <p className="role">Student - L5 SOD A</p>
-                        <p className="id">ID: STU001</p>
-                        <p className="school">Green Hills Academy</p>
+                        <h3 className="name">{userProfile?.name || userProfile?.firstName + ' ' + userProfile?.lastName}</h3>
+                        {/* <p className="role">Student - L5 SOD A</p> */}
+                        <p className="role">Student</p>
+                        {/* <p className="id">ID: STU001</p> */}
+                        <p className="school">{school?.name || "N/A"}</p>
                     </div>
                 </div>
                 <div className="contact">
-                    <div className="email all"><HiOutlineMail className="icon" /><span>john.doe@student.com</span></div>
-                    <div className="class all"><HiOutlineAcademicCap className="icon" /><span>Level 5 Software Development A</span></div>
+                    <div className="email all"><HiOutlineMail className="icon" /><span>{userProfile?.email || "N/A"}</span></div>
+                    {/* <div className="class all"><HiOutlineAcademicCap className="icon" /><span>Level 5 Software Development A</span></div> */}
                 </div>
                 <div className="lower">
                     <div className="prof">
