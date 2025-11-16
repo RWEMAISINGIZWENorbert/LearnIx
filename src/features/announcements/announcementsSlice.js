@@ -109,7 +109,7 @@ export const deleteAnnouncement = createAsyncThunk(
           'Authorization': `Bearer ${auth.token}`,
         },
       };
-
+      console.log(`Anouncement Id to be deleted: ${id}`);
       await axios.delete(`${API_URL}/announcements/delete/${id}`, config);
       return id; // Return the deleted announcement ID
     } catch (error) {

@@ -1,8 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './communications_management.css';
 import { DeleteConfirmation } from '../../shared/DeleteConfirmation';
 import { FaPlus, FaBullhorn, FaEnvelope, FaSms, FaEdit, FaTrash, FaEye, FaPaperPlane } from 'react-icons/fa';
 import { MdNotifications } from 'react-icons/md';
+import { useDispatch, useSelector } from 'react-redux';
+import { 
+  fetchAllAnnouncements, 
+  deleteAnnouncement,
+  selectAnnouncements,
+  selectAnnouncementsLoading,
+  selectAnnouncementsError,
+  resetAnnouncementState,
+  createAnnouncement
+} from '../../../features/announcements/announcementsSlice';
 
 export const Communications_management = () => {
   const [activeTab, setActiveTab] = useState('announcements');
@@ -14,55 +24,77 @@ export const Communications_management = () => {
   const [itemToDelete, setItemToDelete] = useState(null);
   const [deleteType, setDeleteType] = useState('');
 
-  const announcements = [
-    {
-      id: 1,
-      title: 'Mid-Term Examinations Schedule',
-      message: 'All students are reminded that mid-term examinations will commence on Monday, November 6th...',
-      date: '2024-10-25',
-      author: 'Academic Affairs',
-      recipients: 'All Students',
-      status: 'Published'
-    },
-    {
-      id: 2,
-      title: 'Parent-Teacher Conference',
-      message: 'We are pleased to invite all parents to our annual parent-teacher conference...',
-      date: '2024-10-24',
-      author: 'Administration',
-      recipients: 'Parents & Guardians',
-      status: 'Published'
-    },
-    {
-      id: 3,
-      title: 'School Holiday Notice',
-      message: 'The school will be closed for the public holiday on November 1st...',
-      date: '2024-10-23',
-      author: 'Administration',
-      recipients: 'All',
-      status: 'Draft'
+  const dispatch = useDispatch();
+  const announcements = useSelector(selectAnnouncements);
+  const loading = useSelector(selectAnnouncementsLoading);
+  const error = useSelector(selectAnnouncementsError);
+
+  useEffect(() => {
+    dispatch(fetchAllAnnouncements());
+    return () => {
+      dispatch(resetAnnouncementState());
+    };
+  }, [dispatch]);
+
+  const handleDelete = async (id) => {
+    if (window.confirm('Are you sure you want to delete this announcement?')) {
+      await dispatch(deleteAnnouncement(id));
     }
-  ];
+    // Show success message
+    alert('Announcement deleted successfully!');
+  };
+
+
+
+  // const announcements = [
+  //   {
+  //     id: 1,
+  //     title: 'Mid-Term Examinations Schedule',
+  //     message: 'All students are reminded that mid-term examinations will commence on Monday, November 6th...',
+  //     date: '2024-10-25',
+  //     author: 'Academic Affairs',
+  //     recipients: 'All Students',
+  //     status: 'Published'
+  //   },
+  //   {
+  //     id: 2,
+  //     title: 'Parent-Teacher Conference',
+  //     message: 'We are pleased to invite all parents to our annual parent-teacher conference...',
+  //     date: '2024-10-24',
+  //     author: 'Administration',
+  //     recipients: 'Parents & Guardians',
+  //     status: 'Published'
+  //   },
+  //   {
+  //     id: 3,
+  //     title: 'School Holiday Notice',
+  //     message: 'The school will be closed for the public holiday on November 1st...',
+  //     date: '2024-10-23',
+  //     author: 'Administration',
+  //     recipients: 'All',
+  //     status: 'Draft'
+  //   }
+  // ];
 
   const messages = [
-    {
-      id: 1,
-      subject: 'Assignment Deadline Extension',
-      preview: 'The deadline for the Programming assignment has been extended to...',
-      sender: 'Dr. Sarah Johnson',
-      recipient: 'L5 SOD A Students',
-      date: '2024-10-25',
-      read: false
-    },
-    {
-      id: 2,
-      subject: 'Library Books Return Reminder',
-      preview: 'Please return all borrowed library books by Friday...',
-      sender: 'Library Department',
-      recipient: 'All Students',
-      date: '2024-10-24',
-      read: true
-    }
+    // {
+    //   id: 1,
+    //   subject: 'Assignment Deadline Extension',
+    //   preview: 'The deadline for the Programming assignment has been extended to...',
+    //   sender: 'Dr. Sarah Johnson',
+    //   recipient: 'L5 SOD A Students',
+    //   date: '2024-10-25',
+    //   read: false
+    // },
+    // {
+    //   id: 2,
+    //   subject: 'Library Books Return Reminder',
+    //   preview: 'Please return all borrowed library books by Friday...',
+    //   sender: 'Library Department',
+    //   recipient: 'All Students',
+    //   date: '2024-10-24',
+    //   read: true
+    // }
   ];
 
   const stats = [
@@ -88,10 +120,27 @@ export const Communications_management = () => {
     { id: 5, name: 'Michael Brown', class: 'L5 SOD B' }
   ];
 
-  const handleDelete = (item, type) => {
-    setItemToDelete(item);
-    setDeleteType(type);
-    setShowDeleteConfirm(true);
+  // const handleDelete = (item, type) => {
+  //   setItemToDelete(item);
+  //   setDeleteType(type);
+  //   setShowDeleteConfirm(true);
+  // };
+   
+  const [formData, setFormData] = useState({
+    title: '',
+    message: '',
+    recipients: 'all',  // Default to 'all' as per your API
+    priority: 'normal', // Default priority
+    author: 'admin',    // Default author as per your API
+    status: 'draft'     // Default status
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
   const confirmDelete = () => {
@@ -101,6 +150,40 @@ export const Communications_management = () => {
     setItemToDelete(null);
     setDeleteType('');
   };
+
+ 
+
+  const  handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    // Dispatch the createAnnouncement action with the form data
+    await dispatch(createAnnouncement(formData)).unwrap();
+    
+    // Show success message
+    alert('Announcement created successfully!');
+    
+    // Close the modal and reset form
+    setShowNewModal(false);
+    setFormData({
+      title: '',
+      message: '',
+      recipients: 'all',
+      priority: 'normal',
+      author: 'admin',
+      status: 'draft'
+    });
+    
+    // Refresh the announcements list
+    dispatch(fetchAllAnnouncements());
+    
+  } catch (error) {
+    console.error('Failed to create announcement:', error);
+    alert('Failed to create announcement. Please try again.');
+  }
+};
+
+  if (loading) return <div className="loading">Loading announcements...</div>;
+  if (error) return <div className="error">Error: {error}</div>;
 
   return (
     <div className='communications_management'>
@@ -137,29 +220,29 @@ export const Communications_management = () => {
         >
           <FaBullhorn /> Announcements
         </button>
-        <button
+        {/* <button
           className={activeTab === 'messages' ? 'active' : ''}
           onClick={() => setActiveTab('messages')}
         >
           <FaEnvelope /> Messages
-        </button>
+        </button> */}
       </div>
 
       {/* Content Area */}
       {activeTab === 'announcements' && (
         <div className="communications_management_content">
           <div className="communications_management_list">
-            {announcements.map(announcement => (
-              <div className="communications_management_card" key={announcement.id}>
+            {announcements.length > 0 ? announcements.map(announcement => (
+              <div className="communications_management_card" key={announcement._id || announcement.id}>
                 <div className="communications_management_card_header">
                   <div>
                     <h3>{announcement.title}</h3>
                     <div className="communications_management_card_meta">
                       <span className="communications_management_author">{announcement.author}</span>
                       <span className="communications_management_date">{announcement.date}</span>
-                      <span className={`communications_management_status ${announcement.status.toLowerCase()}`}>
+                      { announcement.status && <span className={`communications_management_status ${announcement.status.toLowerCase()}`}>
                         {announcement.status}
-                      </span>
+                        </span>}
                     </div>
                   </div>
                   <div className="communications_management_card_actions">
@@ -169,7 +252,7 @@ export const Communications_management = () => {
                     <button className="communications_management_action_btn edit">
                       <FaEdit />
                     </button>
-                    <button className="communications_management_action_btn delete" onClick={() => handleDelete(announcement, 'announcement')}>
+                    <button className="communications_management_action_btn delete" onClick={() => handleDelete(announcement._id || announcement.id, 'announcement')}>
                       <FaTrash />
                     </button>
                   </div>
@@ -186,7 +269,7 @@ export const Communications_management = () => {
                   )}
                 </div>
               </div>
-            ))}
+            )) : <p>No announcements found</p>}
           </div>
         </div>
       )}
@@ -226,17 +309,20 @@ export const Communications_management = () => {
       )}
 
       {/* Unified Communication Modal */}
-      {showNewModal && (
+      {
+      showNewModal && (
+        <form action="" onSubmit={handleSubmit}>
         <div className="modal_overlay" onClick={() => setShowNewModal(false)}>
+           
           <div className="modal_content" onClick={(e) => e.stopPropagation()}>
             <div className="modal_header">
               <h3>New Communication</h3>
               <button className="close_button" onClick={() => setShowNewModal(false)}>×</button>
             </div>
-            
+             
             <div className="modal_body">
               {/* Communication Type Selection */}
-              <div className="form_field">
+              {/* <div className="form_field">
                 <label>Communication Type</label>
                 <div className="type_selector">
                   <button 
@@ -260,12 +346,18 @@ export const Communications_management = () => {
                     <FaEnvelope /> Message
                   </button>
                 </div>
-              </div>
+              </div> */}
 
               {/* Subject/Title */}
               <div className="form_field">
                 <label>{communicationType === 'announce' ? 'Announcement Title' : 'Message Subject'}</label>
-                <input type="text" placeholder={communicationType === 'announce' ? 'Enter announcement title' : 'Enter message subject'} />
+                <input 
+                type="text"
+                name="title" 
+                value={formData.title}
+                onChange={handleInputChange}
+                placeholder={communicationType === 'announce' ? 'Enter announcement title' : 'Enter message subject'}
+                 />
               </div>
 
               {/* Recipient Selection */}
@@ -284,15 +376,19 @@ export const Communications_management = () => {
                 ) : (
                   <>
                     <select 
-                      value={recipientType} 
-                      onChange={(e) => {
-                        setRecipientType(e.target.value);
-                        setSpecificRecipient('');
-                      }}
+                      // value={recipientType} 
+                      // onChange={(e) => {
+                      //   setRecipientType(e.target.value);
+                      //   setSpecificRecipient('');
+                      // }}
+                      name="recipients"
+                      value={formData.recipients}
+                      onChange={handleInputChange}
                     >
-                      <option value="">Select recipient type</option>
-                      <option value="student">Student</option>
-                      <option value="teacher">Teacher</option>
+                      {/* <option value="">Select recipient type</option> */}
+                      <option value="all">All (Students & Teachers)</option>
+                      <option value="students">Student</option>
+                      <option value="teachers">Teacher</option>
                     </select>
                     
                     {recipientType && (
@@ -322,6 +418,9 @@ export const Communications_management = () => {
               <div className="form_field">
                 <label>Message</label>
                 <textarea 
+                  name="message"
+                  value={formData.message}
+                  onChange={handleInputChange}
                   rows="6" 
                   placeholder={communicationType === 'announce' ? 'Enter announcement content...' : 'Enter message content...'}
                 ></textarea>
@@ -331,10 +430,14 @@ export const Communications_management = () => {
               {communicationType === 'message' && (
                 <div className="form_field">
                   <label>Priority</label>
-                  <select>
+                  <select
+                    name="priority"
+                    value={formData.priority}
+                    onChange={handleInputChange}
+                   >
                     <option value="normal">Normal</option>
                     <option value="high">High</option>
-                    <option value="urgent">Urgent</option>
+                    <option value="low">Low</option>
                   </select>
                 </div>
               )}
@@ -350,7 +453,9 @@ export const Communications_management = () => {
             </div>
           </div>
         </div>
-      )}
+        </form>
+      )
+      }
 
       {/* Delete Confirmation Dialog */}
       <DeleteConfirmation
