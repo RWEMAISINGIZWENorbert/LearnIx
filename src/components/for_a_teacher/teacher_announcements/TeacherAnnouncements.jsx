@@ -1,14 +1,23 @@
-import React from 'react';
+import React , { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import './TeacherAnnouncements.css';
 import { MdAdd } from 'react-icons/md';
 import { FaBullhorn } from 'react-icons/fa';
+import {
+  fetchAllAnnouncements,
+  createAnnouncement,
+  selectAnnouncements,
+  selectAnnouncementsLoading,
+  selectAnnouncementsError,
+  resetAnnouncementState
+} from '../../../features/announcements/announcementsSlice.js';
 
 export const TeacherAnnouncements = () => {
-  const [announcements, setAnnouncements] = React.useState([
-    { id: 1, title: 'Midterm Exam Schedule', content: 'The midterm examinations will be held from November 10-15. Please review the exam timetable.', priority: 'urgent', date: '2024-10-27', classes: ['All Classes'] },
-    { id: 2, title: 'Assignment Extension', content: 'React project deadline has been extended to November 20 due to technical issues.', priority: 'normal', date: '2024-10-26', classes: ['L5 SOD A'] },
-    { id: 3, title: 'Guest Lecture', content: 'We will have a guest lecture on Cloud Architecture on November 5 at 2:00 PM.', priority: 'normal', date: '2024-10-25', classes: ['L6 SOD A', 'L6 SOD B'] }
-  ]);
+  // const [announcements, setAnnouncements] = React.useState([
+  //   { id: 1, title: 'Midterm Exam Schedule', content: 'The midterm examinations will be held from November 10-15. Please review the exam timetable.', priority: 'urgent', date: '2024-10-27', classes: ['All Classes'] },
+  //   { id: 2, title: 'Assignment Extension', content: 'React project deadline has been extended to November 20 due to technical issues.', priority: 'normal', date: '2024-10-26', classes: ['L5 SOD A'] },
+  //   { id: 3, title: 'Guest Lecture', content: 'We will have a guest lecture on Cloud Architecture on November 5 at 2:00 PM.', priority: 'normal', date: '2024-10-25', classes: ['L6 SOD A', 'L6 SOD B'] }
+  // ]);
 
   const [showCreateModal, setShowCreateModal] = React.useState(false);
   const [formTitle, setFormTitle] = React.useState('');
@@ -17,36 +26,78 @@ export const TeacherAnnouncements = () => {
   const classesOptions = ['All Classes', 'L5 SOD A', 'L5 SOD B', 'L6 SOD A', 'L6 SOD B'];
   const [selectedClasses, setSelectedClasses] = React.useState(['All Classes']);
 
-  const toggleClass = (cls) => {
-    if (cls === 'All Classes') {
-      setSelectedClasses(['All Classes']);
-      return;
-    }
-    setSelectedClasses((prev) => {
-      const withoutAll = prev.filter(c => c !== 'All Classes');
-      return withoutAll.includes(cls)
-        ? withoutAll.filter(c => c !== cls)
-        : [...withoutAll, cls];
-    });
-  };
+  const dispatch = useDispatch();
+  const announcements = useSelector(selectAnnouncements);
+  const loading = useSelector(selectAnnouncementsLoading);
+  const error = useSelector(selectAnnouncementsError);
 
-  const handleCreate = (e) => {
-    e.preventDefault();
-    if (!formTitle || !formContent || selectedClasses.length === 0) return;
-    const newAnnouncement = {
-      id: Date.now(),
-      title: formTitle,
-      content: formContent,
-      priority: formPriority,
-      date: new Date().toISOString().split('T')[0],
-      classes: selectedClasses,
+  // const toggleClass = (cls) => {
+  //   if (cls === 'All Classes') {
+  //     setSelectedClasses(['All Classes']);
+  //     return;
+  //   }
+  //   setSelectedClasses((prev) => {
+  //     const withoutAll = prev.filter(c => c !== 'All Classes');
+  //     return withoutAll.includes(cls)
+  //       ? withoutAll.filter(c => c !== cls)
+  //       : [...withoutAll, cls];
+  //   });
+  // };
+  
+  useEffect(() => {
+    dispatch(fetchAllAnnouncements());
+    return () => {
+      dispatch(resetAnnouncementState());
     };
-    setAnnouncements([newAnnouncement, ...announcements]);
-    setShowCreateModal(false);
-    setFormTitle('');
-    setFormContent('');
-    setFormPriority('normal');
-    setSelectedClasses(['All Classes']);
+  }, [dispatch])
+   
+  // const handleCreate = (e) => {
+  //   e.preventDefault();
+  //   if (!formTitle || !formContent || selectedClasses.length === 0) return;
+  //   const newAnnouncement = {
+  //     id: Date.now(),
+  //     title: formTitle,
+  //     content: formContent,
+  //     priority: formPriority,
+  //     date: new Date().toISOString().split('T')[0],
+  //     classes: selectedClasses,
+  //   };
+  //   setAnnouncements([newAnnouncement, ...announcements]);
+  //   setShowCreateModal(false);
+  //   setFormTitle('');
+  //   setFormContent('');
+  //   setFormPriority('normal');
+  //   setSelectedClasses(['All Classes']);
+  // };
+   
+    const handleCreate = async (e) => {
+    e.preventDefault();
+    if (!formTitle || !formContent) return;
+    
+    try {
+      const newAnnouncement = {
+        title: formTitle,
+        message: formContent,
+        priority: formPriority,
+        recipients: selectedClasses.includes('All Classes') ? 'all' : selectedClasses.join(','),
+        status: 'published',
+        author: 'teacher' // Replace with actual teacher ID/name from auth
+      };
+      
+      await dispatch(createAnnouncement(newAnnouncement)).unwrap();
+      
+      setShowCreateModal(false);
+      setFormTitle('');
+      setFormContent('');
+      setFormPriority('normal');
+      setSelectedClasses(['All Classes']);
+      
+      // Refresh the announcements list
+      dispatch(fetchAllAnnouncements());
+    } catch (error) {
+      console.error('Failed to create announcement:', error);
+      alert('Failed to create announcement. Please try again.');
+    }
   };
 
   return (
@@ -60,25 +111,27 @@ export const TeacherAnnouncements = () => {
         <button className="create-btn" onClick={() => setShowCreateModal(true)}>
           <MdAdd className="icon" /> Create Announcement
         </button>
-
+         {loading && <div className="loading">Loading announcements...</div>}
+         {error && <div className="error">Error: {error}</div>}
         <div className="announcements-list">
-          {announcements.map((announcement) => (
-            <div className={`announcement-card priority-${announcement.priority}`} key={announcement.id}>
+          {announcements && announcements.length > 0 ? ( 
+            announcements.map((announcement) => (
+            <div className={`announcement-card priority-${announcement.priority}`} key={announcement._id}>
               <div className="announcement-header">
                 <FaBullhorn className="icon" />
                 <div className="header-content">
                   <h3>{announcement.title}</h3>
                   <div className="meta">
-                    <span>{new Date(announcement.date).toLocaleDateString()}</span>
-                    <span>•</span>
-                    <span>{announcement.classes.join(', ')}</span>
+                    <span>{new Date(announcement.createdAt).toLocaleDateString()}</span>
+                    {/* <span>•</span>
+                    <span>{announcement.classes.join(', ')}</span> */}
                   </div>
                 </div>
                 <span className={`priority-badge ${announcement.priority}`}>{announcement.priority}</span>
               </div>
               <p className="content">{announcement.content}</p>
             </div>
-          ))}
+          ))) : (<p>No announcements found</p>)}
         </div>
       </div>
       {showCreateModal && (
@@ -122,7 +175,7 @@ export const TeacherAnnouncements = () => {
                 </div>
               </div>
 
-              <div className="form_group">
+              {/* <div className="form_group">
                 <label>Target Classes</label>
                 <div className="classes_grid">
                   {classesOptions.map(cls => (
@@ -136,7 +189,7 @@ export const TeacherAnnouncements = () => {
                     </label>
                   ))}
                 </div>
-              </div>
+              </div> */}
 
               <div className="announce_modal_footer">
                 <button type="button" className="cancel_btn" onClick={() => setShowCreateModal(false)}>Cancel</button>
