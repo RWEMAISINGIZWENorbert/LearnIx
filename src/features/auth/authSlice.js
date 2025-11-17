@@ -464,7 +464,6 @@ export const fetchUserProfile = createAsyncThunk(
            navigate('/signUp');
         // return rejectWithValue('No authentication token found');
       }
-
       const response = await axios.get(
         `${API_BASE_URL}/auth/profile`, // Adjust the endpoint if needed
         {
@@ -474,9 +473,9 @@ export const fetchUserProfile = createAsyncThunk(
           }
         }
       );
-
       return response.data.data; // The user data from your API
     } catch (error) {
+       console.log(`Erro Icured ${error}`);
       if (error.response) {
         return rejectWithValue(error.response.data.msg || 'Failed to fetch profile');
       } else if (error.request) {

@@ -15,7 +15,7 @@ export const fetchAssignments = createAsyncThunk(
       },
     };
     const response = await axios.get(`${API_URL}/assignments`, config);
-    return response.data.data;
+    return response.data;
   }
 );
 
@@ -97,6 +97,9 @@ const assignmentsSlice = createSlice({
   name: 'assignments',
   initialState: {
     assignments: [],
+    pendingAssignments: [],
+    submittedAssignments: [],
+    gradedAssignments: [],
     currentAssignment: null,
     loading: false,
     error: null,
@@ -115,7 +118,15 @@ const assignmentsSlice = createSlice({
       })
       .addCase(fetchAssignments.fulfilled, (state, action) => {
         state.loading = false;
-        state.assignments = action.payload;
+        state.assignments = action.payload.data || [];
+        state.pendingAssignments = action.payload.pendingAssignments || [];
+        state.submittedAssignments = action.payload.submittedAssignments || [];
+        state.gradedAssignments = action.payload.gradedAssignments || [];
+
+        console.log(`assignments,${state.assignments}`);
+        console.log(`pendingAssignments, ${state.pendingAssignments}`);
+        console.log(`submittedAssignments, ${state.submittedAssignments}`);
+        console.log(`gradedAssignments, ${state.gradedAssignments}`);
       })
       .addCase(fetchAssignments.rejected, (state, action) => {
         state.loading = false;
@@ -123,6 +134,7 @@ const assignmentsSlice = createSlice({
       })
       // Fetch single assignment
       .addCase(fetchAssignmentById.fulfilled, (state, action) => {
+        state.loading = false
         state.currentAssignment = action.payload;
       })
       // Create assignment
@@ -160,5 +172,9 @@ export const selectAssignments = (state) => state.assignments.assignments;
 export const selectCurrentAssignment = (state) => state.assignments.currentAssignment;
 export const selectAssignmentsLoading = (state) => state.assignments.loading;
 export const selectAssignmentsError = (state) => state.assignments.error;
+
+export const selectPendingAssignments = (state) => state.assignments.pendingAssignments ?? [];
+export const selectSubmittedAssignments = (state) => state.assignments.submittedAssignments ?? [];
+export const selectGradedAssignments = (state) => state.assignments.gradedAssignments ?? []; 
 
 export default assignmentsSlice.reducer;

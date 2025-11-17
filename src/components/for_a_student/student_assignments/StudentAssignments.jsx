@@ -1,14 +1,28 @@
-import React, { useState } from 'react';
 import './StudentAssignments.css';
 import { MdOutlineAssignment, MdUpload, MdCheckCircle } from 'react-icons/md';
 import { LuClock, LuCalendar } from 'react-icons/lu';
 import { HiOutlineBookOpen } from 'react-icons/hi';
 import { BiPaperclip } from 'react-icons/bi';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { 
+  fetchAssignments, 
+  selectAssignments,
+  selectAssignmentsLoading,
+  selectAssignmentsError,
+  selectGradedAssignments,
+  selectPendingAssignments,
+  selectSubmittedAssignments
+} from '../../../features/assignement/assignementSlice';
+
 
 export const StudentAssignments = () => {
   const [activeTab, setActiveTab] = useState('pending');
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [selectedAssignment, setSelectedAssignment] = useState(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const assignments = {
     pending: [
@@ -105,6 +119,23 @@ export const StudentAssignments = () => {
     ]
   };
 
+  // const { 
+  //   pendingAssignments = [], 
+  //   submittedAssignments = [], 
+  //   gradedAssignments = [],
+  //   loading,
+  //   error 
+  // } = useSelector((state) => ({
+  //   // ...state.assignments,
+  //   loading: selectAssignmentsLoading(state),
+  //   error: selectAssignmentsError(state)
+  // }));
+  const loading = useSelector(selectAssignmentsLoading);
+  const error = useSelector(selectAssignmentsError);
+  const pendingAssignments =  useSelector(selectPendingAssignments);
+  const submittedAssignments =  useSelector(selectSubmittedAssignments);
+  const gradedAssignments =  useSelector(selectGradedAssignments);
+
   const handleUpload = (assignment) => {
     setSelectedAssignment(assignment);
     setShowUploadModal(true);
@@ -118,6 +149,39 @@ export const StudentAssignments = () => {
     return diffDays;
   };
 
+  useEffect(() => {
+    dispatch(fetchAssignments());
+  }, [dispatch]);
+
+  // Format date helper function
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const day = String(date.getUTCDate()).padStart(2, '0');
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+    const year = date.getUTCFullYear();
+    return `${day}-${month}-${year}`;
+  };
+
+ const getCurrentAssignments = () => {
+    switch (activeTab) {
+      case 'pending':
+        return pendingAssignments;
+      case 'submitted':
+        return submittedAssignments;
+      case 'graded':
+        return gradedAssignments;
+      default:
+        return [];
+    }
+  };
+
+  
+  const currentAssignments = getCurrentAssignments();
+  if (loading) return <div className="loading">Loading assignments...</div>;
+  if (error) return <div className="error">Error: {error}</div>;
+   
+
   return (
     <div className='studentAssignments'>
       <div className="assignments-header">
@@ -127,15 +191,15 @@ export const StudentAssignments = () => {
         </div>
         <div className="stats-cards">
           <div className="stat-card pending-stat">
-            <div className="stat-number">{assignments.pending.length}</div>
+            <div className="stat-number">{pendingAssignments.length}</div>
             <div className="stat-label">Pending</div>
           </div>
           <div className="stat-card submitted-stat">
-            <div className="stat-number">{assignments.submitted.length}</div>
+            <div className="stat-number">{submittedAssignments.length}</div>
             <div className="stat-label">Submitted</div>
           </div>
           <div className="stat-card graded-stat">
-            <div className="stat-number">{assignments.graded.length}</div>
+            <div className="stat-number">{gradedAssignments.length}</div>
             <div className="stat-label">Graded</div>
           </div>
         </div>
@@ -148,29 +212,30 @@ export const StudentAssignments = () => {
             onClick={() => setActiveTab('pending')}
           >
             <MdOutlineAssignment className="tab-icon" />
-            Pending ({assignments.pending.length})
+            Pending ({pendingAssignments.length})
           </button>
           <button 
             className={activeTab === 'submitted' ? 'active' : ''}
             onClick={() => setActiveTab('submitted')}
           >
             <MdUpload className="tab-icon" />
-            Submitted ({assignments.submitted.length})
+            Submitted ({submittedAssignments.length})
           </button>
           <button 
             className={activeTab === 'graded' ? 'active' : ''}
             onClick={() => setActiveTab('graded')}
           >
             <MdCheckCircle className="tab-icon" />
-            Graded ({assignments.graded.length})
+            Graded ({gradedAssignments.length})
           </button>
         </div>
 
         <div className="content">
           {activeTab === 'pending' && (
             <div className="assignments-list">
-              {assignments.pending.map(assignment => {
+               {pendingAssignments.length > 0 ? pendingAssignments.map(assignment => {
                 const daysLeft = getDaysUntilDue(assignment.dueDate);
+                console.log(`Title, ${assignment.title}`);
                 return (
                   <div key={assignment.id} className={`assignment-card ${assignment.urgent ? 'urgent' : ''}`}>
                     <div className="assignment-header">
@@ -209,13 +274,13 @@ export const StudentAssignments = () => {
                     </button>
                   </div>
                 );
-              })}
+              }): ( <p> No Pending Assignment Found</p> )}
             </div>
-          )}
+          ) }
 
           {activeTab === 'submitted' && (
             <div className="assignments-list">
-              {assignments.submitted.map(assignment => (
+              {submittedAssignments.map(assignment => (
                 <div key={assignment.id} className="assignment-card submitted">
                   <div className="assignment-header">
                     <div className="icon-wrapper submitted">
@@ -249,7 +314,7 @@ export const StudentAssignments = () => {
 
           {activeTab === 'graded' && (
             <div className="assignments-list">
-              {assignments.graded.map(assignment => (
+              {gradedAssignments.map(assignment => (
                 <div key={assignment.id} className="assignment-card graded">
                   <div className="assignment-header">
                     <div className="icon-wrapper graded">
