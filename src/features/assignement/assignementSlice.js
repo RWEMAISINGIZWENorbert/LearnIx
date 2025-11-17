@@ -38,14 +38,16 @@ export const createAssignment = createAsyncThunk(
   'assignments/create',
   async (assignmentData, { getState }) => {
     const { auth } = getState();
-    const formData = new FormData();
-    formData.append('title', assignmentData.title);
-    formData.append('description', assignmentData.description);
-    formData.append('dueDate', assignmentData.dueDate);
-    if (assignmentData.file) {
-      formData.append('assignment', assignmentData.file);
-    }
-
+    // const formData = new FormData();
+    // formData.append('title', assignmentData.title);
+    // formData.append('description', assignmentData.description);
+    // formData.append('dueDate', assignmentData.dueDate);
+    // if (assignmentData.file) {
+    //   formData.append('assignment', assignmentData.file);
+    // }
+    console.log(`The Assignments Title ${assignmentData.get('title')}`);
+    console.log(`The Assignments descr ${assignmentData.get('description')}`);
+    console.log(`The Assignments Data ${assignmentData.get('dueDate')}`);
     const config = {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -53,7 +55,7 @@ export const createAssignment = createAsyncThunk(
       },
     };
 
-    const response = await axios.post(`${API_URL}/assignments/new`, formData, config);
+    const response = await axios.post(`${API_URL}/assignments/new`, assignmentData, config);
     return response.data.data;
   }
 );

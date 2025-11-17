@@ -5,8 +5,27 @@ import { MdOutlineAssignment, MdAdd, MdCheckCircle, MdPending } from 'react-icon
 import { LuClock, LuCalendar, LuUpload, LuX, LuMic, LuTrash2 } from 'react-icons/lu';
 import { HiOutlineBookOpen } from 'react-icons/hi';
 import { FaUsers, FaPause, FaPlay } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { 
+  fetchAssignments, 
+  createAssignment,
+  selectAssignments,
+  selectAssignmentsLoading,
+  selectAssignmentsError
+} from '../../../features/assignement/assignementSlice';
 
 export const TeacherAssignments = () => {
+ 
+  const dispatch = useDispatch();
+  const assignments = useSelector(selectAssignments);
+  const loading = useSelector(selectAssignmentsLoading);
+  const error = useSelector(selectAssignmentsError);
+
+   useEffect(() => {
+    dispatch(fetchAssignments());
+  }, [dispatch]);
+
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('active');
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -162,84 +181,121 @@ export const TeacherAssignments = () => {
       file: uploadedFile,
       audio: audioBlob
     });
+
+    let formDataToSend = new FormData();
+    formDataToSend.append('title', assignmentTitle);
+    formDataToSend.append('description', assignmentDescription);
+    formDataToSend.append('dueDate', assignmentDueDate);
+    formDataToSend.append('assignment', uploadedFile);
+    try {
+      dispatch(createAssignment(formDataToSend));
+       alert('Assignment created successfully!');
+       setShowCreateModal(false);
+      // Reset form
+      setAssignmentTitle('');
+      setAssignmentDescription('');
+      setAssignmentDueDate('');
+      setAssignmentClass('');
+      setUploadedFile(null);
+      cancelRecording();
+    } catch (error) {
+      console.error('Error creating assignment:', error);
+    }
     
-    // Reset form
-    setShowCreateModal(false);
-    setAssignmentTitle('');
-    setAssignmentDescription('');
-    setAssignmentDueDate('');
-    setAssignmentClass('');
-    setUploadedFile(null);
-    cancelRecording();
+    // // Reset form
+    // setShowCreateModal(false);
+    // setAssignmentTitle('');
+    // setAssignmentDescription('');
+    // setAssignmentDueDate('');
+    // setAssignmentClass('');
+    // setUploadedFile(null);
+    // cancelRecording();
     
     alert('Assignment created successfully!');
   };
 
-  const assignments = {
-    active: [
-      {
-        id: 1,
-        title: 'React Component Design',
-        course: 'Web Development',
-        courseCode: 'CS301',
-        dueDate: '2025-11-15',
-        submitted: 18,
-        total: 24,
-        pending: 6,
-        graded: 12,
-        color: '#3b82f6'
-      },
-      {
-        id: 2,
-        title: 'Database Normalization',
-        course: 'Database Systems',
-        courseCode: 'CS302',
-        dueDate: '2025-11-18',
-        submitted: 20,
-        total: 26,
-        pending: 8,
-        graded: 12,
-        color: '#10b981'
-      },
-      {
-        id: 3,
-        title: 'UML Class Diagrams',
-        course: 'Software Engineering',
-        courseCode: 'CS401',
-        dueDate: '2025-11-20',
-        submitted: 15,
-        total: 22,
-        pending: 5,
-        graded: 10,
-        color: '#8b5cf6'
-      }
-    ],
-    completed: [
-      {
-        id: 4,
-        title: 'HTML/CSS Project',
-        course: 'Web Development',
-        courseCode: 'CS301',
-        completedDate: '2025-10-20',
-        submitted: 24,
-        total: 24,
-        avgGrade: 88,
-        color: '#3b82f6'
-      },
-      {
-        id: 5,
-        title: 'SQL Queries Exercise',
-        course: 'Database Systems',
-        courseCode: 'CS302',
-        completedDate: '2025-10-15',
-        submitted: 26,
-        total: 26,
-        avgGrade: 85,
-        color: '#10b981'
-      }
-    ]
-  };
-
+  // const assignments = {
+  //   active: [
+  //     {
+  //       id: 1,
+  //       title: 'React Component Design',
+  //       course: 'Web Development',
+  //       courseCode: 'CS301',
+  //       dueDate: '2025-11-15',
+  //       submitted: 18,
+  //       total: 24,
+  //       pending: 6,
+  //       graded: 12,
+  //       color: '#3b82f6'
+  //     },
+  //     {
+  //       id: 2,
+  //       title: 'Database Normalization',
+  //       course: 'Database Systems',
+  //       courseCode: 'CS302',
+  //       dueDate: '2025-11-18',
+  //       submitted: 20,
+  //       total: 26,
+  //       pending: 8,
+  //       graded: 12,
+  //       color: '#10b981'
+  //     },
+  //     {
+  //       id: 3,
+  //       title: 'UML Class Diagrams',
+  //       course: 'Software Engineering',
+  //       courseCode: 'CS401',
+  //       dueDate: '2025-11-20',
+  //       submitted: 15,
+  //       total: 22,
+  //       pending: 5,
+  //       graded: 10,
+  //       color: '#8b5cf6'
+  //     }
+  //   ],
+  //   completed: [
+  //     {
+  //       id: 4,
+  //       title: 'HTML/CSS Project',
+  //       course: 'Web Development',
+  //       courseCode: 'CS301',
+  //       completedDate: '2025-10-20',
+  //       submitted: 24,
+  //       total: 24,
+  //       avgGrade: 88,
+  //       color: '#3b82f6'
+  //     },
+  //     {
+  //       id: 5,
+  //       title: 'SQL Queries Exercise',
+  //       course: 'Database Systems',
+  //       courseCode: 'CS302',
+  //       completedDate: '2025-10-15',
+  //       submitted: 26,
+  //       total: 26,
+  //       avgGrade: 85,
+  //       color: '#10b981'
+  //     }
+  //   ]
+  // };
+   
+  const formatDateTime = (dateTimeString) => {
+  if (!dateTimeString) return '';
+  console.log(`dateTimeString ${dateTimeString}`);
+  const date = new Date(dateTimeString);
+   console.log(`Formatting date ${date}`);
+  // Get date components
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+  const year = date.getFullYear();
+  
+  // Get time components
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  
+  return `${day}-${month}-${year} ${hours}:${minutes}`;
+};
+  
   return (
     <div className='teacherAssignments'>
       <div className="box">
@@ -253,22 +309,24 @@ export const TeacherAssignments = () => {
             className={activeTab === 'active' ? 'active' : ''}
             onClick={() => setActiveTab('active')}
           >
-            Active ({assignments.active.length})
+            Active ({assignments.filter(e => e.status === 'active').length})
           </button>
           <button 
             className={activeTab === 'completed' ? 'active' : ''}
             onClick={() => setActiveTab('completed')}
           >
-            Completed ({assignments.completed.length})
+            Completed ({assignments.filter(e => e.status === 'completed').length})
           </button>
           <button className="create-btn" onClick={() => setShowCreateModal(true)}>
             <MdAdd className="icon" /> Create Assignment
           </button>
         </div>
-
+        {loading && <div className="loading">Loading assignments...</div>}
+        {error && <div className="error">{error}</div>}
         <div className="assignments-grid">
-          {activeTab === 'active' && assignments.active.map((assignment) => (
-            <div key={assignment.id} className="assignment-card">
+          {activeTab === 'active' && assignments.filter(e => e.status === 'active').length > 0 ?
+           assignments.filter(e => e.status === 'active').map((assignment) => (
+            <div key={assignment._id} className="assignment-card">
               <div className="assignment-header" style={{borderLeft: `none`}}>
                 <div className="assignment-icon" style={{background: `${assignment.color}20`, color: assignment.color}}>
                   <MdOutlineAssignment />
@@ -282,7 +340,7 @@ export const TeacherAssignments = () => {
               <div className="assignment-details">
                 <div className="detail-row">
                   <LuCalendar className="icon" />
-                  <span>Due: {new Date(assignment.dueDate).toLocaleDateString()}</span>
+                  <span>Due: {formatDateTime(assignment.dueDate)}</span>
                 </div>
                 <div className="detail-row">
                   <FaUsers className="icon" />
@@ -313,10 +371,11 @@ export const TeacherAssignments = () => {
 
               <button className="view-btn" style={{background: assignment.color}} onClick={() => navigate(`/teacher/assignments/${assignment.id}/submissions`)}>View Submissions</button>
             </div>
-          ))}
+          )) : <p>No assignments found</p>}
 
-          {activeTab === 'completed' && assignments.completed.map((assignment) => (
-            <div key={assignment.id} className="assignment-card">
+          {activeTab === 'completed' && assignments.filter(e => e.status === 'completed').length > 0 
+          && assignments.filter(e => e.status === 'completed').map((assignment) => (
+            <div key={assignment._id} className="assignment-card">
               <div className="assignment-header" style={{borderLeft: `none`}}>
                 <div className="assignment-icon" style={{background: `${assignment.color}20`, color: assignment.color}}>
                   <MdCheckCircle />
