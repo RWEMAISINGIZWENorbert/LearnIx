@@ -1,102 +1,118 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './AssignmentSubmissions.css';
 import { FaArrowLeft, FaDownload, FaCheck, FaTimes } from 'react-icons/fa';
 import { LuCalendar, LuClock, LuFileText } from 'react-icons/lu';
 import { MdOutlineAssignment } from 'react-icons/md';
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchSubmissionsByAssignment } from '../../../features/submissions/submissionSlice';
 
 export const AssignmentSubmissions = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { assignmentId } = useParams();
+
+  const { 
+    submissions, 
+    loading, 
+    error,
+    currentAssignment 
+  } = useSelector((state) => state.submissions);
   
-  const [submissions, setSubmissions] = useState([
-    {
-      id: 1,
-      studentId: "STU001",
-      studentName: "John Doe",
-      submittedAt: "2025-11-10 14:32",
-      status: "submitted",
-      fileUrl: "assignment_john.pdf",
-      fileName: "React_Component_Design.pdf",
-      marks: "",
-      feedback: "",
-      profilePic: "profile_pic_blank.png"
-    },
-    {
-      id: 2,
-      studentId: "STU002",
-      studentName: "Jane Smith",
-      submittedAt: "2025-11-09 10:15",
-      status: "submitted",
-      fileUrl: "assignment_jane.pdf",
-      fileName: "Component_Design_Final.pdf",
-      marks: "",
-      feedback: "",
-      profilePic: "profile_pic_blank.png"
-    },
-    {
-      id: 3,
-      studentId: "STU003",
-      studentName: "Mike Johnson",
-      submittedAt: "2025-11-11 16:45",
-      status: "submitted",
-      fileUrl: "assignment_mike.zip",
-      fileName: "React_Project.zip",
-      marks: "",
-      feedback: "",
-      profilePic: "profile_pic_blank.png"
-    },
-    {
-      id: 4,
-      studentId: "STU004",
-      studentName: "Sarah Wilson",
-      submittedAt: "",
-      status: "pending",
-      fileUrl: "",
-      fileName: "",
-      marks: "",
-      feedback: "",
-      profilePic: "profile_pic_blank.png"
-    },
-    {
-      id: 5,
-      studentId: "STU005",
-      studentName: "David Brown",
-      submittedAt: "2025-11-12 09:20",
-      status: "submitted",
-      fileUrl: "assignment_david.pdf",
-      fileName: "Assignment_Submission.pdf",
-      marks: "",
-      feedback: "",
-      profilePic: "profile_pic_blank.png"
-    },
-    {
-      id: 6,
-      studentId: "STU006",
-      studentName: "Emily Davis",
-      submittedAt: "",
-      status: "pending",
-      fileUrl: "",
-      fileName: "",
-      marks: "",
-      feedback: "",
-      profilePic: "profile_pic_blank.png"
+  // const [submissions, setSubmissions] = useState([
+  //   {
+  //     id: 1,
+  //     studentId: "STU001",
+  //     studentName: "John Doe",
+  //     submittedAt: "2025-11-10 14:32",
+  //     status: "submitted",
+  //     fileUrl: "assignment_john.pdf",
+  //     fileName: "React_Component_Design.pdf",
+  //     marks: "",
+  //     feedback: "",
+  //     profilePic: "profile_pic_blank.png"
+  //   },
+  //   {
+  //     id: 2,
+  //     studentId: "STU002",
+  //     studentName: "Jane Smith",
+  //     submittedAt: "2025-11-09 10:15",
+  //     status: "submitted",
+  //     fileUrl: "assignment_jane.pdf",
+  //     fileName: "Component_Design_Final.pdf",
+  //     marks: "",
+  //     feedback: "",
+  //     profilePic: "profile_pic_blank.png"
+  //   },
+  //   {
+  //     id: 3,
+  //     studentId: "STU003",
+  //     studentName: "Mike Johnson",
+  //     submittedAt: "2025-11-11 16:45",
+  //     status: "submitted",
+  //     fileUrl: "assignment_mike.zip",
+  //     fileName: "React_Project.zip",
+  //     marks: "",
+  //     feedback: "",
+  //     profilePic: "profile_pic_blank.png"
+  //   },
+  //   {
+  //     id: 4,
+  //     studentId: "STU004",
+  //     studentName: "Sarah Wilson",
+  //     submittedAt: "",
+  //     status: "pending",
+  //     fileUrl: "",
+  //     fileName: "",
+  //     marks: "",
+  //     feedback: "",
+  //     profilePic: "profile_pic_blank.png"
+  //   },
+  //   {
+  //     id: 5,
+  //     studentId: "STU005",
+  //     studentName: "David Brown",
+  //     submittedAt: "2025-11-12 09:20",
+  //     status: "submitted",
+  //     fileUrl: "assignment_david.pdf",
+  //     fileName: "Assignment_Submission.pdf",
+  //     marks: "",
+  //     feedback: "",
+  //     profilePic: "profile_pic_blank.png"
+  //   },
+  //   {
+  //     id: 6,
+  //     studentId: "STU006",
+  //     studentName: "Emily Davis",
+  //     submittedAt: "",
+  //     status: "pending",
+  //     fileUrl: "",
+  //     fileName: "",
+  //     marks: "",
+  //     feedback: "",
+  //     profilePic: "profile_pic_blank.png"
+  //   }
+  // ]);
+  
+  useEffect(() => {
+    if (assignmentId) {
+      dispatch(fetchSubmissionsByAssignment(assignmentId));
     }
-  ]);
+  }, [dispatch, assignmentId]);
 
   const [selectedSubmission, setSelectedSubmission] = useState(null);
 
-  const handleMarksChange = (id, value) => {
-    setSubmissions(submissions.map(sub => 
-      sub.id === id ? { ...sub, marks: value } : sub
-    ));
-  };
+  // const handleMarksChange = (id, value) => {
+  //   setSubmissions(submissions.map(sub => 
+  //     sub.id === id ? { ...sub, marks: value } : sub
+  //   ));
+  // };
 
-  const handleFeedbackChange = (id, value) => {
-    setSubmissions(submissions.map(sub => 
-      sub.id === id ? { ...sub, feedback: value } : sub
-    ));
-  };
+  // const handleFeedbackChange = (id, value) => {
+  //   setSubmissions(submissions.map(sub => 
+  //     sub.id === id ? { ...sub, feedback: value } : sub
+  //   ));
+  // };
 
   const handleSaveGrade = (id) => {
     const submission = submissions.find(sub => sub.id === id);
@@ -107,6 +123,22 @@ export const AssignmentSubmissions = () => {
 
   const submittedCount = submissions.filter(s => s.status === "submitted").length;
   const pendingCount = submissions.filter(s => s.status === "pending").length;
+
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const day = String(date.getUTCDate()).padStart(2, '0');
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+    const year = date.getUTCFullYear();
+    const hours = String(date.getUTCHours()).padStart(2, '0');
+    const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+    return `${day}-${month}-${year} ${hours}:${minutes}`;
+  };
+
+
+  if (loading) return <div className="loading">Loading submissions...</div>;
+  if (error) return <div className="error">Error: {error}</div>;
+
 
   return (
     <div className='assignmentSubmissions'>

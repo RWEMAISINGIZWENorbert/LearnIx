@@ -351,7 +351,7 @@ export const TeacherAssignments = () => {
               <div className="progress-section">
                 <div className="progress-header">
                   <span>Submission Progress</span>
-                  <span className="progress-value">{Math.round((assignment.submitted / assignment.total) * 100)}%</span>
+                  <span className="progress-value">{assignment.submitted > 0 ? Math.round((assignment.submitted / assignment.total) * 100) : 0}%</span>
                 </div>
                 <div className="progress-bar">
                   <div className="progress" style={{width: `${(assignment.submitted / assignment.total) * 100}%`, background: assignment.color}}></div>
@@ -369,7 +369,7 @@ export const TeacherAssignments = () => {
                 </div>
               </div>
 
-              <button className="view-btn" style={{background: assignment.color}} onClick={() => navigate(`/teacher/assignments/${assignment.id}/submissions`)}>View Submissions</button>
+              <button className="view-btn" style={{background: assignment.color}} onClick={() => navigate(`/teacher/assignments/${assignment._id}/submissions`)}>View Submissions</button>
             </div>
           )) : <p>No assignments found</p>}
 
