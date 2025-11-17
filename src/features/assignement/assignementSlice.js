@@ -123,10 +123,10 @@ const assignmentsSlice = createSlice({
         state.submittedAssignments = action.payload.submittedAssignments || [];
         state.gradedAssignments = action.payload.gradedAssignments || [];
 
-        console.log(`assignments,${state.assignments}`);
-        console.log(`pendingAssignments, ${state.pendingAssignments}`);
-        console.log(`submittedAssignments, ${state.submittedAssignments}`);
-        console.log(`gradedAssignments, ${state.gradedAssignments}`);
+        // console.log(`assignments,${state.assignments}`);
+        // console.log(`pendingAssignments, ${state.pendingAssignments}`);
+        // console.log(`submittedAssignments, ${state.submittedAssignments}`);
+        // console.log(`gradedAssignments, ${state.gradedAssignments}`);
       })
       .addCase(fetchAssignments.rejected, (state, action) => {
         state.loading = false;

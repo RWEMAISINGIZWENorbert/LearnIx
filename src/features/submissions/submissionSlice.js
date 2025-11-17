@@ -55,7 +55,7 @@ export const submitAssignment = createAsyncThunk(
 
     const response = await axios.post(
       `${API_URL}/submissions/new`,
-      formData,
+      submissionData,
       config
     );
     return response.data.data;
@@ -115,7 +115,11 @@ const submissionsSlice = createSlice({
       })
       // Submit assignment
       .addCase(submitAssignment.fulfilled, (state, action) => {
-        state.submissions.unshift(action.payload);
+        // state.submissions.unshift(action.payload);
+        // state.submissions.push(action.payload);
+        state.assignmentSubmissions = action.payload;
+        state.submissions = action.payload;
+        state.loading = false;
       })
       // Grade submission
       .addCase(gradeSubmission.fulfilled, (state, action) => {

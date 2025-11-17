@@ -15,6 +15,8 @@ import {
   selectPendingAssignments,
   selectSubmittedAssignments
 } from '../../../features/assignement/assignementSlice';
+import { submitAssignment } from '../../../features/submissions/submissionSlice';
+
 
 
 export const StudentAssignments = () => {
@@ -22,7 +24,9 @@ export const StudentAssignments = () => {
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [selectedAssignment, setSelectedAssignment] = useState(null);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [uploadedFile, setUploadedFile] = useState(null);
+  const [comment, setComment] = useState('');
 
   const assignments = {
     pending: [
@@ -176,6 +180,44 @@ export const StudentAssignments = () => {
     }
   };
 
+
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setUploadedFile(file);
+    }
+  };
+
+  const handleSubmitAssignment = async (assignmentId, formData) => {
+   try {
+    // Add assignmentId to the formData
+    console.log(`formData Description ${formData.get('description')}`);
+    console.log(`formData AssignmentIdssi ${formData.get('assignmentId')}`);
+    console.log(`formData Submission ${formData.get('submission')}`);
+
+    const submissionData = {
+      ...formData,
+      assignmentId
+    };
+    
+    // Dispatch the submitAssignment action
+    const resultAction = dispatch(submitAssignment(formData));
+    
+    // Check if the submission was successful
+    if (submitAssignment.fulfilled != null) {
+      // Refresh the assignments to update the UI
+      dispatch(fetchAssignments());
+      // Close the modal
+      setShowUploadModal(false);
+      // Show success message
+      alert('Assignment submitted successfully!');
+    }
+  } catch (error) {
+    console.error('Error submitting assignment:', error);
+    alert('Failed to submit assignment. Please try again.');
+  }
+};
+
   
   const currentAssignments = getCurrentAssignments();
   if (loading) return <div className="loading">Loading assignments...</div>;
@@ -235,9 +277,8 @@ export const StudentAssignments = () => {
             <div className="assignments-list">
                {pendingAssignments.length > 0 ? pendingAssignments.map(assignment => {
                 const daysLeft = getDaysUntilDue(assignment.dueDate);
-                console.log(`Title, ${assignment.title}`);
                 return (
-                  <div key={assignment.id} className={`assignment-card ${assignment.urgent ? 'urgent' : ''}`}>
+                  <div key={assignment._id} className={`assignment-card ${assignment.urgent ? 'urgent' : ''}`}>
                     <div className="assignment-header">
                       <div className="icon-wrapper">
                         <MdOutlineAssignment className="icon" />
@@ -246,7 +287,7 @@ export const StudentAssignments = () => {
                         <h3>{assignment.title}</h3>
                         <div className="course-tag">
                           <HiOutlineBookOpen className="icon" />
-                          <span>{assignment.course} ({assignment.courseCode})</span>
+                          <span>{assignment.subject} {assignment.courseCode}</span>
                         </div>
                       </div>
                       {daysLeft <= 1 && <span className="urgent-badge">Urgent</span>}
@@ -358,25 +399,47 @@ export const StudentAssignments = () => {
               <h3>Submit Assignment</h3>
               <button onClick={() => setShowUploadModal(false)}>×</button>
             </div>
+            <form 
+             onSubmit={(e) => {
+                 e.preventDefault();
+                 const formData = new FormData(e.target);
+                 formData.append('submission', uploadedFile); 
+                 formData.append('assignmentId', selectedAssignment._id);
+                 formData.append('description', comment);
+                 handleSubmitAssignment(selectedAssignment._id, formData);
+             }}>
             <div className="modal-body">
               <h4>{selectedAssignment.title}</h4>
               <p className="course">{selectedAssignment.course}</p>
               
-              <div className="upload-area">
+              <div className="upload-area" onClick={() => document.getElementById('file-upload').click()}>
                 <BiPaperclip className="upload-icon" />
-                <p>Drag and drop your file here or click to browse</p>
-                <input type="file" />
+                <p>{uploadedFile ? uploadedFile.name : 'Drag and drop your file here or click to browse'}</p>
+                <input 
+                  id="file-upload"
+                  type="file" 
+                  onChange={(e) => {if (e.target.files && e.target.files[0]) {
+                      setUploadedFile(e.target.files[0]);
+                  }}}
+                accept=".pdf,.doc,.docx,.ppt,.pptx,.txt,.zip,.mp3,.wav,.m4a,.ogg,.mp4,.avi,.mov,.mkv,.webm"
+                />
               </div>
 
               <div className="form-group">
                 <label>Comments (Optional)</label>
-                <textarea placeholder="Add any comments for your instructor..." rows="4"></textarea>
+                <textarea 
+                placeholder="Add any comments for your instructor..." 
+                rows="4"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                ></textarea>
               </div>
             </div>
             <div className="modal-footer">
               <button className="btn-cancel" onClick={() => setShowUploadModal(false)}>Cancel</button>
               <button className="btn-submit">Submit Assignment</button>
             </div>
+            </form>
           </div>
         </div>
       )}
