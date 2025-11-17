@@ -8,6 +8,8 @@ import classesReducer from "../features/classes/classesSlice"
 import applicationsReducer from "../features/applications/applicationsSlice"
 import resourcesReducer from "../features/resources/resourcesSlice"
 import announcementsReducer from "../features/announcements/announcementsSlice"
+import assignmentsReducer from "../features/assignement/assignementSlice"
+import submissionsReducer from "../features/submissions/submissionSlice"
 
 export const store = configureStore({
      reducer: {
@@ -19,7 +21,9 @@ export const store = configureStore({
         classes: classesReducer,
         applications: applicationsReducer,
         resources: resourcesReducer,
-        announcements: announcementsReducer
+        announcements: announcementsReducer,
+        assignments: assignmentsReducer,
+        submissions: submissionsReducer,
      }
  })
 

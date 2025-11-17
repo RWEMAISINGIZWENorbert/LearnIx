@@ -148,7 +148,7 @@ export const TeacherAssignments = () => {
   };
 
   const handleCreateAssignment = () => {
-    if (!assignmentTitle || !assignmentDueDate || !assignmentClass) {
+         if (!assignmentTitle || !assignmentDueDate || !assignmentClass) {
       alert('Please fill in all required fields');
       return;
     }
