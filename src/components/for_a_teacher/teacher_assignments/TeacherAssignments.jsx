@@ -24,7 +24,7 @@ export const TeacherAssignments = () => {
 
    useEffect(() => {
     dispatch(fetchAssignments());
-  }, [dispatch]);
+  }, [dispatch, fetchAssignments ]);
 
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('active');
@@ -281,9 +281,7 @@ export const TeacherAssignments = () => {
    
   const formatDateTime = (dateTimeString) => {
   if (!dateTimeString) return '';
-  console.log(`dateTimeString ${dateTimeString}`);
   const date = new Date(dateTimeString);
-   console.log(`Formatting date ${date}`);
   // Get date components
   const day = String(date.getDate()).padStart(2, '0');
   const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
@@ -369,7 +367,7 @@ export const TeacherAssignments = () => {
                 </div>
               </div>
 
-              <button className="view-btn" style={{background: assignment.color}} onClick={() => navigate(`/teacher/assignments/${assignment._id}/submissions`)}>View Submissions</button>
+              <button className="view-btn" style={{background: assignment.color}} onClick={() => navigate(`/teacher/assignments/${assignment._id || assignment.id}/submissions`)}>View Submissions</button>
             </div>
           )) : <p>No assignments found</p>}
 

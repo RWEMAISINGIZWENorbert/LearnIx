@@ -21,6 +21,7 @@ export const fetchSubmissions = createAsyncThunk(
 export const fetchSubmissionsByAssignment = createAsyncThunk(
   'submissions/fetchByAssignment',
   async (assignmentId, { getState }) => {
+     console.log(`The assignment Id to fetch ${assignmentId}`);
     const { auth } = getState();
     const config = {
       headers: {
@@ -111,6 +112,7 @@ const submissionsSlice = createSlice({
       })
       // Fetch submissions by assignment
       .addCase(fetchSubmissionsByAssignment.fulfilled, (state, action) => {
+        
         state.assignmentSubmissions = action.payload;
       })
       // Submit assignment

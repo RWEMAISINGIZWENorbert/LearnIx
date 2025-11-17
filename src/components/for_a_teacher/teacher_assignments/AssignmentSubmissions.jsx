@@ -5,7 +5,7 @@ import { FaArrowLeft, FaDownload, FaCheck, FaTimes } from 'react-icons/fa';
 import { LuCalendar, LuClock, LuFileText } from 'react-icons/lu';
 import { MdOutlineAssignment } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchSubmissionsByAssignment } from '../../../features/submissions/submissionSlice';
+import { fetchSubmissionsByAssignment, selectAssignmentSubmissions } from '../../../features/submissions/submissionSlice';
 
 export const AssignmentSubmissions = () => {
   const navigate = useNavigate();
@@ -13,11 +13,11 @@ export const AssignmentSubmissions = () => {
   const { assignmentId } = useParams();
 
   const { 
-    submissions, 
     loading, 
     error,
     currentAssignment 
   } = useSelector((state) => state.submissions);
+  const submissions = useSelector(selectAssignmentSubmissions);
   
   // const [submissions, setSubmissions] = useState([
   //   {
@@ -100,7 +100,7 @@ export const AssignmentSubmissions = () => {
     }
   }, [dispatch, assignmentId]);
 
-  const [selectedSubmission, setSelectedSubmission] = useState(null);
+  const [selectedSubmission, setSelectedSubmission] = useState(submissions.length === 0 ? null : submissions[0]);
 
   // const handleMarksChange = (id, value) => {
   //   setSubmissions(submissions.map(sub => 
@@ -135,7 +135,8 @@ export const AssignmentSubmissions = () => {
     return `${day}-${month}-${year} ${hours}:${minutes}`;
   };
 
-
+  console.log(`The submissions ${submissions.length}`);
+  console.log(`The selected submission ${selectedSubmission}`);
   if (loading) return <div className="loading">Loading submissions...</div>;
   if (error) return <div className="error">Error: {error}</div>;
 
@@ -155,7 +156,7 @@ export const AssignmentSubmissions = () => {
           <div className="stats_summary">
             <div className="stat_item submitted">
               <FaCheck className="icon" />
-              <span>{submittedCount} Submitted</span>
+              <span>{submissions.length} Submitted</span>
             </div>
             <div className="stat_item pending">
               <FaTimes className="icon" />
@@ -169,7 +170,7 @@ export const AssignmentSubmissions = () => {
           <div className="submissions_list">
             {submissions.map((submission) => (
               <div 
-                key={submission.id} 
+                key={submission._id} 
                 className={`submission_card ${submission.status} ${selectedSubmission?.id === submission.id ? 'active' : ''}`}
                 onClick={() => setSelectedSubmission(submission)}
               >
@@ -191,7 +192,7 @@ export const AssignmentSubmissions = () => {
                   <div className="submission_meta">
                     <div className="meta_item">
                       <LuCalendar className="icon" />
-                      <span>{submission.submittedAt}</span>
+                      <span>{submission.createdAt}</span>
                     </div>
                     <div className="meta_item">
                       <LuFileText className="icon" />
@@ -217,14 +218,15 @@ export const AssignmentSubmissions = () => {
                 <p>{selectedSubmission.studentName} - {selectedSubmission.studentId}</p>
               </div>
 
-              {selectedSubmission.status === "submitted" ? (
+              {/* {selectedSubmission.status === "submitted" ? ( */}
+              {selectedSubmission.studentId !== "" ? (
                 <>
                   <div className="submitted_work">
                     <div className="file_preview">
                       <LuFileText className="file_icon" />
                       <div className="file_info">
                         <h4>{selectedSubmission.fileName}</h4>
-                        <p>Submitted on {selectedSubmission.submittedAt}</p>
+                        <p>Submitted on {formatDate(selectedSubmission.createdAt)}</p>
                       </div>
                       <button className="download_btn">
                         <FaDownload /> Download
@@ -239,7 +241,7 @@ export const AssignmentSubmissions = () => {
                         type="number"
                         min="0"
                         max="100"
-                        value={selectedSubmission.marks}
+                        value={selectedSubmission.grade}
                         onChange={(e) => handleMarksChange(selectedSubmission.id, e.target.value)}
                         placeholder="Enter marks"
                       />
@@ -257,8 +259,8 @@ export const AssignmentSubmissions = () => {
 
                     <button 
                       className="save_grade_btn"
-                      onClick={() => handleSaveGrade(selectedSubmission.id)}
-                      disabled={!selectedSubmission.marks}
+                      onClick={() => handleSaveGrade(selectedSubmission._id)}
+                      disabled={!selectedSubmission.grade}
                     >
                       <FaCheck /> Save Grade
                     </button>
