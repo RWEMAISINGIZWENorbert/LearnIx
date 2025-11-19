@@ -52,13 +52,13 @@ export const LeftSideBar = () => {
       }
     };
 
-    if (profileLoading) {
-    return <div>Loading profile...</div>;
-  }
+  //   if (profileLoading) {
+  //   return <div>Loading profile...</div>;
+  // }
 
-  if (profileError) {
-    return <div>Error: {profileError}</div>;
-  }
+  // if (profileError) {
+  //   return <div>Error: {profileError}</div>;
+  // }
 
   return (
     <div className='leftSideBar'>
@@ -106,13 +106,16 @@ export const LeftSideBar = () => {
             <div className="lowerSection">
                 <div className="profile">
                     <div className="img">
-                        <img  
-                        src={school?.schoolLogo || `${import.meta.env.BASE_URL}assets/greenhills.png`} 
+                      { loading ?
+                       <img src={`${import.meta.env.BASE_URL}assets/profile_pic_blank.png`} alt="School Logo" /> 
+                       : <img  
+                        src={school?.schoolLogo || `${import.meta.env.BASE_URL}assets/profile_pic_blank.png`} 
                         alt= {school?.name || "School Logo" }
                          />
+                      }
                     </div>
                     <div className="info">
-                        <h3 className="name">{school?.name || "N/A"}</h3>
+                       {school && <h3 className="name">{school?.name || "N/A"}</h3>}
                         <p className="role">Administrator</p>
                     </div>
                 </div>

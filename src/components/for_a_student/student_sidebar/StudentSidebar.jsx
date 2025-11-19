@@ -33,13 +33,13 @@ export const StudentSidebar = () => {
         dispatch(fetchUserProfile(navigate));
       }, [dispatch, navigate]);
 
-       if (profileLoading) {
-          return <div>Loading profile...</div>;
-        }
+    //    if (profileLoading) {
+    //       return <div>Loading profile...</div>;
+    //     }
       
-        if (profileError) {
-          return <div>Error: {profileError}</div>;
-        }
+    //     if (profileError) {
+    //       return <div>Error: {profileError}</div>;
+    //     }
 
   return (
     <div className='studentSidebar'>
@@ -77,16 +77,18 @@ export const StudentSidebar = () => {
                     <div className="img">
                         <img src={`${import.meta.env.BASE_URL}assets/profile_pic_blank.png`} alt="Student profile" />
                     </div>
-                    <div className="info">
+                    {
+                    userProfile && <div className="info">
                         <h3 className="name">{userProfile?.name || userProfile?.firstName + ' ' + userProfile?.lastName}</h3>
                         {/* <p className="role">Student - L5 SOD A</p> */}
                         <p className="role">Student</p>
                         {/* <p className="id">ID: STU001</p> */}
                         <p className="school">{school?.name || "N/A"}</p>
                     </div>
+                   }
                 </div>
                 <div className="contact">
-                    <div className="email all"><HiOutlineMail className="icon" /><span>{userProfile?.email || "N/A"}</span></div>
+                   {userProfile && <div className="email all"><HiOutlineMail className="icon" /><span>{userProfile?.email || "N/A"}</span></div>}
                     {/* <div className="class all"><HiOutlineAcademicCap className="icon" /><span>Level 5 Software Development A</span></div> */}
                 </div>
                 <div className="lower">

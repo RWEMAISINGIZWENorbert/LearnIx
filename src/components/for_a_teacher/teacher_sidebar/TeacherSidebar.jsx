@@ -24,13 +24,13 @@ export const TeacherSidebar = () => {
       dispatch(fetchUserProfile(navigate));
     }, [dispatch, navigate]); 
     
-    if (profileLoading) {
-          return <div>Loading profile...</div>;
-        }
+    // if (profileLoading) {
+    //       return <div>Loading profile...</div>;
+    //     }
       
-        if (profileError) {
-          return <div>Error: {profileError}</div>;
-        }
+    //     if (profileError) {
+    //       return <div>Error: {profileError}</div>;
+    //     }
 
     const handleLogout = async (e) => {
       e.preventDefault();
@@ -77,15 +77,17 @@ export const TeacherSidebar = () => {
                     <div className="img">
                         <img src={`${import.meta.env.BASE_URL}assets/profile_pic_blank.png`} alt="Teacher profile" />
                     </div>
+                    {userProfile &&
                     <div className="info">
                         <h3 className="name">{userProfile?.name || userProfile?.firstName + ' ' + userProfile?.lastName}</h3>
                         <p className="role">Teacher</p>
                         {/* <p className="id">ID: TCHR042</p> */}
                         <p className="school">{school?.name}</p>
                     </div>
+                    }
                 </div>
                 <div className="contact">
-                    <div className="email all"><HiOutlineMail className="icon" /><span>{userProfile?.email}</span></div>
+                    {userProfile &&  <div className="email all"><HiOutlineMail className="icon" /><span>{userProfile?.email}</span></div>}
                     {/* <div className="dept all"><HiOutlineAcademicCap className="icon" /><span>Software Development Dept.</span></div> */}
                 </div>
                 <div className="lower">
