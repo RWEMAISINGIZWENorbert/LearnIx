@@ -48,7 +48,43 @@ import { Teacher_Settings_Page } from './pages/teacher/teacher_settings_page';
 import { Teacher_profile } from './pages/teacher/teacher_profile/teacher_profile';
 import { Teacher_Assignment_Submissions_Page } from './pages/teacher/teacher_assignment_submissions_page';
 
+import { ProtectedRoute } from './features/ProtectedRoute';
+import { useSelector } from 'react-redux';
+import { selectIsAuthenticated, selectRole, selectLoading } from './features/auth/authSlice';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+
 function App() {
+  
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const role = useSelector(selectRole);
+  const loading = useSelector(selectLoading);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [initialized, setInitialized] = useState(false);
+
+  // Handle initial redirect if user is authenticated
+ useEffect(() => {
+    const publicPaths = ['/login', '/signup', '/', '/features', '/schools', '/books', '/dev_team', '/school-registration', '/email-verification', '/student-application'];
+    const isPublicPath = publicPaths.some(path => location.pathname.startsWith(path));
+    
+    if (isAuthenticated && isPublicPath) {
+      const redirectPath = role ? `/${role}/dashboard` : '/';
+      navigate(redirectPath, { replace: true });
+    }
+    
+    // Set initialized to true after first check
+    if (!initialized) {
+      setInitialized(true);
+    }
+  }, [isAuthenticated, role, location.pathname, navigate, initialized]);
+
+  // Show loading state while initializing
+  if (!initialized || loading) {
+    return <div>Loading...</div>; // Replace with your loading component
+  }
+
+
   return (
       <ClickSpark
         sparkColor='#A05AC8'
@@ -58,7 +94,7 @@ function App() {
         duration={1000}
         zIndex={100}
       >
-      <Router>
+      {/* <Router> */}
     <div className="app">
       <Routes>
         {/* Public page routes */}
@@ -67,65 +103,97 @@ function App() {
         <Route path='/schools' element={<Schools/>}/>
         <Route path='/books' element={<Books/>}/>
         <Route path='/dev_team' element={<Developers/>}/>
-        <Route path='/signup' element={<AuthFlow/>}/>
-        <Route path='/login' element={<AuthFlow/>}/>
+        <Route 
+              path="/signup" 
+              element={
+                // <ProtectedRoute requireAuth={false}>
+                  <AuthFlow />
+                // </ProtectedRoute>
+              } 
+            />
+        <Route 
+              path="/login" 
+              element={
+                // <ProtectedRoute requireAuth={false}>
+                  <AuthFlow />
+                // </ProtectedRoute>
+              } 
+            />
         <Route path='/school-registration' element={<School_Registration_Page/>}/>
         <Route path='/email-verification' element={<Email_Verification_Page/>}/>
         <Route path='/student-application' element={<StudentApplication/>}/>
 
         {/* Admin page routes */}
-        <Route path='/admin'>
-            <Route path='' element={<Admin_dashboard/>}/>
-            <Route path='dashboard' element={<Admin_dashboard/>}/>
-            <Route path='settings' element={<Admin_settings/>}/>
-            <Route path='notifications' element={<Admin_notifications/>}/>
-            <Route path='students' element={<Admin_student_management/>}/>
-            <Route path='classes' element={<Admin_classes_management/>}/>
-            <Route path='teachers' element={<Admin_teachers_management/>}/>
-            <Route path='admissions' element={<Admin_admissions_management/>}/>
-            <Route path='resources' element={<Admin_resources_management/>}/>
-            <Route path='academic_setup' element={<Admin_academic_setup/>}/>
-            <Route path='communications' element={<Admin_communications/>}/>
-            <Route path='profile' element={<Admin_profile/>}/>
-        </Route>
+        <Route
+              element={
+                <ProtectedRoute allowedRoles={['admin']} />
+              }
+            >
+              <Route path="admin">
+                <Route index element={<Admin_dashboard />} />
+                <Route path="dashboard" element={<Admin_dashboard />} />
+                <Route path="settings" element={<Admin_settings />} />
+                <Route path="notifications" element={<Admin_notifications />} />
+                <Route path="students" element={<Admin_student_management />} />
+                <Route path="classes" element={<Admin_classes_management />} />
+                <Route path="teachers" element={<Admin_teachers_management />} />
+                <Route path="admissions" element={<Admin_admissions_management />} />
+                <Route path="resources" element={<Admin_resources_management />} />
+                <Route path="academic_setup" element={<Admin_academic_setup />} />
+                <Route path="communications" element={<Admin_communications />} />
+                <Route path="profile" element={<Admin_profile />} />
+              </Route>
+            </Route>
 
         {/* Access Denied */}
         <Route path='/access-denied' element={<AccessDenied/>}/>
 
         {/* Student page routes */}
-        <Route path='/student'>
-            <Route path='' element={<Student_Dashboard_Page/>}/>
-            <Route path='dashboard' element={<Student_Dashboard_Page/>}/>
-            <Route path='assignments' element={<Student_Assignments_Page/>}/>
-            <Route path='resources' element={<Student_Resources_Page/>}/>
-            <Route path='announcements' element={<Student_Announcements_Page/>}/>
-            <Route path='notifications' element={<Student_Notifications_Page/>}/>
-            <Route path='settings' element={<Student_Settings_Page/>}/>
-            <Route path='profile' element={<Student_profile/>}/>
-        </Route>
+        <Route
+              element={
+                <ProtectedRoute allowedRoles={['student']} />
+              }
+            >
+              <Route path="student">
+                <Route index element={<Student_Dashboard_Page />} />
+                <Route path="dashboard" element={<Student_Dashboard_Page />} />
+                <Route path="assignments" element={<Student_Assignments_Page />} />
+                <Route path="resources" element={<Student_Resources_Page />} />
+                <Route path="announcements" element={<Student_Announcements_Page />} />
+                <Route path="notifications" element={<Student_Notifications_Page />} />
+                <Route path="settings" element={<Student_Settings_Page />} />
+                <Route path="profile" element={<Student_profile />} />
+              </Route>
+            </Route>
 
         {/* Teacher page routes */}
-        <Route path='/teacher'>
-            <Route path='' element={<Teacher_Dashboard_Page/>}/>
-            <Route path='dashboard' element={<Teacher_Dashboard_Page/>}/>
-            <Route path='classes' element={<Teacher_Classes_Page/>}/>
-            <Route path='students' element={<Teacher_Students_Page/>}/>
-            <Route path='assignments' element={<Teacher_Assignments_Page/>}/>
-            <Route path='assignments/:assignmentId/submissions' element={<Teacher_Assignment_Submissions_Page/>}/>
-            <Route path='grades' element={<Teacher_Grades_Page/>}/>
-            <Route path='attendance' element={<Teacher_Attendance_Page/>}/>
-            <Route path='schedule' element={<Teacher_Schedule_Page/>}/>
-            <Route path='resources' element={<Teacher_Resources_Page/>}/>
-            <Route path='announcements' element={<Teacher_Announcements_Page/>}/>
-            <Route path='settings' element={<Teacher_Settings_Page/>}/>
-            <Route path='profile' element={<Teacher_profile/>}/>
-        </Route>
+         <Route
+              element={
+                <ProtectedRoute allowedRoles={['teacher']} />
+              }
+            >
+              <Route path="teacher">
+                <Route index element={<Teacher_Dashboard_Page />} />
+                <Route path="dashboard" element={<Teacher_Dashboard_Page />} />
+                <Route path="classes" element={<Teacher_Classes_Page />} />
+                <Route path="students" element={<Teacher_Students_Page />} />
+                <Route path="assignments" element={<Teacher_Assignments_Page />} />
+                <Route path="submissions" element={<Teacher_Assignment_Submissions_Page />} />
+                <Route path="grades" element={<Teacher_Grades_Page />} />
+                <Route path="attendance" element={<Teacher_Attendance_Page />} />
+                <Route path="schedule" element={<Teacher_Schedule_Page />} />
+                <Route path="resources" element={<Teacher_Resources_Page />} />
+                <Route path="announcements" element={<Teacher_Announcements_Page />} />
+                <Route path="settings" element={<Teacher_Settings_Page />} />
+                <Route path="profile" element={<Teacher_profile />} />
+              </Route>
+            </Route>
 
           {/* Not Found Route */}
         <Route path='*' element={<Not_found/>}/>
       </Routes>
     </div>
-    </Router>
+    {/* </Router> */}
 
 </ClickSpark>
     

@@ -487,6 +487,7 @@ export const fetchUserProfile = createAsyncThunk(
   }
 );
  
+ console.log(`Is Autheniticated ${!!localStorage.getItem('token')}`);
 
 const authSlice = createSlice({
   name: 'auth',
@@ -496,7 +497,7 @@ const authSlice = createSlice({
     profileLoading: false,
     profileError: null,
     token: localStorage.getItem('token') || null,
-    isAuthenticated: false,
+    isAuthenticated: !!localStorage.getItem('token'),
     role: localStorage.getItem('role') || null,
     loading: false,
     error: null,
