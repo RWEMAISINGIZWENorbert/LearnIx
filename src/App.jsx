@@ -63,10 +63,9 @@ function App() {
   const navigate = useNavigate();
   const [initialized, setInitialized] = useState(false);
 
-  // Handle initial redirect if user is authenticated
  useEffect(() => {
     const publicPaths = ['/login', '/signup', '/', '/features', '/schools', '/books', '/dev_team', '/school-registration', '/email-verification', '/student-application'];
-    const isPublicPath = publicPaths.some(path => location.pathname.startsWith(path));
+    const isPublicPath = publicPaths.some(path => location.pathname === path || (path !== '/' && location.pathname.startsWith(path + '/')));
     
     if (isAuthenticated && isPublicPath) {
       const redirectPath = role ? `/${role}/dashboard` : '/';
@@ -124,11 +123,7 @@ function App() {
         <Route path='/student-application' element={<StudentApplication/>}/>
 
         {/* Admin page routes */}
-        <Route
-              element={
-                <ProtectedRoute allowedRoles={['admin']} />
-              }
-            >
+        <Route element={ <ProtectedRoute allowedRoles={['admin']} />} >
               <Route path="admin">
                 <Route index element={<Admin_dashboard />} />
                 <Route path="dashboard" element={<Admin_dashboard />} />
