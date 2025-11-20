@@ -233,16 +233,22 @@ export const TeacherResources = () => {
    );
   }
 
-  const handleDownloadDocument = (doc) => {
-    console.log(`The Document Data ${doc}`)
-    if (doc.fileUrl) {
+  const handleDownloadDocument = async (doc) => {
+    console.log(`The Document Data ${doc}`);
+    console.log(`The Document Title ${doc.title || doc.name || 'document'}`);
+    if (doc.fileUrl) {      
       // const fileURL = URL.createObjectURL(doc.fileUrl);
       const link = window.document.createElement('a');
       link.href = doc.fileUrl;
-      link.download = doc.title;
-      window.document.body.appendChild(link);
+      link.download =doc.title || doc.name || 'document';
+       console.log(`The Document Title ${doc.title || doc.name || 'document'}`);
+      document.body.appendChild(link);
+      // window.document.body.appendChild(link);
       link.click();
-      window.document.body.removeChild(link);
+      // window.document.body.removeChild(link);
+       document.body.removeChild(link);
+
+        window.URL.revokeObjectURL(blobUrl);
       
     } else {
       alert(`Downloading: ${doc.name}`);
