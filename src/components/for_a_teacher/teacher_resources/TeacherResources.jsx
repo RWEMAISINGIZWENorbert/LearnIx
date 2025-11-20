@@ -234,22 +234,25 @@ export const TeacherResources = () => {
   }
 
   const handleDownloadDocument = async (doc) => {
-    console.log(`The Document Data ${doc}`);
-    console.log(`The Document Title ${doc.title || doc.name || 'document'}`);
-    if (doc.fileUrl) {      
+    // In a real application, this would trigger a file download
+    console.log(`The Document Data ${doc}`)
+    if (doc.fileUrl) {
       // const fileURL = URL.createObjectURL(doc.fileUrl);
-      const link = window.document.createElement('a');
-      link.href = doc.fileUrl;
-      link.download =doc.title || doc.name || 'document';
-       console.log(`The Document Title ${doc.title || doc.name || 'document'}`);
-      document.body.appendChild(link);
-      // window.document.body.appendChild(link);
-      link.click();
-      // window.document.body.removeChild(link);
-       document.body.removeChild(link);
+      const fileURL = doc.fileUrl;
+      const fileType = doc.fileUrl?.split('.').pop().toLowerCase();
+      const title = doc.title || doc.name;
+      const fileName = title + '.' + fileType;
+      //  alert(`The File Name to download  ${fileName}`);
+      const response = await fetch(fileURL);
+      const blob = await response.blob();
 
-        window.URL.revokeObjectURL(blobUrl);
-      
+       const link = document.createElement("a");
+       link.href = URL.createObjectURL(blob);
+       link.download = fileName;
+
+       document.body.appendChild(link);
+       link.click();
+       link.remove();
     } else {
       alert(`Downloading: ${doc.name}`);
     }

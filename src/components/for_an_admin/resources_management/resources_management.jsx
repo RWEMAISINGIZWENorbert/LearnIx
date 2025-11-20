@@ -19,6 +19,7 @@ export const Resources_management = () => {
   const [fileName, setFileName] = useState('');
   const [fileCategory, setFileCategory] = useState('');
   const [fileDescription, setFileDescription] = useState('');
+  const [viewedDocument, setViewedDocument] = useState(null);
 
   const dispatch = useDispatch();
 const { resources: documents = [], loading, error } = useSelector((state) => state.resources);
@@ -179,21 +180,32 @@ const getFileIcon = (type) => {
   };
 
    const handleViewDocument = (document) => {
-     console.log(`Call To View Document ${document.fileUrl}`);
-    if (document.fileUrl) {
-       console.log(`The Document File ${document.fileUrl}`);
-      // const fileURL = URL.createObjectURL(document.fileUrl);
-      window.open(document.fileUrl, '_blank');
-    } else {
-      alert(`Viewing: ${document.title || document.name}\nThis would open the document in a viewer.`);
+      if (document.fileUrl) {
+        setViewedDocument(document);
+      } else {
+        alert(`Viewing: ${document.name}\nThis would open the document in a viewer.`);
+      }
+    };
+  
+  // Add this near the top of your renderContent function
+    if (viewedDocument) {
+      return (
+      <div style={{ width: '70%', height: '100vh', padding: '20px', transform: 'translateX(20vw)' }}>
+        <button 
+          onClick={() => setViewedDocument(null)} 
+          style={{ marginBottom: '10px', padding: '5px 10px' }}
+        >
+          ← Back to Documents
+        </button>
+        <FileViewer url={viewedDocument.fileUrl} />
+      </div>
+     );
     }
-  };
    
   //const fileType = doc.fileUrl?.split('.').pop().toLowerCase();
 
   const handleDownloadDocument = async (doc) => {
     // In a real application, this would trigger a file download
-    console.log(`The Document Data ${doc}`)
     if (doc.fileUrl) {
       // const fileURL = URL.createObjectURL(doc.fileUrl);
       const fileURL = doc.fileUrl;

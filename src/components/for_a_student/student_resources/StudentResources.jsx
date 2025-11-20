@@ -10,7 +10,7 @@ import { fetchAllResources, selectResources, selectResourcesLoading, selectResou
 
 export const StudentResources = () => {
   const [filter, setFilter] = useState('all');
-
+  const [viewedDocument, setViewedDocument] = useState(null);
   const dispatch = useDispatch();
   const resources = useSelector(selectResources);
   const loading = useSelector(selectResourcesLoading);
@@ -38,12 +38,51 @@ export const StudentResources = () => {
   const pdfCount = resources.filter(r => r.type === 'PDF').length;
   const videoCount = resources.filter(r => r.type === 'Video').length;
 
-  const handleViewDocument = (document) => {
-     console.log(`The Document File Url ${document.fileUrl}`);
-    if (document.fileUrl) {
-      window.open(document.fileUrl, '_blank');
+    const handleViewDocument = (document) => {
+      if (document.fileUrl) {
+        setViewedDocument(document);
+      } else {
+        alert(`Viewing: ${document.name}\nThis would open the document in a viewer.`);
+      }
+    };
+  
+  // Add this near the top of your renderContent function
+    if (viewedDocument) {
+      return (
+      <div style={{ width: '70%', height: '100vh', padding: '20px', transform: 'translateX(20vw)' }}>
+        <button 
+          onClick={() => setViewedDocument(null)} 
+          style={{ marginBottom: '10px', padding: '5px 10px' }}
+        >
+          ← Back to Documents
+        </button>
+        <FileViewer url={viewedDocument.fileUrl} />
+      </div>
+     );
+    }
+
+  const handleDownloadDocument = async (doc) => {
+    // In a real application, this would trigger a file download
+    console.log(`The Document Data ${doc}`)
+    if (doc.fileUrl) {
+      // const fileURL = URL.createObjectURL(doc.fileUrl);
+      const fileURL = doc.fileUrl;
+      const fileType = doc.fileUrl?.split('.').pop().toLowerCase();
+      const title = doc.title || doc.name;
+      const fileName = title + '.' + fileType;
+      //  alert(`The File Name to download  ${fileName}`);
+      const response = await fetch(fileURL);
+      const blob = await response.blob();
+
+       const link = document.createElement("a");
+       link.href = URL.createObjectURL(blob);
+       link.download = fileName;
+
+       document.body.appendChild(link);
+       link.click();
+       link.remove();
     } else {
-      // alert(`Viewing: ${document.title}\nThis would open the document in a viewer.`);
+      alert(`Downloading: ${doc.name}`);
     }
   };
 
