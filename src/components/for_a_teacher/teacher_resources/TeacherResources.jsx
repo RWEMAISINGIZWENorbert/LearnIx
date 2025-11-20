@@ -7,8 +7,10 @@ import { LuBookOpen, LuFileText, LuDownload, LuUpload, LuEye, LuTrash, LuPlus } 
 import { MdOutlineSubject } from 'react-icons/md';
 import { FaFilePdf, FaFileWord, FaFileImage, FaFileVideo } from "react-icons/fa";
 import { fetchAllResources, createResource, selectResources, selectResourcesLoading, selectResourcesError } from '../../../features/resources/resourcesSlice';
+import FileViewer from '../../Docs/FileViewer';
 
 export const TeacherResources = () => {
+  const [viewedDocument, setViewedDocument] = useState(null);
   const [activeTab, setActiveTab] = useState('documents');
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
@@ -210,13 +212,26 @@ export const TeacherResources = () => {
 
   const handleViewDocument = (document) => {
     if (document.fileUrl) {
-       console.log(`The Document File ${document.fileUrl}`);
-      // const fileURL = URL.createObjectURL(document.fileUrl);
-      window.open(document.fileUrl, '_blank');
+      setViewedDocument(document);
     } else {
       alert(`Viewing: ${document.name}\nThis would open the document in a viewer.`);
     }
   };
+
+// Add this near the top of your renderContent function
+  if (viewedDocument) {
+    return (
+    <div style={{ width: '70%', height: '100vh', padding: '20px', transform: 'translateX(20vw)' }}>
+      <button 
+        onClick={() => setViewedDocument(null)} 
+        style={{ marginBottom: '10px', padding: '5px 10px' }}
+      >
+        ← Back to Documents
+      </button>
+      <FileViewer url={viewedDocument.fileUrl} />
+    </div>
+   );
+  }
 
   const handleDownloadDocument = (doc) => {
     console.log(`The Document Data ${doc}`)
