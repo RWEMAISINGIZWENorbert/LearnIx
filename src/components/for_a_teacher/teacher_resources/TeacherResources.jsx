@@ -153,7 +153,7 @@ export const TeacherResources = () => {
 
     try {
       const formData = new FormData();
-      formData.append('image', uploadedFile);
+      formData.append('resource', uploadedFile);
       formData.append('title', fileName);
       formData.append('category', fileCategory);
       
@@ -162,11 +162,11 @@ export const TeacherResources = () => {
       }
 
       // Log the data being sent
-      console.group('Sending Resource Data');
-      console.log('File:', uploadedFile);
-      console.log('Title:', fileName);
-      console.log('Category:', fileCategory);
-      console.log('Description:', fileDescription || 'Not provided');
+      // console.group('Sending Resource Data');
+      // console.log('File:', uploadedFile);
+      // console.log('Title:', fileName);
+      // console.log('Category:', fileCategory);
+      // console.log('Description:', fileDescription || 'Not provided');
       console.log('FormData entries:');
       for (let pair of formData.entries()) {
         console.log(pair[0] + ': ', pair[1]);
@@ -395,10 +395,10 @@ export const TeacherResources = () => {
                 </div>
                 <button 
                   className="submit_button" 
-                  onClick={handleFileUpload}
-                  disabled={!uploadedFile || !fileName || !fileCategory}
+                  onClick={!loading ? handleFileUpload: null}
+                  disabled={!uploadedFile || !fileName || !fileCategory || loading}
                 >
-                  Upload File
+                 { loading ? 'processing...' : 'Upload File' }
                 </button>
               </div>
             </div>

@@ -16,7 +16,7 @@ export const fetchAllResources = createAsyncThunk(
       };
 
       const response = await axios.get(`${API_URL}/resources`, config);
-      console.log(`Data Response${response.data.data.map((e) => e.fileUrl)}`);
+      // console.log(`Data Response${response.data.data.map((e) => e.fileUrl)}`);
       return response.data.data;
     } catch (error) {
        console.error('Error creating resource:', error);
@@ -48,18 +48,18 @@ export const createResource = createAsyncThunk(
     try {
       const API_URL = import.meta.env.VITE_API_BASE_URL;
       // Log the incoming resource data
-      console.group('Resource Data in Redux Slice');
-      console.log('Raw resourceData:', resourceData);
+      // console.group('Resource Data in Redux Slice');
+      // console.log('Raw resourceData:', resourceData);
       
       // Log FormData entries if it's a FormData object
-      if (resourceData instanceof FormData) {
-        console.log('FormData entries:');
-        for (let pair of resourceData.entries()) {
-          console.log(pair[0] + ':', pair[1]);
-        }
-      } else {
-        console.log('Regular object data:', JSON.stringify(resourceData, null, 2));
-      }
+      // if (resourceData instanceof FormData) {
+      //   console.log('FormData entries:');
+      //   for (let pair of resourceData.entries()) {
+      //     console.log(pair[0] + ':', pair[1]);
+      //   }
+      // } else {
+      //   console.log('Regular object data:', JSON.stringify(resourceData, null, 2));
+      // }
       
       const { auth } = getState();
       const formData = resourceData instanceof FormData 
@@ -73,11 +73,11 @@ export const createResource = createAsyncThunk(
         });
       }
       
-      console.log('Final FormData being sent to API:');
-      for (let pair of formData.entries()) {
-        console.log(pair[0] + ':', pair[1]);
-      }
-      console.groupEnd();
+      // console.log('Final FormData being sent to API:');
+      // for (let pair of formData.entries()) {
+      //   console.log(pair[0] + ':', pair[1]);
+      // }
+      // console.groupEnd();
 
       const config = {
         headers: {
@@ -91,7 +91,7 @@ export const createResource = createAsyncThunk(
         resourceData, 
         config
       );
-      console.log(`Data Response: ${response.data.data}`);
+      // console.log(`Data Response: ${response.data.data}`);
       return response.data.data;
     } catch (error) {
       console.error('Error creating resource:', error);
