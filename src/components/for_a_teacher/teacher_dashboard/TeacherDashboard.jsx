@@ -6,8 +6,34 @@ import { LuClock, LuFileText } from 'react-icons/lu';
 import { HiOutlineBookOpen } from 'react-icons/hi';
 import { GrAnnounce } from 'react-icons/gr';
 import { NavLink } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+
+import {
+   fetchTeacherDashboardSummary,
+   selectTeacherDashboardSummary,
+   selectTeacherDashboardLoading,
+   selectTeacherDashboardError,
+   clearTeacherDashboardError
+} from "../../../features/dashboard/teacher/teacherDashboardSlice";
 
 export const TeacherDashboard = () => {
+
+   const dispatch = useDispatch();
+   const summary = useSelector(selectTeacherDashboardSummary);
+   const loading = useSelector(selectTeacherDashboardLoading);
+   const error = useSelector(selectTeacherDashboardError); 
+   
+    useEffect(() => {
+       dispatch(fetchTeacherDashboardSummary());
+       return () => {
+         dispatch(clearTeacherDashboardError())
+       }
+    }, [dispatch]);
+
+   if (loading) return <div>Loading dashboard data...</div>;
+   if (error) return <div className="error">{error}</div>;
+
   return (
     <div className='teacherDashboard'>
       <div className='dash'>
@@ -23,7 +49,7 @@ export const TeacherDashboard = () => {
             <div className="divisions">
               <div className="div1 all">
                 <div className="left">
-                  <h3>142</h3>
+                  <h3>{summary.students}</h3>
                   <p>Total Students</p>
                 </div>
                 <div className="right">
@@ -33,7 +59,7 @@ export const TeacherDashboard = () => {
 
               <div className="div2 all">
                 <div className="left">
-                  <h3>18</h3>
+                  <h3>{summary.assignments}</h3>
                   <p>Active Assignments</p>
                 </div>
                 <div className="right">
@@ -43,7 +69,7 @@ export const TeacherDashboard = () => {
 
               <div className="div3 all">
                 <div className="left">
-                  <h3>47</h3>
+                  <h3>{summary.resources}</h3>
                   <p>Resources Shared</p>
                 </div>
                 <div className="right">
@@ -53,7 +79,7 @@ export const TeacherDashboard = () => {
 
               <div className="div4 all">
                 <div className="left">
-                  <h3>12</h3>
+                  <h3>{summary.announcements}</h3>
                   <p>Announcements</p>
                 </div>
                 <div className="right">
@@ -73,7 +99,7 @@ export const TeacherDashboard = () => {
                   <NavLink to='/teacher/assignments'><button>View All</button></NavLink>
                 </div>
                 <div className="down">
-                  <div className="assignment-activity-item">
+                  {/* <div className="assignment-activity-item">
                     <div className="content">
                       <h4>React Project Submission</h4>
                       <p className="student-info">John Doe • Web Development</p>
@@ -107,7 +133,26 @@ export const TeacherDashboard = () => {
                       </div>
                     </div>
                     <span className="status reviewed">Reviewed</span>
-                  </div>
+                  </div> */}
+                  {
+                    summary.recentAssignments.length > 0 ? (
+                      summary.recentAssignments.map((item, index) => (
+                        <div className="assignment-activity-item" key={index}>
+                          <div className="content">
+                           <h4>{item.name || item.title}</h4>
+                           <p className="student-info">Emma Wilson • Database Systems</p>
+                           <div className="time-info">
+                            <LuClock className="icon" />
+                            <span>5 hours ago</span>
+                           </div>
+                          </div>
+                          <span className="status new">New</span>
+                         </div>
+                      ))     
+                    ): (
+                       <p>No Recent Assignments</p>
+                    )
+                    }
                 </div>
               </div>
 
@@ -118,7 +163,7 @@ export const TeacherDashboard = () => {
                   <NavLink to='/teacher/resources'><button>View All</button></NavLink>
                 </div>
                 <div className="down resources-list">
-                  <div className="resource-item">
+                  {/* <div className="resource-item">
                     <div className="resource-icon pdf">
                       <LuFileText />
                     </div>
@@ -147,7 +192,31 @@ export const TeacherDashboard = () => {
                       <p>Software Engineering • 3.2 MB</p>
                     </div>
                     <span className="resource-date">2 days ago</span>
-                  </div>
+                  </div> */}
+
+                 {
+                  summary.recentResources.length > 0 ? (
+                    summary.recentResources.map((resource, index) => (
+                      <div className="resource-item" key={index}>
+                        <div className="resource-icon pdf">
+                          <LuFileText />
+                        </div>
+                        <div className="resource-info">
+                          <h4>{resource.title}</h4>
+                          <p>{resource.course} • {resource.size}</p>
+                        </div>
+                        <span className="resource-date">{resource.createdAt 
+                                ? new Date(resource.createdAt).toLocaleDateString('en-US', { 
+                                    month: 'short', 
+                                    day: 'numeric' 
+                                  }) 
+                                : 'N/A'}</span>
+                      </div>
+                    ))
+                  ) : (
+                    <p>No recent resources</p>
+                  )
+                 } 
                 </div>
               </div>
             </div>
@@ -161,7 +230,7 @@ export const TeacherDashboard = () => {
                   <NavLink to='/teacher/announcements'><span className="view-link">View All</span></NavLink>
                 </div>
                 <div className="announcement-items">
-                  <div className="announcement-item">
+                  {/* <div className="announcement-item">
                     <div className="announcement-header">
                       <h4>Mid-term Exam Schedule</h4>
                       <span className="date">2 days ago</span>
@@ -181,12 +250,29 @@ export const TeacherDashboard = () => {
                       <span className="date">1 week ago</span>
                     </div>
                     <p>Join us for exciting guest lectures on AI and ML...</p>
-                  </div>
+                  </div> */}
+                  {
+                     summary.recentAnnouncements.length > 0 ? (
+                       summary.recentAnnouncements.map((item, index) => {
+                        return <div className="announcement-item">
+                           <div className="announcement-header">
+                               <h4>{item.title || item.name}</h4>
+                               <span className="date">{
+                                 item.createdAt 
+                                  ? new Data(item.createdAt).toLocaleDateString('en-Us', {month: 'short', day: 'numeric'}): "N/A"}</span>
+                            </div>
+                           <p>{item.message}</p>
+                        </div>
+                       })
+                     ) : (
+                       <p>No Recent Annoucement</p>
+                     )
+                  }
                 </div>
               </div>
 
               {/* Pending Reviews */}
-              <div className="pending-reviews">
+              {/* <div className="pending-reviews">
                 <div className="section-title">
                   <h3>Pending Reviews</h3>
                 </div>
@@ -206,7 +292,7 @@ export const TeacherDashboard = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
 
