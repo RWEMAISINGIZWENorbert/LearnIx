@@ -6,8 +6,37 @@ import { LuClock, LuBookOpen, LuFileText } from 'react-icons/lu';
 import { GrAnnounce, GrResources } from 'react-icons/gr';
 import { FaRegBell } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { 
+  fetchStudentDashboardSummary,
+  selectStudentDashboardSummary,
+  selectStudentDashboardLoading,
+  selectStudentDashboardError,
+  clearStudentDashboardError
+ } from '../../../features/dashboard/student/studentDashboardSlice';
 
 export const StudentDashboard = () => {
+  const dispatch = useDispatch();
+  const summary = useSelector(selectStudentDashboardSummary);
+  const loading = useSelector(selectStudentDashboardLoading);
+  const error = useSelector(selectStudentDashboardError);
+
+  useEffect(() => {
+    dispatch(fetchStudentDashboardSummary());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (error) {
+      setTimeout(() => {
+        dispatch(clearStudentDashboardError());
+      }, 5000);
+    }
+  }, [error, dispatch]);
+
+  if (loading) return <div>Loading dashboard data...</div>;
+  if (error) return <div className="error">{error}</div>;
+
   return (
     <div className='studentDashboard'>
       <div className='dash'>
@@ -23,7 +52,7 @@ export const StudentDashboard = () => {
             <div className="divisions">
               <div className="div1 all">
                 <div className="left">
-                  <h3>12</h3>
+                  <h3>{summary.assignments}</h3>
                   <p>Pending Assignments</p>
                 </div>
                 <div className="right">
@@ -33,7 +62,7 @@ export const StudentDashboard = () => {
 
               <div className="div2 all">
                 <div className="left">
-                  <h3>45</h3>
+                  <h3>{summary.resources}</h3>
                   <p>Available Resources</p>
                 </div>
                 <div className="right">
@@ -43,7 +72,7 @@ export const StudentDashboard = () => {
 
               <div className="div3 all">
                 <div className="left">
-                  <h3>8</h3>
+                  <h3>{summary.announcements}</h3>
                   <p>New Announcements</p>
                 </div>
                 <div className="right">
@@ -51,15 +80,15 @@ export const StudentDashboard = () => {
                 </div>
               </div>
 
-              <div className="div4 all">
+             {summary.notifications &&  <div className="div4 all">
                 <div className="left">
-                  <h3>5</h3>
+                  <h3>{summary.notifications}</h3>
                   <p>Unread Notifications</p>
                 </div>
                 <div className="right">
                   <div className="icon"><FaRegBell /></div>
                 </div>
-              </div>
+              </div> }
             </div>
           </div>
 
@@ -73,7 +102,7 @@ export const StudentDashboard = () => {
                   <NavLink to='/student/assignments'><button>View All</button></NavLink>
                 </div>
                 <div className="down">
-                  <div className="assignment-item">
+                  {/* <div className="assignment-item">
                     <div className="content">
                       <h4>Mathematics - Calculus Assignment</h4>
                       <p className="course">Advanced Mathematics</p>
@@ -107,7 +136,29 @@ export const StudentDashboard = () => {
                       </div>
                     </div>
                     <span className="status normal">Normal</span>
-                  </div>
+                  </div> */}
+                  {
+                    summary.recentAssignments.length > 0 ? (
+                       summary.recentAssignments.map((item, index) => {
+                        return (
+                          <div className="assignment-item">
+                            <div className="content">
+                              <h4>{item.title}</h4>
+                              <p className="course">{item.course}</p>
+                              <div className="deadline">
+                                <LuClock className="icon" />
+                                <span>Due: {item.dueDate}</span>
+                              </div>
+                            </div>
+                            <span className = {item.status == 'completed' ? "status normal" : "status pending" } >{item.status}</span>
+                          </div>
+                        )
+                       })
+                    )  
+                    : (
+                       <p>No Recent Assignments Found</p>
+                    )
+                  }
                 </div>
               </div>
 
@@ -119,7 +170,7 @@ export const StudentDashboard = () => {
                 </div>
                 <div className="down">
                   <div className="resource-list">
-                    <div className="resource-item">
+                    {/* <div className="resource-item">
                       <div className="resource-icon pdf">
                         <LuFileText />
                       </div>
@@ -148,7 +199,28 @@ export const StudentDashboard = () => {
                         <p>Rules and regulations • 1.8 MB • 1 week ago</p>
                       </div>
                       <button className="view-btn">View</button>
-                    </div>
+                    </div> */}
+                    {
+                       summary.recentResources.length > 0 ? (
+                          summary.recentResources.map((item, index) => {
+                            return (
+                              <div className="resource-item">
+                                <div className="resource-icon pdf">
+                                  <LuFileText />
+                                </div>
+                                <div className="resource-info">
+                                  <h4>{item.title}</h4>
+                                  <p>{item.type} • {item.size} • {item.date}</p>
+                                </div>
+                                <button className="view-btn">View</button>
+                              </div>
+                            )
+                          })
+                       )
+                       : (
+                          <p>No Recent Resources Found</p>
+                       )
+                    }
                   </div>
                 </div>
               </div>
@@ -163,7 +235,7 @@ export const StudentDashboard = () => {
                   <NavLink to='/student/announcements'><span className="view-link">View All</span></NavLink>
                 </div>
                 <div className="schedule-items">
-                  <div className="announcement-item">
+                  {/* <div className="announcement-item">
                     <div className="announcement-badge important">Important</div>
                     <h4>Mid-Term Examination Schedule Released</h4>
                     <p className="announcement-time">Posted 2 hours ago</p>
@@ -180,12 +252,30 @@ export const StudentDashboard = () => {
                     <h4>Science Fair Next Week</h4>
                     <p className="announcement-time">Posted 2 days ago</p>
                     <p className="announcement-preview">Annual science fair will be held next week...</p>
-                  </div>
+                  </div> */}
+                  {
+                     summary.recentAnnouncements.length > 0 ? (
+                        summary.recentAnnouncements.map((item, index) => {
+                          return <div className="announcement-item">
+                            <div className="announcement-badge general">General</div>
+                               <h4>{item.title}</h4>
+                               <p className="announcement-time">Posted on {
+                                 item.createdAt 
+                                 ? new Date(item.createdAt).toLocaleDateString('en-Us', {month: 'short', day: 'numeric'}) 
+                                 : 'N/A'
+                                 }</p>
+                               <p className="announcement-preview">{item.message}</p>
+                            </div>
+                        })
+                     ) : (
+                       <p>No recent Announcemnts Found</p>
+                     )
+                  }
                 </div>
               </div>
 
               {/* Assignment Progress */}
-              <div className="performance">
+              {/* <div className="performance">
                 <div className="section-title">
                   <h3>Assignment Progress</h3>
                 </div>
@@ -212,7 +302,7 @@ export const StudentDashboard = () => {
                     <div className="value">68%</div>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
 
