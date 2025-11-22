@@ -10,12 +10,14 @@ import resourcesReducer from "../features/resources/resourcesSlice"
 import announcementsReducer from "../features/announcements/announcementsSlice"
 import assignmentsReducer from "../features/assignement/assignementSlice"
 import submissionsReducer from "../features/submissions/submissionSlice"
+import teacherDashboardeducer from "../features/dashboard/teacher/teacherDashboardSlice"
 
 export const store = configureStore({
      reducer: {
         auth: authReducer,
         school: schoolReducer,
         adminDashboard: adminDashboardReducer,
+        teacherDashboard: teacherDashboardeducer,
         students: studentsReducer,
         teachers: teachersReducer,
         classes: classesReducer,

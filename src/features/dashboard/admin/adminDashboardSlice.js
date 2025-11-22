@@ -20,7 +20,7 @@ export const fetchAdminDashboardSummary = createAsyncThunk(
         config
       );
 
-      return response.data.data; // Return the data part of the response
+      return response.data.data;
     } catch (error) {
       // Return error message from API or default message
       return rejectWithValue(
