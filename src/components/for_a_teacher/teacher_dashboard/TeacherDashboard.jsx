@@ -259,7 +259,7 @@ export const TeacherDashboard = () => {
                                <h4>{item.title || item.name}</h4>
                                <span className="date">{
                                  item.createdAt 
-                                  ? new Data(item.createdAt).toLocaleDateString('en-Us', {month: 'short', day: 'numeric'}): "N/A"}</span>
+                                  ? new Date(item.createdAt).toLocaleDateString('en-Us', {month: 'short', day: 'numeric'}): "N/A"}</span>
                             </div>
                            <p>{item.message}</p>
                         </div>

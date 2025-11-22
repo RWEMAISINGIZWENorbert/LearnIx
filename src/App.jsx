@@ -173,7 +173,7 @@ function App() {
                 <Route path="classes" element={<Teacher_Classes_Page />} />
                 <Route path="students" element={<Teacher_Students_Page />} />
                 <Route path="assignments" element={<Teacher_Assignments_Page />} />
-                <Route path="submissions" element={<Teacher_Assignment_Submissions_Page />} />
+                <Route path="assignments/:assignmentId/submissions" element={<Teacher_Assignment_Submissions_Page />} />
                 <Route path="grades" element={<Teacher_Grades_Page />} />
                 <Route path="attendance" element={<Teacher_Attendance_Page />} />
                 <Route path="schedule" element={<Teacher_Schedule_Page />} />
