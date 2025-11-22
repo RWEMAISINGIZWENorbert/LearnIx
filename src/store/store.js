@@ -11,6 +11,7 @@ import announcementsReducer from "../features/announcements/announcementsSlice"
 import assignmentsReducer from "../features/assignement/assignementSlice"
 import submissionsReducer from "../features/submissions/submissionSlice"
 import teacherDashboardeducer from "../features/dashboard/teacher/teacherDashboardSlice"
+import studentDashboardReducer from "../features/dashboard/student/studentDashboardSlice"
 
 export const store = configureStore({
      reducer: {
@@ -18,6 +19,7 @@ export const store = configureStore({
         school: schoolReducer,
         adminDashboard: adminDashboardReducer,
         teacherDashboard: teacherDashboardeducer,
+        studentDashboard: studentDashboardReducer,
         students: studentsReducer,
         teachers: teachersReducer,
         classes: classesReducer,
