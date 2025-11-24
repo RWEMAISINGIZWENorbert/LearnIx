@@ -28,100 +28,100 @@ export const StudentAssignments = () => {
   const [uploadedFile, setUploadedFile] = useState(null);
   const [comment, setComment] = useState('');
 
-  const assignments = {
-    pending: [
-      {
-        id: 1,
-        title: 'Calculus Assignment - Integration',
-        course: 'Advanced Mathematics',
-        courseCode: 'MATH 301',
-        dueDate: '2025-10-28',
-        dueTime: '23:59',
-        description: 'Complete exercises on integration techniques',
-        points: 100,
-        urgent: true
-      },
-      {
-        id: 2,
-        title: 'Physics Lab Report',
-        course: 'Physics Laboratory',
-        courseCode: 'PHYS 201',
-        dueDate: '2025-10-30',
-        dueTime: '17:00',
-        description: 'Write a detailed lab report on the experiment',
-        points: 50,
-        urgent: false
-      },
-      {
-        id: 3,
-        title: 'Web Application Project',
-        course: 'Software Development',
-        courseCode: 'CS 401',
-        dueDate: '2025-11-05',
-        dueTime: '23:59',
-        description: 'Build a full-stack web application',
-        points: 200,
-        urgent: false
-      }
-    ],
-    submitted: [
-      {
-        id: 4,
-        title: 'Essay on Shakespeare',
-        course: 'English Literature',
-        courseCode: 'ENG 202',
-        submittedDate: '2025-10-20',
-        dueDate: '2025-10-22',
-        status: 'Under Review',
-        points: 100
-      },
-      {
-        id: 5,
-        title: 'Database Design Project',
-        course: 'Database Management',
-        courseCode: 'CS 301',
-        submittedDate: '2025-10-18',
-        dueDate: '2025-10-20',
-        status: 'Under Review',
-        points: 150
-      }
-    ],
-    graded: [
-      {
-        id: 6,
-        title: 'Algebra Quiz 2',
-        course: 'Advanced Mathematics',
-        courseCode: 'MATH 301',
-        submittedDate: '2025-10-10',
-        gradedDate: '2025-10-12',
-        score: 92,
-        points: 100,
-        feedback: 'Excellent work! Clear understanding of concepts.'
-      },
-      {
-        id: 7,
-        title: 'HTML/CSS Project',
-        course: 'Web Technologies',
-        courseCode: 'CS 402',
-        submittedDate: '2025-10-08',
-        gradedDate: '2025-10-10',
-        score: 95,
-        points: 100,
-        feedback: 'Outstanding design and implementation!'
-      },
-      {
-        id: 8,
-        title: 'Physics Quiz 3',
-        course: 'Physics Laboratory',
-        courseCode: 'PHYS 201',
-        submittedDate: '2025-10-05',
-        gradedDate: '2025-10-07',
-        score: 88,
-        points: 100,
-        feedback: 'Good understanding, minor calculation errors.'
-      }
-    ]
-  };
+  // const assignments = {
+  //   pending: [
+  //     {
+  //       id: 1,
+  //       title: 'Calculus Assignment - Integration',
+  //       course: 'Advanced Mathematics',
+  //       courseCode: 'MATH 301',
+  //       dueDate: '2025-10-28',
+  //       dueTime: '23:59',
+  //       description: 'Complete exercises on integration techniques',
+  //       points: 100,
+  //       urgent: true
+  //     },
+  //     {
+  //       id: 2,
+  //       title: 'Physics Lab Report',
+  //       course: 'Physics Laboratory',
+  //       courseCode: 'PHYS 201',
+  //       dueDate: '2025-10-30',
+  //       dueTime: '17:00',
+  //       description: 'Write a detailed lab report on the experiment',
+  //       points: 50,
+  //       urgent: false
+  //     },
+  //     {
+  //       id: 3,
+  //       title: 'Web Application Project',
+  //       course: 'Software Development',
+  //       courseCode: 'CS 401',
+  //       dueDate: '2025-11-05',
+  //       dueTime: '23:59',
+  //       description: 'Build a full-stack web application',
+  //       points: 200,
+  //       urgent: false
+  //     }
+  //   ],
+  //   submitted: [
+  //     {
+  //       id: 4,
+  //       title: 'Essay on Shakespeare',
+  //       course: 'English Literature',
+  //       courseCode: 'ENG 202',
+  //       submittedDate: '2025-10-20',
+  //       dueDate: '2025-10-22',
+  //       status: 'Under Review',
+  //       points: 100
+  //     },
+  //     {
+  //       id: 5,
+  //       title: 'Database Design Project',
+  //       course: 'Database Management',
+  //       courseCode: 'CS 301',
+  //       submittedDate: '2025-10-18',
+  //       dueDate: '2025-10-20',
+  //       status: 'Under Review',
+  //       points: 150
+  //     }
+  //   ],
+  //   graded: [
+  //     {
+  //       id: 6,
+  //       title: 'Algebra Quiz 2',
+  //       course: 'Advanced Mathematics',
+  //       courseCode: 'MATH 301',
+  //       submittedDate: '2025-10-10',
+  //       gradedDate: '2025-10-12',
+  //       score: 92,
+  //       points: 100,
+  //       feedback: 'Excellent work! Clear understanding of concepts.'
+  //     },
+  //     {
+  //       id: 7,
+  //       title: 'HTML/CSS Project',
+  //       course: 'Web Technologies',
+  //       courseCode: 'CS 402',
+  //       submittedDate: '2025-10-08',
+  //       gradedDate: '2025-10-10',
+  //       score: 95,
+  //       points: 100,
+  //       feedback: 'Outstanding design and implementation!'
+  //     },
+  //     {
+  //       id: 8,
+  //       title: 'Physics Quiz 3',
+  //       course: 'Physics Laboratory',
+  //       courseCode: 'PHYS 201',
+  //       submittedDate: '2025-10-05',
+  //       gradedDate: '2025-10-07',
+  //       score: 88,
+  //       points: 100,
+  //       feedback: 'Good understanding, minor calculation errors.'
+  //     }
+  //   ]
+  // };
 
   // const { 
   //   pendingAssignments = [], 
@@ -277,6 +277,10 @@ export const StudentAssignments = () => {
             <div className="assignments-list">
                {pendingAssignments.length > 0 ? pendingAssignments.map(assignment => {
                 const daysLeft = getDaysUntilDue(assignment.dueDate);
+                 console.log(`The Due Date ${new Date(assignment.dueDate)}`);
+                 console.log(`The Curret Date ${new Date()}`);
+                const isExpired = new Date(assignment.dueDate) <= new Date();
+                console.log(`Is Expired ${isExpired}`);
                 return (
                   <div key={assignment._id} className={`assignment-card ${assignment.urgent ? 'urgent' : ''}`}>
                     <div className="assignment-header">
@@ -304,14 +308,18 @@ export const StudentAssignments = () => {
                         <LuClock className="icon" />
                         <span>{daysLeft} days left</span>
                       </div>
-                      <div className="meta-item">
-                        <span className="points">{assignment.points} points</span>
-                      </div>
+                      {/* <div className="meta-item">
+                        <span className="points">{assignment.grade} points</span>
+                      </div> */}
                     </div>
 
-                    <button className="submit-btn" onClick={() => handleUpload(assignment)}>
-                      <MdUpload className="icon" />
-                      Submit Assignment
+                    <button 
+                    className="submit-btn" 
+                    disabled = {isExpired}
+                    style={isExpired ? {background: "#cfcfcfff"}: {}}
+                    onClick={() => handleUpload(assignment)}>
+                      {!isExpired ? <MdUpload className="icon" /> : null}
+                      { isExpired ? 'Expired':  'Submit Assignment' }
                     </button>
                   </div>
                 );
@@ -345,7 +353,7 @@ export const StudentAssignments = () => {
                       <span>Due Date: {new Date(assignment.dueDate).toLocaleDateString()}</span>
                     </div>
                     <div className="meta-item">
-                      <span className="points">{assignment.points} points</span>
+                      <span className="points">{assignment.points || Number(assignment.grade)} points</span>
                     </div>
                   </div>
                 </div>
@@ -369,8 +377,8 @@ export const StudentAssignments = () => {
                       </div>
                     </div>
                     <div className="grade-badge">
-                      <span className="score">{assignment.score}/{assignment.points}</span>
-                      <span className="percentage">({Math.round(assignment.score / assignment.points * 100)}%)</span>
+                      <span className="score">{Number(assignment.grade)}/{assignment.score || 100}</span>
+                      <span className="percentage">({Math.round(Number(assignment.grade) / (assignment.score || 100) * 100)}%)</span>
                     </div>
                   </div>
 
