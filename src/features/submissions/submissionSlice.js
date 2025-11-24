@@ -75,7 +75,7 @@ export const gradeSubmission = createAsyncThunk(
     };
     const response = await axios.patch(
       `${API_URL}/submissions/grade/${submissionId}`,
-      { grade, feedback },
+      { grade, feedBack: feedback },
       config
     );
     return response.data.data;

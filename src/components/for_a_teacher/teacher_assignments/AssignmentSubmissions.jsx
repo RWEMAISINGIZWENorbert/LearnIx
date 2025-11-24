@@ -6,6 +6,7 @@ import { LuCalendar, LuClock, LuFileText } from 'react-icons/lu';
 import { MdOutlineAssignment } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchSubmissionsByAssignment, selectAssignmentSubmissions, gradeSubmission } from '../../../features/submissions/submissionSlice';
+import FileViewer from '../../Docs/FileViewer';
 
 export const AssignmentSubmissions = () => {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ export const AssignmentSubmissions = () => {
   const { assignmentId } = useParams();
   const [grade, setGrade] = useState(0);
   const [feedback, setFeedBack] = useState("");
+  const [viewedDocument, setViewedDocument] = useState(null);
 
 
   const { 
@@ -143,6 +145,30 @@ export const AssignmentSubmissions = () => {
     return `${day}-${month}-${year} ${hours}:${minutes}`;
   };
 
+  const handleViewDocument = (document) => {
+    if (document.fileUrl) {
+       console.log(`The Document File Url ${document.fileUrl}`);
+      setViewedDocument(document);
+    } else {
+      alert(`Viewing: ${document.name}\nThis would open the document in a viewer.`);
+    }
+  };
+
+  if (viewedDocument) {
+      return (
+      <div style={{ width: '70%', height: '100vh', padding: '20px', transform: 'translateX(20vw)' }}>
+        <button 
+          onClick={() => setViewedDocument(null)} 
+          style={{ marginBottom: '10px', padding: '5px 10px' }}
+        >
+          ← Back to Documents
+        </button>
+        <FileViewer url={viewedDocument.fileUrl} />
+      </div>
+     );
+    }
+
+
   if (loading) return <div className="loading">Loading submissions...</div>;
   if (error) return <div className="error">Error: {error}</div>;
   
@@ -234,9 +260,13 @@ export const AssignmentSubmissions = () => {
                         <h4>{selectedSubmission.fileName}</h4>
                         <p>Submitted on {formatDate(selectedSubmission.createdAt)}</p>
                       </div>
-                      <button className="download_btn">
+                     { selectedSubmission.fileUrl ? <button 
+                      className="download_btn"
+                      onClick={() => handleViewDocument(selectedSubmission)}
+                      >
                         <FaDownload /> Download
-                      </button>
+                      </button>  : null  
+                    } 
                     </div>
                   </div>
 

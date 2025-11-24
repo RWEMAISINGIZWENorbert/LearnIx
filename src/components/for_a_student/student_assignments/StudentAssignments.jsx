@@ -384,7 +384,7 @@ export const StudentAssignments = () => {
 
                   <div className="feedback-section">
                     <h4>Instructor Feedback:</h4>
-                    <p>{assignment.feedback}</p>
+                    <p>{assignment.feedback || assignment.feedBack}</p>
                   </div>
 
                   <div className="assignment-meta">
