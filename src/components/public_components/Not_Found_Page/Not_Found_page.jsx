@@ -1,5 +1,5 @@
 import React from 'react'
-import './Not_Found_page.css'
+import './Not_found_page.css'
 import { MdArrowForwardIos } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 
