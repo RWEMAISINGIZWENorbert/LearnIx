@@ -65,7 +65,7 @@ export const submitAssignment = createAsyncThunk(
 
 export const gradeSubmission = createAsyncThunk(
   'submissions/grade',
-  async ({ submissionId, grade }, { getState }) => {
+  async ({ submissionId, grade, feedback }, { getState }) => {
     const { auth } = getState();
     const config = {
       headers: {
@@ -75,7 +75,7 @@ export const gradeSubmission = createAsyncThunk(
     };
     const response = await axios.patch(
       `${API_URL}/submissions/grade/${submissionId}`,
-      { grade },
+      { grade, feedback },
       config
     );
     return response.data.data;

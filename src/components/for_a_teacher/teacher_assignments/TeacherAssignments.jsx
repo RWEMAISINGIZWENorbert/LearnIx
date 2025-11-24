@@ -173,14 +173,14 @@ export const TeacherAssignments = () => {
     }
     
     // Handle assignment creation logic here
-    console.log({
-      title: assignmentTitle,
-      description: assignmentDescription,
-      dueDate: assignmentDueDate,
-      class: assignmentClass,
-      file: uploadedFile,
-      audio: audioBlob
-    });
+    // console.log({
+    //   title: assignmentTitle,
+    //   description: assignmentDescription,
+    //   dueDate: assignmentDueDate,
+    //   class: assignmentClass,
+    //   file: uploadedFile,
+    //   audio: audioBlob
+    // });
 
     let formDataToSend = new FormData();
     formDataToSend.append('title', assignmentTitle);
@@ -189,7 +189,7 @@ export const TeacherAssignments = () => {
     formDataToSend.append('assignment', uploadedFile);
     try {
       dispatch(createAssignment(formDataToSend));
-       alert('Assignment created successfully!');
+      //  alert('Assignment created successfully!');
        setShowCreateModal(false);
       // Reset form
       setAssignmentTitle('');
@@ -198,6 +198,7 @@ export const TeacherAssignments = () => {
       setAssignmentClass('');
       setUploadedFile(null);
       cancelRecording();
+      fetchAssignments();
     } catch (error) {
       console.error('Error creating assignment:', error);
     }
@@ -211,8 +212,8 @@ export const TeacherAssignments = () => {
     // setUploadedFile(null);
     // cancelRecording();
     
-    alert('Assignment created successfully!');
-  };
+  };    // alert('Assignment created successfully!');
+
 
   // const assignments = {
   //   active: [
@@ -293,6 +294,9 @@ export const TeacherAssignments = () => {
   
   return `${day}-${month}-${year} ${hours}:${minutes}`;
 };
+
+//  if(loading) return <div>Loading...</div>
+//  if(error) return <div>Error: {error}</div>
   
   return (
     <div className='teacherAssignments'>
@@ -322,7 +326,8 @@ export const TeacherAssignments = () => {
         {loading && <div className="loading">Loading assignments...</div>}
         {error && <div className="error">{error}</div>}
         <div className="assignments-grid">
-          {activeTab === 'active' && assignments.filter(e => e.status === 'active').length > 0 ?
+          {activeTab === 'active' &&
+           
            assignments.filter(e => e.status === 'active').map((assignment) => (
             <div key={assignment._id} className="assignment-card">
               <div className="assignment-header" style={{borderLeft: `none`}}>
@@ -367,9 +372,13 @@ export const TeacherAssignments = () => {
                 </div>
               </div>
 
-              <button className="view-btn" style={{background: assignment.color}} onClick={() => navigate(`/teacher/assignments/${assignment._id || assignment.id}/submissions`)}>View Submissions</button>
+              <button 
+              className="view-btn" 
+              style={{background: assignment.color != null ? assignment.color : '#10b981'}} 
+              onClick={() => navigate(`/teacher/assignments/${assignment._id}/submissions`)}>
+                View Submissions</button>
             </div>
-          )) : <p>No assignments found</p>}
+          ))}
 
           {activeTab === 'completed' && assignments.filter(e => e.status === 'completed').length > 0 
           && assignments.filter(e => e.status === 'completed').map((assignment) => (
@@ -399,7 +408,10 @@ export const TeacherAssignments = () => {
                 </div>
               </div>
 
-              <button className="view-btn" style={{background: assignment.color}} onClick={() => navigate(`/teacher/assignments/${assignment.id}/submissions`)}>View Details</button>
+              <button 
+              className="view-btn" 
+              style={{background: assignment.color != null ? assignment.color : '#8b5cf6' }} 
+              onClick={() => navigate(`/teacher/assignments/${assignment.id}/submissions`)}>View Details</button>
             </div>
           ))}
         </div>

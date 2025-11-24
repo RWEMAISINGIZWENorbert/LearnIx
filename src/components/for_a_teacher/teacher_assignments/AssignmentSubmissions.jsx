@@ -5,12 +5,15 @@ import { FaArrowLeft, FaDownload, FaCheck, FaTimes } from 'react-icons/fa';
 import { LuCalendar, LuClock, LuFileText } from 'react-icons/lu';
 import { MdOutlineAssignment } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchSubmissionsByAssignment, selectAssignmentSubmissions } from '../../../features/submissions/submissionSlice';
+import { fetchSubmissionsByAssignment, selectAssignmentSubmissions, gradeSubmission } from '../../../features/submissions/submissionSlice';
 
 export const AssignmentSubmissions = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { assignmentId } = useParams();
+  const [grade, setGrade] = useState(0);
+  const [feedback, setFeedBack] = useState("");
+
 
   const { 
     loading, 
@@ -94,13 +97,17 @@ export const AssignmentSubmissions = () => {
   //   }
   // ]);
   
-  useEffect(() => {
+  const [selectedSubmission, setSelectedSubmission] = useState(submissions.length === 0 ? null : submissions[0]);
+
+    useEffect(() => {
     if (assignmentId) {
       dispatch(fetchSubmissionsByAssignment(assignmentId));
+      setSelectedSubmission(submissions.length === 0 ? null : submissions[0]);
+      setGrade(submissions.length === 0 ? null : submissions[0].grade);
+      setFeedBack(submissions.length === 0 ? null : submissions[0].feedback);
     }
+    () => navigate(-1)
   }, [dispatch, assignmentId]);
-
-  const [selectedSubmission, setSelectedSubmission] = useState(submissions.length === 0 ? null : submissions[0]);
 
   // const handleMarksChange = (id, value) => {
   //   setSubmissions(submissions.map(sub => 
@@ -115,10 +122,11 @@ export const AssignmentSubmissions = () => {
   // };
 
   const handleSaveGrade = (id) => {
-    const submission = submissions.find(sub => sub.id === id);
-    if (submission.marks) {
-      alert(`Grade saved: ${submission.marks}/100 for ${submission.studentName}`);
-    }
+     dispatch(gradeSubmission({
+      submissionId: id,
+      grade,
+      feedback
+     }));
   };
 
   const submittedCount = submissions.filter(s => s.status === "submitted").length;
@@ -135,11 +143,9 @@ export const AssignmentSubmissions = () => {
     return `${day}-${month}-${year} ${hours}:${minutes}`;
   };
 
-  console.log(`The submissions ${submissions.length}`);
-  console.log(`The selected submission ${selectedSubmission}`);
   if (loading) return <div className="loading">Loading submissions...</div>;
   if (error) return <div className="error">Error: {error}</div>;
-
+  
 
   return (
     <div className='assignmentSubmissions'>
@@ -172,15 +178,15 @@ export const AssignmentSubmissions = () => {
               <div 
                 key={submission._id} 
                 className={`submission_card ${submission.status} ${selectedSubmission?.id === submission.id ? 'active' : ''}`}
-                onClick={() => setSelectedSubmission(submission)}
+                onClick={() => {setSelectedSubmission(submission), setGrade(submission.grade), setFeedBack(submission.feedback)}}
               >
                 <div className="student_info">
                   <div className="student_avatar">
-                    <img src={`${import.meta.env.BASE_URL}assets/${submission.profilePic}`} alt={submission.studentName} />
+                    <img src={`${import.meta.env.BASE_URL}assets/profile_pic_blank.png` } alt={submission.studentName} />
                   </div>
                   <div className="student_details">
                     <h4>{submission.studentName}</h4>
-                    <p className="student_id">{submission.studentId}</p>
+                    {/* <p className="student_id">{submission.studentId}</p> */}
                   </div>
                   <div className={`status_badge ${submission.status}`}>
                     {submission.status === "submitted" ? <FaCheck /> : <FaTimes />}
@@ -201,9 +207,9 @@ export const AssignmentSubmissions = () => {
                   </div>
                 )}
 
-                {submission.marks && (
+                {submission.grade && (
                   <div className="graded_badge">
-                    Graded: {submission.marks}/100
+                    Graded: {submission.grade}/100
                   </div>
                 )}
               </div>
@@ -241,8 +247,8 @@ export const AssignmentSubmissions = () => {
                         type="number"
                         min="0"
                         max="100"
-                        value={selectedSubmission.grade}
-                        onChange={(e) => handleMarksChange(selectedSubmission.id, e.target.value)}
+                        value={grade}
+                        onChange={(e) => setGrade(e.target.value)}
                         placeholder="Enter marks"
                       />
                     </div>
@@ -251,8 +257,8 @@ export const AssignmentSubmissions = () => {
                       <label>Feedback</label>
                       <textarea
                         rows="5"
-                        value={selectedSubmission.feedback}
-                        onChange={(e) => handleFeedbackChange(selectedSubmission.id, e.target.value)}
+                        value={feedback}
+                        onChange={(e) => setFeedBack(e.target.value)}
                         placeholder="Provide feedback to the student..."
                       />
                     </div>
@@ -260,7 +266,7 @@ export const AssignmentSubmissions = () => {
                     <button 
                       className="save_grade_btn"
                       onClick={() => handleSaveGrade(selectedSubmission._id)}
-                      disabled={!selectedSubmission.grade}
+                      disabled={grade == 0 || grade == null}
                     >
                       <FaCheck /> Save Grade
                     </button>
