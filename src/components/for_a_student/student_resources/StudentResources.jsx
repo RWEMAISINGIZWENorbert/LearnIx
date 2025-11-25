@@ -7,6 +7,7 @@ import { MdOutlineVideoLibrary } from 'react-icons/md';
 import { LuFileText, LuVideo, LuFolder } from 'react-icons/lu';
 import { useSelector, useDispatch } from 'react-redux'; 
 import { fetchAllResources, selectResources, selectResourcesLoading, selectResourcesError } from '../../../features/resources/resourcesSlice';
+import FileViewer from  '../../Docs/FileViewer';
 
 export const StudentResources = () => {
   const [filter, setFilter] = useState('all');

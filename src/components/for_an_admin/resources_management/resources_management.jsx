@@ -8,6 +8,7 @@ import { MdOutlineSubject } from 'react-icons/md';
 import { FaFilePdf, FaFileWord, FaFileImage, FaFileVideo } from "react-icons/fa";
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllResources } from '../../../features/resources/resourcesSlice';
+import FileViewer from  '../../Docs/FileViewer';
 
 export const Resources_management = () => {
   let navigate = useNavigate();
