@@ -89,7 +89,7 @@ export const SchoolRegistration = () => {
       dispatch(nextStep());
     } else if (isSuccess && currentStep === steps.length - 1) {
       // Final step completed
-      alert('School registration successful! Your admin ID has been sent to your email.');
+      alert('School registered successful!');
       navigate('/login');
     }
   }, [isSuccess, currentStep, dispatch, navigate]);

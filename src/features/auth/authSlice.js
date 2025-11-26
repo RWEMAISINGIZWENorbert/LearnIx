@@ -196,6 +196,7 @@ export const confirmPassword = createAsyncThunk(
       // Get all required data from localStorage
       const name = localStorage.getItem('name');
       const email = localStorage.getItem('email');
+      const tel = localStorage.getItem('tel');
       const schoolId = localStorage.getItem('schoolId');
       const role = localStorage.getItem('role');
 
@@ -228,7 +229,8 @@ export const confirmPassword = createAsyncThunk(
         password,
         cPassword,
         schoolId,
-        role
+        role,
+        tel
       };
 
       // Make API request

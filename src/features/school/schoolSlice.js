@@ -237,6 +237,7 @@ export const registerEmailAndTel = createAsyncThunk(
       if (response.status === 200 || response.status === 201) {
         // Store email in localStorage for verification step
         localStorage.setItem('email', email);
+        localStorage.setItem('tel', tel);
         
         return {
           status: response.data.status,
@@ -433,6 +434,8 @@ export const confirmSchoolPassword = createAsyncThunk(
         });
       }
 
+      const tel = localStorage.getItem('tel');
+
       // Password strength validation (at least one uppercase, one lowercase, one number)
       const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
        /////////////////////////        TEST MODE: This wiil be ntegrated later   //////////////////////
@@ -451,7 +454,7 @@ export const confirmSchoolPassword = createAsyncThunk(
 
       const response = await axios.post(
         `${API_BASE_URL}/schools/confirmPassword`,
-        { schoolId, name, email, password, cPassword },
+        { schoolId, name, email, password, cPassword, tel },
         {
           headers: { 'Content-Type': 'application/json' },
           timeout: 10000
