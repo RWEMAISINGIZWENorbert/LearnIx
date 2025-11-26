@@ -62,8 +62,14 @@ export const registerPersonalInfo = createAsyncThunk(
             role: data.role
           }
         };
+      }else if(response.status === 400 || response.status === 404){
+         console.log(`The Failed Response Msg ${response.data.msg}`);
+        return rejectWithValue({
+          msg: response.data.msg,
+          status: response.status,
+          field: response.data.field
+        });
       }
-
       return rejectWithValue({
         msg: 'Registration failed. Please try again.'
       });
@@ -518,6 +524,11 @@ const authSlice = createSlice({
       state.registrationStep = null;
       state.error = null;
       state.successMessage = null;
+      localStorage.removeItem('schoolId');
+    localStorage.removeItem('email');
+  localStorage.removeItem('name');
+  localStorage.removeItem('tel');
+  localStorage.removeItem('role');
     },
     // Set authentication from stored data (for app initialization)
     setAuthFromStorage: (state) => {
@@ -557,7 +568,11 @@ const authSlice = createSlice({
       })
       .addCase(registerPersonalInfo.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        state.error = {
+          msg: action.payload.msg,
+          status: action.payload.status || null,
+          field: action.payload.field || null
+        };
         state.successMessage = null;
       })
 

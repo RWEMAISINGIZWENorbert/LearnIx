@@ -79,9 +79,9 @@ function App() {
   }, [isAuthenticated, role, location.pathname, navigate, initialized]);
 
   // Show loading state while initializing
-  if (!initialized || loading) {
-    return <div>Loading...</div>; // Replace with your loading component
-  }
+  // if (!initialized || loading) {
+  //   return <div>Loading...</div>; // Replace with your loading component
+  // }
 
 
   return (

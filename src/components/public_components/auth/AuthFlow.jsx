@@ -18,6 +18,7 @@ import {
   selectUser,
   selectRole,
   selectRegistrationStep,
+  resetRegistration
 } from '../../../features/auth/authSlice';
 
 export const AuthFlow = () => {
@@ -191,18 +192,23 @@ export const AuthFlow = () => {
 
   // Redirect if already authenticated
   useEffect(() => {
-     console.log('isAuthenticated', isAuthenticated);
-     console.log('user', user);
-     console.log('role', role);
-    if (isAuthenticated && user) {
+    console.log('isAuthenticated', isAuthenticated);
+    console.log('user', user);
+    console.log('role', role);
+    
+    // Only redirect if we're not in the middle of registration
+    const isRegistering = !isLogin && registrationStep !== 'completed';
+    
+    if (isAuthenticated && user && !isRegistering) {
       if (role === 'student') navigate('/student/dashboard');
       else if (role === 'teacher') navigate('/teacher/dashboard');
       else if (role === 'admin') navigate('/admin/dashboard');
     }
-  }, [isAuthenticated, user, role, navigate]);
+  }, [isAuthenticated, user, role, navigate, isLogin, registrationStep]);
 
-  // Handle successful registration step progression
-  useEffect(() => {
+
+// Handle successful registration step progression
+useEffect(() => {
     if (registrationStep === 'otp_verification' && !isLogin) {
       // Move to verification step after successful personal info registration
       const verificationStepIndex = steps.findIndex(s => s.title === 'Verification');
@@ -211,6 +217,10 @@ export const AuthFlow = () => {
       }
     }
   }, [registrationStep, isLogin, steps]);
+
+useEffect(() => {
+  dispatch(resetRegistration());
+}, [dispatch, isLogin]);
 
   // Show error messages as popup alerts
   useEffect(() => {
@@ -223,12 +233,16 @@ export const AuthFlow = () => {
 
   // Show success messages as popup alerts
   useEffect(() => {
-    if (successMessage) {
+  if (successMessage) {
+    if (successMessage.includes('Verification Code')) {
+      // Don't show the alert here, it will be shown in handleNext
+      dispatch(clearSuccess());
+    } else {
       alert(successMessage);
-      // Clear success message after showing
       dispatch(clearSuccess());
     }
-  }, [successMessage, dispatch]);
+  }
+}, [successMessage, dispatch]);
 
   const handleNext = async () => {
     const stepTitle = steps[currentStep]?.title;
@@ -274,30 +288,29 @@ export const AuthFlow = () => {
           alert('Please enter a valid user ID');
           return;
         }
+         console.log(`The Cuuernt Step ${currentStep}`);
         setCurrentStep(currentStep + 1);
+         console.log(`The Next Step ${currentStep}`);
         break;
 
       case 'Personal Info':
         // Step 1 - Call registerPersonalInfo API
-        if (!formData.fullName || !formData.email || !formData.phone) {
-          alert('Please fill all required fields');
-          return;
+       if (!formData.fullName || !formData.email || !formData.phone) {
+         alert('Please fill all required fields');
+        return;
         }
 
-        const result = dispatch(registerPersonalInfo({
-          code: formData.userId,
-          name: formData.fullName,
-          email: formData.email,
-          tel: formData.phone
-        }));
-
-        if (registerPersonalInfo.fulfilled.match(result)) {
-          // Success - OTP sent, will move to verification step via useEffect
-          console.log('Personal info registered, OTP sent');
-        }
-        // Error will be displayed from Redux state
-        setCurrentStep(currentStep + 1);
-        break;
+      try {
+        await dispatch(registerPersonalInfo({
+         code: formData.userId,
+         name: formData.fullName,
+         email: formData.email,
+         tel: formData.phone
+    })).unwrap();
+  } catch (error) {
+    console.error('Registration failed:', error);
+  }
+  break;
 
       case 'Guardian Info':
         // Step 2 (Students only) - Just validate and move forward
