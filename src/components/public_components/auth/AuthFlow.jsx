@@ -296,6 +296,7 @@ export const AuthFlow = () => {
           console.log('Personal info registered, OTP sent');
         }
         // Error will be displayed from Redux state
+        setCurrentStep(currentStep + 1);
         break;
 
       case 'Guardian Info':
