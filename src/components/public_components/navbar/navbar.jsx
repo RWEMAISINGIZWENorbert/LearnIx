@@ -13,7 +13,7 @@ export const Navbar = () => {
                 <div className="links">
                     <div className="link home "><NavLink className={({ isActive }) => isActive ? 'nav-item hover' : 'nav-item'} to='/'>home</NavLink></div>
                     <div className="link schools"><NavLink className={({ isActive }) => isActive ? 'nav-item hover' : 'nav-item'} to="/schools">schools</NavLink></div>
-                    <div className="link books"><NavLink className={({ isActive }) => isActive ? 'nav-item hover' : 'nav-item'} to="/books">books</NavLink></div>
+                    {/* <div className="link books"><NavLink className={({ isActive }) => isActive ? 'nav-item hover' : 'nav-item'} to="/books">books</NavLink></div> */}
                     <div className="link features"><NavLink className={({ isActive }) => isActive ? 'nav-item hover' : 'nav-item'} to="/features">features</NavLink></div>
                     {/* <div className="link dev_team"><NavLink className={({ isActive }) => isActive ? 'nav-item hover' : 'nav-item'} to="/dev_team">Developers</NavLink></div> */}
                 </div>
