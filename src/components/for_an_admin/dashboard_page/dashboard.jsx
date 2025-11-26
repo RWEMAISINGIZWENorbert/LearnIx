@@ -121,12 +121,15 @@ useEffect(() => {
             {/* LEFT column inside middle */}
             <div className="left">
               {/* LEFT -> Upper: Recent activities & alerts */}
-              <div className="upper">
+             {/* /////////////////////////////////////////////////////////////////
+              ///////////////////// This Upper Section [Recent activities & alerts] not implemented now  ////////////////////////////////////////////
+              /////////////////// //////////////////////////////////////////////
+              /////////////////////////////////////////////////////////////////  */}
+             {/* <div className="upper">
                 <div className="up">
                   <h3>Recent activities & alerts</h3>
                 </div>
                 <div className="down">
-                  {/* Activity item 1 */}
                   <div className="it">
                     <div className="div">
                       <h4>New student registration : Franco Nelly</h4>
@@ -135,7 +138,6 @@ useEffect(() => {
                     <div className="dot"></div>
                   </div>
 
-                  {/* Activity item 2 */}
                   <div className="it">
                     <div className="div">
                       <h4>Exam results uploaded for L5 SOD A</h4>
@@ -144,7 +146,6 @@ useEffect(() => {
                     <div className="dot"></div>
                   </div>
 
-                  {/* Activity item 3 */}
                   <div className="it">
                     <div className="div">
                       <h4>Attendance alert : L5 SOD B</h4>
@@ -155,6 +156,10 @@ useEffect(() => {
                 </div>
               </div>
               {/* END: LEFT -> Upper */}
+              {/* /////////////////////////////////////////////////////////////////
+              /////////////////////////////////////////////////////////////////
+              /////////////////////////////////////////////////////////////////
+              /////////////////////////////////////////////////////////////////  */}
 
               {/* LEFT -> Lower: Pending applications */}
               <div className="lower">
@@ -175,29 +180,6 @@ useEffect(() => {
                         <th>Status</th>
                       </tr>
                     </thead>
-                    {/* <tbody>
-                      <tr>
-                        <td>1</td>
-                        <td>Franco Nelly</td>
-                        <td>L5 SOD</td>
-                        <td>2d ago</td>
-                        <td><span className='approved'>Approved</span></td>
-                      </tr>
-                      <tr>
-                        <td>2</td>
-                        <td>RWEMA Nobii</td>
-                        <td>L5 SOD</td>
-                        <td>1d ago</td>
-                        <td><span className='pending'>pending</span></td>
-                      </tr>
-                      <tr>
-                        <td>3</td>
-                        <td>SHEMA Valentin</td>
-                        <td>L5 SOD</td>
-                        <td>4d ago</td>
-                        <td><span className='rejected'>Rejected</span></td>
-                      </tr>
-                    </tbody> */}
                     <tbody>
                       {summary.recentApplications.length > 0 ? (
                         console.log(`Recent Application Summary: ${summary.recentApplications.length}`),
@@ -248,7 +230,7 @@ useEffect(() => {
                     <div style={{ fontWeight: 800 }}>{summary.admissionSnapshot.approved || 0}</div>
                   </div>
                   <div style={{ height: 8, background: 'rgba(15,23,42,0.06)', borderRadius: 8, overflow: 'hidden' }}>
-                    <div style={{ width: '72%', height: '100%', background: 'green' }} />
+                    <div style={{ width: `${(summary.admissionSnapshot.approved * 100)/(summary.admissionSnapshot.approved +summary.admissionSnapshot.pending + summary.admissionSnapshot.rejected)}%`, height: '100%', background: 'green' }} />
                   </div>
                 </div>
 
@@ -257,7 +239,7 @@ useEffect(() => {
                   <div style={{ fontWeight: 800 }}>{summary.admissionSnapshot.pending || 0}</div>
                 </div>
                 <div style={{ height: 8, background: 'rgba(15,23,42,0.06)', borderRadius: 8, overflow: 'hidden' }}>
-                  <div style={{ width: '24%', height: '100%', background: 'orange' }} />
+                  <div style={{ width: `${(summary.admissionSnapshot.pending * 100)/(summary.admissionSnapshot.approved +summary.admissionSnapshot.pending + summary.admissionSnapshot.rejected)}%`, height: '100%', background: 'orange' }} />
                 </div>
 
                 
@@ -267,7 +249,7 @@ useEffect(() => {
                     <div style={{ fontWeight: 800 }}>{summary.admissionSnapshot.rejected || 0}</div>
                   </div>
                   <div style={{ height: 8, background: 'rgba(15,23,42,0.06)', borderRadius: 8, overflow: 'hidden' }}>
-                    <div style={{ width: '34%', height: '100%', background: 'red' }} />
+                    <div style={{ width: `${(summary.admissionSnapshot.rejected * 100)/(summary.admissionSnapshot.approved +summary.admissionSnapshot.pending + summary.admissionSnapshot.rejected)}%`, height: '100%', background: 'red' }} />
                   </div>
                 </div>
               </div>
