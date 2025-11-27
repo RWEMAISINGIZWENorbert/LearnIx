@@ -13,7 +13,6 @@
 .assignmentSubmissions .box {
     background: white;
     border-radius: 12px;
-    box-shadow: var(--shadow);
 }
 
 /* Header */

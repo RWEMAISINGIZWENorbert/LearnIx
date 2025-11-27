@@ -246,9 +246,6 @@ export const Communications_management = () => {
                     </div>
                   </div>
                   <div className="communications_management_card_actions">
-                    <button className="communications_management_action_btn view">
-                      <FaEye />
-                    </button>
                     <button className="communications_management_action_btn edit">
                       <FaEdit />
                     </button>

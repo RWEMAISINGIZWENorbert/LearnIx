@@ -87,20 +87,6 @@ export const Settings = () => {
                     </div>
               </div>
             </div>
-            <div className="div5 all">
-              <div className="i"><div className="icon"><HiOutlinePaintBrush /></div></div>
-              <div className="content">
-                    <div className="up">
-                      <h3>Customization & UI</h3>
-                    </div>
-                    <div className="mid">
-                      <p>Customize the look and feel of the application.</p>
-                    </div>
-                    <div className="down">
-                      <button><span>Customize</span><FaLongArrowAltRight className='icon'/></button>
-                    </div>
-              </div>
-            </div>
             <div className="div6 all">
               <div className="i"><div className="icon"><IoLockOpenOutline /></div></div>
               <div className="content">
@@ -112,20 +98,6 @@ export const Settings = () => {
                     </div>
                     <div className="down">
                       <button onClick={() => setShowSecurityModal(true)}><span>Secure</span><FaLongArrowAltRight className='icon'/></button>
-                    </div>
-              </div>
-            </div>
-            <div className="div7 all">
-              <div className="i"><div className="icon"><FaRegQuestionCircle  /></div></div>
-              <div className="content">
-                    <div className="up">
-                      <h3>Feedback & Support</h3>
-                    </div>
-                    <div className="mid">
-                      <p>Get help and support for using the application.</p>
-                    </div>
-                    <div className="down">
-                      <button><span>Support</span><FaLongArrowAltRight className='icon'/></button>
                     </div>
               </div>
             </div>

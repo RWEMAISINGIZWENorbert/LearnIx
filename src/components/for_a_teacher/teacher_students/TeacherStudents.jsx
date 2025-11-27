@@ -100,7 +100,7 @@ export const TeacherStudents = () => {
   });
 
   return (
-    <div className='teacherStudents students_management'>
+    <div className='teacherStudents'>
       <div className="box">
         <div className="whole_up">
           <div className="upper">
@@ -122,7 +122,7 @@ export const TeacherStudents = () => {
                 <button>Search</button>
               </div>
             </div>
-            <div className="stats">
+            <div className="new">
               <div className="left"><div className="icon"><LuUser/></div></div>
               <div className="right">
                 <span>Total Students</span>
