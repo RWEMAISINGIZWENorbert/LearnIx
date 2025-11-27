@@ -315,11 +315,13 @@ export const StudentAssignments = () => {
 
                     <button 
                     className="submit-btn" 
-                    disabled = {isExpired}
                     style={isExpired ? {background: "#cfcfcfff"}: {}}
-                    onClick={() => handleUpload(assignment)}>
+                    onClick={() => handleUpload(assignment)}
+                    disabled = {isExpired}
+                    >
                       {!isExpired ? <MdUpload className="icon" /> : null}
                       { isExpired ? 'Expired':  'Submit Assignment' }
+                      
                     </button>
                   </div>
                 );
