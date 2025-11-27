@@ -8,6 +8,7 @@ import { LuFileText, LuVideo, LuFolder } from 'react-icons/lu';
 import { useSelector, useDispatch } from 'react-redux'; 
 import { fetchAllResources, selectResources, selectResourcesLoading, selectResourcesError } from '../../../features/resources/resourcesSlice';
 import FileViewer from  '../../Docs/FileViewer';
+import { FaFilePdf, FaFileWord, FaFileImage, FaFileVideo } from "react-icons/fa";
 
 export const StudentResources = () => {
   const [filter, setFilter] = useState('all');
@@ -38,6 +39,20 @@ export const StudentResources = () => {
   const totalResources = resources.length;
   const pdfCount = resources.filter(r => r.type === 'PDF').length;
   const videoCount = resources.filter(r => r.type === 'Video').length;
+
+  const getFileIcon = (type) => {
+    switch(type) {
+      case 'pdf': return <FaFilePdf className="icon pdf" />;
+      case 'docx': 
+      case 'doc': return <FaFileWord className="icon word" />;
+      case 'png': 
+      case 'jpg': 
+      case 'jpeg': return <FaFileImage className="icon image" />;
+      case 'mp4': 
+      case 'avi': return <FaFileVideo className="icon video" />;
+      default: return <LuFileText className="icon default" />;
+    }
+  };
 
     const handleViewDocument = (document) => {
       if (document.fileUrl) {
@@ -133,15 +148,16 @@ export const StudentResources = () => {
           {filteredResources.map(resource => (
             <div key={resource.id} className="resource-card">
               <div className="resource-icon">
-                {resource.type === 'PDF' ? <BiFile /> : <MdOutlineVideoLibrary />}
+                {/* {resource.type === 'PDF' ? <BiFile /> : <MdOutlineVideoLibrary />} */}
+                {getFileIcon(resource.fileUrl?.split('.').pop() || '')}
               </div>
               <div className="resource-info">
                 <h3>{resource.title}</h3>
                 <p className="course"><HiOutlineBookOpen className="icon" />{resource.course}</p>
                 <div className="meta">
                   <span className="type">{resource.type}</span>
-                  <span className="size">{resource.size}</span>
-                  <span className="date">{new Date(resource.date).toLocaleDateString()}</span>
+                  <span className="size">{resource.size} </span>
+                  <span className="date">{new Date(resource.createdAt).toLocaleDateString()}</span>
                 </div>
               </div>
               <button className="download-btn" onClick={() => handleViewDocument(resource)}>
