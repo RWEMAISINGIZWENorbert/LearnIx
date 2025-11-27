@@ -4,22 +4,16 @@
   --white: white;
   --shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 }
-.teacherStudents, .students_management{
+.teacherStudents{
     transform: translateX(20vw);
     padding: 20px;
-}
-.teacherStudents.students_management{
-    transform: translateX(20vw);
-    padding: 20px;
-}
-.teacherStudents, .students_management{
     width: 80vw;
     min-height: 100vh;
 }
-.teacherStudents .up, .students_management .up {
+.teacherStudents .up {
     margin-bottom: 20px;
 }
-.students_management .up  .button button{
+.teacherStudents .up  .button button{
     background: none;
     outline: none;
     border: 1px solid rgba(0, 0, 0, 0.1);
@@ -32,39 +26,39 @@
     font-weight: 500;
     cursor: pointer;
 }
-.students_management .upper p{
+.teacherStudents .upper p{
     opacity: 0.7;
     font-size: 14px;
 }
 
-.students_management .box .whole_up .mini_up{
+.teacherStudents .box .whole_up .mini_up{
     margin-top: 20px;
     display: flex;
     gap:10px
 }
-.students_management .box .whole_up .mini_up .search_box .search,
-.students_management .box .whole_up .mini_up .search_box{
+.teacherStudents .box .whole_up .mini_up .search_box .search,
+.teacherStudents .box .whole_up .mini_up .search_box{
     display: flex;
     width: 100%;
     gap: 10px;
     align-items: center;
 }
-.students_management .box .whole_up .mini_up .search_box .search input{
+.teacherStudents .box .whole_up .mini_up .search_box .search input{
     width: 100%;
     outline: none;
     background: none;
     border: none;
 }
-.students_management .box .whole_up .mini_up .search_box .search .icon{
+.teacherStudents .box .whole_up .mini_up .search_box .search .icon{
     font-size: 1.2rem;
     margin-top: 5px;
 }
-.students_management .box .whole_up .mini_up .search_box{
+.teacherStudents .box .whole_up .mini_up .search_box{
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     padding:10px 10px; 
 }
-.students_management .box .whole_up .mini_up .search_box .button button{
+.teacherStudents .box .whole_up .mini_up .search_box .button button{
     background: none;
     color:var(--main_color);
     font-weight: 600;
@@ -73,77 +67,77 @@
     outline: none;
     cursor: pointer;
 }
-.students_management .box .middle{
+.teacherStudents .box .middle{
     display: flex;
     flex-wrap: wrap;
     margin-top: 20px;
     gap: 20px;
 }
-.students_management .box .middle .student{
+.teacherStudents .box .middle .student{
     box-shadow: var(--shadow);
     padding: 10px;
     border-radius: 10px;
     background: none;
     width: 25vw;
 }
-.students_management .box .middle .student .up h4{
+.teacherStudents .box .middle .student .up h4{
     text-transform: uppercase;
 }
-.students_management .box .middle .student .up{
+.teacherStudents .box .middle .student .up{
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-.students_management .box .middle .student .up .active_status.inactive{
+.teacherStudents .box .middle .student .up .active_status.inactive{
   background: rgb(255, 192, 203);
   color: rgb(216, 81, 103);
 }
-.students_management .box .middle .student .up .active_status.active{
+.teacherStudents .box .middle .student .up .active_status.active{
     background: rgb(165, 255, 165);
     color: green;
 }
-.students_management .box .middle .student .up .active_status{
+.teacherStudents .box .middle .student .up .active_status{
     padding:3px 5px;
     border-radius: 10px;
     font-size: 12px;
 }
-.students_management .box .middle .student .details p .icon{
+.teacherStudents .box .middle .student .details p .icon{
     font-size: 16px;
 }
-.students_management .box .middle .student .details p ul{
+.teacherStudents .box .middle .student .details p ul{
     margin-left: 12px;
 }
-.students_management .box .middle .student .profile .data .name{
+.teacherStudents .box .middle .student .profile .data .name{
     font-weight: 500;
     font-size: 15px;
 }
-.students_management .box .middle .student .profile .data .email{
+.teacherStudents .box .middle .student .profile .data .email{
     font-size: 14px;
     opacity: 0.7;
 }
-.students_management .box .middle .student .profile .data .studentId{
+.teacherStudents .box .middle .student .profile .data .studentId{
     font-size: 12px;
     opacity: 0.6;
     font-weight: 500;
 }
-.students_management .box .middle .student .profile .data{
+.teacherStudents .box .middle .student .profile .data{
     margin-left: 10px;
 }
-.students_management .box .middle .student .up{
+.teacherStudents .box .middle .student .up{
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     padding: 10px;
 }
-.students_management .box .middle .student .profile {
+.teacherStudents .box .middle .student .profile {
     display: flex;
     align-items: center;
 }
-.students_management .box .middle .student .profile .img img{
+.teacherStudents .box .middle .student .profile .img img{
     width: 2cm;
     height: 2cm;
     border-radius: 50%;
 }
-.students_management .box .middle .student .details p{
+.teacherStudents .box .middle .student .details p{
     display: flex;
     opacity: 0.7;
     font-size: 14px;
@@ -151,17 +145,17 @@
     margin-bottom: 5px;
     align-items: center;
 }
-.students_management .box .middle .student .down{
+.teacherStudents .box .middle .student .down{
     display: flex;
     justify-content: space-between;
     margin-top: 10px;
 }
-.students_management .box .middle .student .down button .icon{
+.teacherStudents .box .middle .student .down button .icon{
     font-size: 16px;
     display: flex;
     margin-top: 3px;
 }
-.students_management .box .middle .student .down button{
+.teacherStudents .box .middle .student .down button{
     display: flex;
     gap: 10px;
     align-items: center;
@@ -171,21 +165,13 @@
     outline: none;
     cursor: pointer;
 }
-.students_management .box .middle .student .down .more{
+.teacherStudents .box .middle .student .down .more{
     color: blue;
 }
-.students_management .box .middle .student .down .archive{
+.teacherStudents .box .middle .student .down .archive{
     color: red;
 }
-.students_management .box .mini_up .new:hover{
-    background: rgba(0, 0, 0, 0.06);
-    transition: 0.3s;
-}
-.students_management .box .mini_up .new:active{
-    transform: scale(0.98);
-    transition: 0.3s ease-in-out;
-}
-.students_management .box .mini_up .new {
+.teacherStudents .box .mini_up .new {
     display: flex;
     background:none;
     border-radius: 10px;
@@ -194,10 +180,10 @@
     border: 1px solid rgba(0, 0, 0, 0.1);
     cursor: pointer;
 }
-.students_management .box .mini_up .new .left {
+.teacherStudents .box .mini_up .new .left {
     margin-right: 10px;
 }
-.students_management .box .mini_up .new .left .icon{
+.teacherStudents .box .mini_up .new .left .icon{
     font-size: 1.5rem;
     background: rgb(188, 188, 255);
     color: blue;
@@ -205,21 +191,21 @@
     border-radius: 5px;
     display: flex;
 }
-.students_management .box .mini_up .new .right span,
-.students_management .box .mini_up .new .right p{
+.teacherStudents .box .mini_up .new .right span,
+.teacherStudents .box .mini_up .new .right p{
     text-wrap: nowrap;
 }
-.students_management .box .mini_up .new .right span{
+.teacherStudents .box .mini_up .new .right span{
     font-weight: 500;
     font-size: 14px;
 }
-.students_management .box .mini_up .new .right p{
+.teacherStudents .box .mini_up .new .right p{
     font-size: 12px;
     opacity: 0.6;
 }
 
 /* Modal Styles with Glass Effect */
-.students_management .modal-overlay {
+.teacherStudents .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -239,7 +225,7 @@
     to { opacity: 1; }
 }
 
-.students_management .modal {
+.teacherStudents .modal {
     background: rgba(255,255,255,0.95);
     backdrop-filter: blur(20px);
     border-radius: 20px;
@@ -264,7 +250,7 @@
     }
 }
 
-.students_management .modal-header {
+.teacherStudents .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -272,12 +258,12 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.students_management .modal-header h3 {
+.teacherStudents .modal-header h3 {
     margin: 0;
     color: var(--main_color);
 }
 
-.students_management .modal-header button {
+.teacherStudents .modal-header button {
     background: none;
     border: none;
     font-size: 24px;
@@ -285,15 +271,15 @@
     color: #666;
 }
 
-.students_management .modal-body {
+.teacherStudents .modal-body {
     padding: 20px;
 }
 
-.students_management .form-group {
+.teacherStudents .form-group {
     margin-bottom: 20px;
 }
 
-.students_management .form-group label {
+.teacherStudents .form-group label {
     display: block;
     margin-bottom: 8px;
     font-weight: 600;
@@ -301,8 +287,8 @@
     font-size: 14px;
 }
 
-.students_management .form-group input,
-.students_management .form-group select {
+.teacherStudents .form-group input,
+.teacherStudents .form-group select {
     width: 100%;
     padding: 12px 16px;
     border: 2px solid rgba(0, 0, 0, 0.1);
@@ -313,13 +299,13 @@
     transition: all 0.3s ease;
 }
 
-.students_management .form-group input:focus,
-.students_management .form-group select:focus {
+.teacherStudents .form-group input:focus,
+.teacherStudents .form-group select:focus {
     border-color: var(--main_color);
     box-shadow: 0 0 0 4px rgba(160, 90, 200, 0.1);
 }
 
-.students_management .modal-footer {
+.teacherStudents .modal-footer {
     display: flex;
     justify-content: flex-end;
     gap: 12px;
@@ -328,7 +314,7 @@
     background: rgba(160, 90, 200, 0.02);
 }
 
-.students_management .modal-footer button {
+.teacherStudents .modal-footer button {
     padding: 12px 28px;
     border: none;
     border-radius: 10px;
@@ -338,22 +324,22 @@
     transition: all 0.3s ease;
 }
 
-.students_management .modal-footer button:first-child {
+.teacherStudents .modal-footer button:first-child {
     background: rgba(0,0,0,0.05);
     color: #666;
 }
 
-.students_management .modal-footer button:first-child:hover {
+.teacherStudents .modal-footer button:first-child:hover {
     background: rgba(0,0,0,0.1);
 }
 
-.students_management .modal-footer button:last-child {
+.teacherStudents .modal-footer button:last-child {
     background: linear-gradient(135deg, var(--main_color) 0%, #7b2cbf 100%);
     color: white;
     box-shadow: 0 4px 12px rgba(160, 90, 200, 0.3);
 }
 
-.students_management .modal-footer button:last-child:hover {
+.teacherStudents .modal-footer button:last-child:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(160, 90, 200, 0.4);
 }

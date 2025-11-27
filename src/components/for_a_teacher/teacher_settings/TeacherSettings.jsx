@@ -88,21 +88,6 @@ export const TeacherSettings = () => {
               </div>
             </div>
 
-            <div className="div5 all">
-              <div className="i"><div className="icon"><HiOutlinePaintBrush /></div></div>
-              <div className="content">
-                <div className="up">
-                  <h3>Appearance</h3>
-                </div>
-                <div className="mid">
-                  <p>Customize the look and feel of your interface.</p>
-                </div>
-                <div className="down">
-                  <button><span>Customize</span><FaLongArrowAltRight className='icon'/></button>
-                </div>
-              </div>
-            </div>
-
             <div className="div6 all">
               <div className="i"><div className="icon"><FaStar /></div></div>
               <div className="content">

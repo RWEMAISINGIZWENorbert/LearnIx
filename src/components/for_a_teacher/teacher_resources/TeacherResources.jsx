@@ -63,14 +63,6 @@ export const TeacherResources = () => {
     }
   ]);
 
-  const categories = [
-    { name: "Lecture Notes", count: 45, color: "#3b82f6" },
-    { name: "Tutorial", count: 32, color: "#22c55e" },
-    { name: "Reference", count: 25, color: "#ef4444" },
-    { name: "Assignment", count: 18, color: "#f59e0b" },
-    { name: "Past Papers", count: 12, color: "#8b5cf6" },
-    { name: "Other", count: 2, color: "#e45cf6ff" }
-  ];
 
   const getFileIcon = (type) => {
     switch(type) {
@@ -162,7 +154,6 @@ export const TeacherResources = () => {
 
   const tabs = [
     { id: 'documents', label: 'Documents', icon: <LuFileText /> },
-    { id: 'categories', label: 'Categories', icon: <MdOutlineSubject /> },
     { id: 'uploads', label: 'Upload', icon: <LuUpload /> },
   ];
 
@@ -173,12 +164,6 @@ export const TeacherResources = () => {
           <div className="content_section">
             <div className="section_header">
               <h3>Document Library</h3>
-              <div className="header_actions">
-                <button className="upload_button" onClick={() => setActiveTab('uploads')}>
-                  <LuUpload className="icon" />
-                  <span>Upload File</span>
-                </button>
-              </div>
             </div>
             <div className="documents_list">
               {documents.map(document => (
@@ -207,39 +192,7 @@ export const TeacherResources = () => {
             </div>
           </div>
         );
-      
-      case 'categories':
-        return (
-          <div className="content_section">
-            <div className="section_header">
-              <h3>Resource Categories</h3>
-              <button className="add_button">
-                <LuPlus className="icon" />
-                <span>Add Category</span>
-              </button>
-            </div>
-            <div className="categories_grid">
-              {categories.map((category, index) => (
-                <div key={index} className="category_card">
-                  <div className="category_header">
-                    <div className="category_icon" style={{ backgroundColor: category.color }}>
-                      <LuBookOpen />
-                    </div>
-                    <div className="category_info">
-                      <h4>{category.name}</h4>
-                      <p>{category.count} files</p>
-                    </div>
-                  </div>
-                  <div className="category_actions">
-                    <button className="view">View Files</button>
-                    <button className="edit">Edit</button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        );
-      
+
       case 'uploads':
         return (
           <div className="content_section">
