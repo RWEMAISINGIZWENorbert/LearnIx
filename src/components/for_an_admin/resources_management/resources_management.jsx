@@ -7,7 +7,7 @@ import { LuBookOpen, LuFileText, LuDownload, LuUpload, LuEye, LuTrash, LuPlus } 
 import { MdOutlineSubject } from 'react-icons/md';
 import { FaFilePdf, FaFileWord, FaFileImage, FaFileVideo } from "react-icons/fa";
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAllResources } from '../../../features/resources/resourcesSlice';
+import { fetchAllResources, createResource, selectResourcesLoading, selectResourcesError } from '../../../features/resources/resourcesSlice';
 import FileViewer from  '../../Docs/FileViewer';
 
 export const Resources_management = () => {
@@ -23,7 +23,9 @@ export const Resources_management = () => {
   const [viewedDocument, setViewedDocument] = useState(null);
 
   const dispatch = useDispatch();
-const { resources: documents = [], loading, error } = useSelector((state) => state.resources);
+  const loading = useSelector(selectResourcesLoading);
+  const error = useSelector(selectResourcesError);
+ const { resources: documents = [] } = useSelector((state) => state.resources);
 
 useEffect(() => {
   dispatch(fetchAllResources());
@@ -95,6 +97,12 @@ useEffect(() => {
   //   }
   // };
 
+  useEffect(() => {
+      if (error && error.msg) {
+        alert(error.msg);
+      }
+  }, [error, dispatch]);
+
   const formatFileSize = (bytes) => {
   if (bytes === 0) return '0 Bytes';
   const k = 1024;
@@ -150,36 +158,80 @@ const getFileIcon = (type) => {
     }
   };
 
-  const handleFileUpload = () => {
-    if (uploadedFile && fileName && fileCategory) {
-      const newDocument = {
-        id: documents.length + 1,
-        name: fileName,
-        type: uploadedFile.name.split('.').pop(),
-        size: `${(uploadedFile.size / (1024 * 1024)).toFixed(2)} MB`,
-        uploaded: 'Just now',
-        downloads: 0,
-        category: fileCategory,
-        file: uploadedFile
-      };
+  // const handleFileUpload = () => {
+  //   if (uploadedFile && fileName && fileCategory) {
+  //     const newDocument = {
+  //       id: documents.length + 1,
+  //       name: fileName,
+  //       type: uploadedFile.name.split('.').pop(),
+  //       size: `${(uploadedFile.size / (1024 * 1024)).toFixed(2)} MB`,
+  //       uploaded: 'Just now',
+  //       downloads: 0,
+  //       category: fileCategory,
+  //       file: uploadedFile
+  //     };
       
-      setDocuments([newDocument, ...documents]);
+  //     setDocuments([newDocument, ...documents]);
       
-      // Reset form
-      setUploadedFile(null);
-      setFileName('');
-      setFileCategory('');
-      setFileDescription('');
+  //     // Reset form
+  //     setUploadedFile(null);
+  //     setFileName('');
+  //     setFileCategory('');
+  //     setFileDescription('');
       
-      // Switch to documents tab to see the uploaded file
-      setActiveTab('documents');
+  //     // Switch to documents tab to see the uploaded file
+  //     setActiveTab('documents');
       
-      alert('File uploaded successfully!');
-    } else {
-      alert('Please fill in all required fields and select a file.');
-    }
-  };
-
+  //     alert('File uploaded successfully!');
+  //   } else {
+  //     alert('Please fill in all required fields and select a file.');
+  //   }
+  // };
+ 
+   const handleFileUpload = async () => {
+       if (!uploadedFile || !fileName || !fileCategory) {
+         alert('Please fill in all required fields');
+         return;
+       }
+   
+       try {
+         const formData = new FormData();
+         formData.append('resource', uploadedFile);
+         formData.append('title', fileName);
+         formData.append('category', fileCategory);
+         
+         if (fileDescription) {
+           formData.append('description', fileDescription);
+         }
+   
+         const resultAction = await dispatch(createResource(formData));
+         
+         if (createResource.fulfilled.match(resultAction)) {
+           // Refresh the resources list
+           await dispatch(fetchAllResources());
+           
+           // Show success message
+           alert('Resource uploaded successfully!');
+           
+           // Reset the form
+           setFileName('');
+           setFileCategory('');
+           setFileDescription('');
+           setUploadedFile(null);
+           
+           // Reset file input
+           const fileInput = document.querySelector('input[type="file"]');
+           if (fileInput) fileInput.value = '';
+         } else {
+           // throw new Error(resultAction.error?.message || 'Failed to upload resource');
+         }
+       } catch (error) {
+         console.error('Error uploading file:', error);
+         alert(`Error: ${error.message}`);
+       }
+     };
+   
+   
    const handleViewDocument = (document) => {
       if (document.fileUrl) {
         setViewedDocument(document);
@@ -231,7 +283,7 @@ const getFileIcon = (type) => {
 
   const tabs = [
     { id: 'documents', label: 'Documents', icon: <LuFileText /> },
-    { id: 'categories', label: 'Categories', icon: <MdOutlineSubject /> },
+    // { id: 'categories', label: 'Categories', icon: <MdOutlineSubject /> },
     { id: 'uploads', label: 'Upload', icon: <LuUpload /> },
   ];
 
@@ -265,10 +317,10 @@ const getFileIcon = (type) => {
             <div className="section_header">
               <h3>Document Library</h3>
               <div className="header_actions">
-                <button className="upload_button">
+                {/* <button className="upload_button">
                   <LuUpload className="icon" />
                   <span>Upload File</span>
-                </button>
+                </button> */}
               </div>
             </div>
             <div className="documents_list">

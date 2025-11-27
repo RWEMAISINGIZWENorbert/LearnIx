@@ -26,15 +26,15 @@ export const fetchAllResources = createAsyncThunk(
         console.error('Response data:', error.response.data);
         console.error('Response status:', error.response.status);
         console.error('Response headers:', error.response.headers);
-        return rejectWithValue(error.response.data?.message || 'Failed to create resource');
+        return rejectWithValue({msg: error.response.data?.msg || 'Failed to create resource'});
       } else if (error.request) {
         // The request was made but no response was received
         console.error('No response received:', error.request);
-        return rejectWithValue('No response received from server');
+        return rejectWithValue({msg: 'No response received from server'});
       } else {
         // Something happened in setting up the request that triggered an Error
         console.error('Request setup error:', error.message);
-        return rejectWithValue(error.message);
+        return rejectWithValue(error.message || error.msg);
       }
       // return rejectWithValue(error.response?.data?.message || 'Failed to fetch resources');
     }
@@ -101,7 +101,7 @@ export const createResource = createAsyncThunk(
         console.error('Response data:', error.response.data);
         console.error('Response status:', error.response.status);
         console.error('Response headers:', error.response.headers);
-        return rejectWithValue(error.response.data?.message || 'Failed to create resource');
+        return rejectWithValue({msg: error.response.data?.msg || 'Failed to create resource'});
       } else if (error.request) {
         // The request was made but no response was received
         console.error('No response received:', error.request);
@@ -162,8 +162,9 @@ const resourcesSlice = createSlice({
         state.success = true;
       })
       .addCase(createResource.rejected, (state, action) => {
+       console.log(`[createResource]Rejected wth the Action Data Msg ${action.payload.msg}`);
         state.loading = false;
-        state.error = action.payload;
+        state.error = {msg: action.payload.msg};
         state.success = false;
       });
   },

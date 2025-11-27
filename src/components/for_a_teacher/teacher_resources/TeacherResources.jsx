@@ -167,11 +167,11 @@ export const TeacherResources = () => {
       // console.log('Title:', fileName);
       // console.log('Category:', fileCategory);
       // console.log('Description:', fileDescription || 'Not provided');
-      console.log('FormData entries:');
-      for (let pair of formData.entries()) {
-        console.log(pair[0] + ': ', pair[1]);
-      }
-      console.groupEnd();
+      // console.log('FormData entries:');
+      // for (let pair of formData.entries()) {
+      //   console.log(pair[0] + ': ', pair[1]);
+      // }
+      // console.groupEnd();
 
       const resultAction = await dispatch(createResource(formData));
       
