@@ -59,6 +59,7 @@ export const submitAssignment = createAsyncThunk(
       submissionData,
       config
     );
+     console.log('Submission response:', response.data);
     return response.data.data;
   }
 );

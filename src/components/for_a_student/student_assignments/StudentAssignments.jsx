@@ -15,7 +15,7 @@ import {
   selectPendingAssignments,
   selectSubmittedAssignments
 } from '../../../features/assignement/assignementSlice';
-import { submitAssignment } from '../../../features/submissions/submissionSlice';
+import { selectSubmissionsLoading, selectSubmissionsError,submitAssignment } from '../../../features/submissions/submissionSlice';
 
 
 
@@ -140,6 +140,9 @@ export const StudentAssignments = () => {
   const submittedAssignments =  useSelector(selectSubmittedAssignments);
   const gradedAssignments =  useSelector(selectGradedAssignments);
 
+  const submissionsLoading = useSelector(selectSubmissionsLoading);
+  const submissionsError = useSelector(selectSubmissionsError);
+
   const handleUpload = (assignment) => {
     setSelectedAssignment(assignment);
     setShowUploadModal(true);
@@ -195,22 +198,19 @@ export const StudentAssignments = () => {
     console.log(`formData AssignmentIdssi ${formData.get('assignmentId')}`);
     console.log(`formData Submission ${formData.get('submission')}`);
 
-    const submissionData = {
-      ...formData,
-      assignmentId
-    };
+    // const submissionData = {
+    //   ...formData,
+    //   assignmentId
+    // };
     
     // Dispatch the submitAssignment action
     const resultAction = dispatch(submitAssignment(formData));
     
     // Check if the submission was successful
-    if (submitAssignment.fulfilled != null) {
-      // Refresh the assignments to update the UI
+    if (submitAssignment.fulfilled.match(resultAction)) {
+       console.log('Assignment submitted successfully:', resultAction.payload);
       dispatch(fetchAssignments());
-      // Close the modal
       setShowUploadModal(false);
-      // Show success message
-      alert('Assignment submitted successfully!');
     }
   } catch (error) {
     console.error('Error submitting assignment:', error);
@@ -277,10 +277,7 @@ export const StudentAssignments = () => {
             <div className="assignments-list">
                {pendingAssignments.length > 0 ? pendingAssignments.map(assignment => {
                 const daysLeft = getDaysUntilDue(assignment.dueDate);
-                 console.log(`The Due Date ${new Date(assignment.dueDate)}`);
-                 console.log(`The Curret Date ${new Date()}`);
                 const isExpired = new Date(assignment.dueDate) <= new Date();
-                console.log(`Is Expired ${isExpired}`);
                 return (
                   <div key={assignment._id} className={`assignment-card ${assignment.urgent ? 'urgent' : ''}`}>
                     <div className="assignment-header">
@@ -446,8 +443,8 @@ export const StudentAssignments = () => {
               </div>
             </div>
             <div className="modal-footer">
-              <button className="btn-cancel" onClick={() => setShowUploadModal(false)}>Cancel</button>
-              <button className="btn-submit">Submit Assignment</button>
+              <button className="btn-cancel" type='button' onClick={() => setShowUploadModal(false)}>Cancel</button>
+              <button className="btn-submit" type="submit">{!submissionsLoading ? 'Submit Assignment' : 'Submitting...'}</button>
             </div>
             </form>
           </div>
