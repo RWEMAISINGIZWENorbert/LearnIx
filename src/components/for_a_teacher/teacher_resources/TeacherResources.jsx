@@ -42,6 +42,13 @@ export const TeacherResources = () => {
   useEffect(() => {
     dispatch(fetchAllResources());
   }, [dispatch]);
+
+  useEffect(() => {
+        if (error && error.msg) {
+          alert(error.msg);
+        }
+    }, [error, dispatch]);
+  
   
   // Helper function to get file type from URL
   const getFileTypeFromUrl = (url) => {

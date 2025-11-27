@@ -442,9 +442,9 @@ const getFileIcon = (type) => {
                 <button 
                   className="submit_button" 
                   onClick={handleFileUpload}
-                  disabled={!uploadedFile || !fileName || !fileCategory}
+                  disabled={!uploadedFile || !fileName || !fileCategory || loading}
                 >
-                  Upload File
+                  { loading ? 'Uploading...' : 'Upload File' }
                 </button>
               </div>
             </div>
