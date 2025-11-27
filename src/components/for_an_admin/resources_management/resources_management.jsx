@@ -181,7 +181,6 @@ export const Resources_management = () => {
 
   const tabs = [
     { id: 'documents', label: 'Documents', icon: <LuFileText /> },
-    { id: 'categories', label: 'Categories', icon: <MdOutlineSubject /> },
     { id: 'uploads', label: 'Upload', icon: <LuUpload /> },
   ];
 
@@ -192,12 +191,6 @@ export const Resources_management = () => {
           <div className="content_section">
             <div className="section_header">
               <h3>Document Library</h3>
-              <div className="header_actions">
-                <button className="upload_button">
-                  <LuUpload className="icon" />
-                  <span>Upload File</span>
-                </button>
-              </div>
             </div>
             <div className="documents_list">
               {documents.map(document => (
@@ -226,39 +219,6 @@ export const Resources_management = () => {
             </div>
           </div>
         );
-      
-      case 'categories':
-        return (
-          <div className="content_section">
-            <div className="section_header">
-              <h3>Resource Categories</h3>
-              <button className="add_button">
-                <LuPlus className="icon" />
-                <span>Add Category</span>
-              </button>
-            </div>
-            <div className="categories_grid">
-              {categories.map((category, index) => (
-                <div key={index} className="category_card">
-                  <div className="category_header">
-                    <div className="category_icon" style={{ backgroundColor: category.color }}>
-                      <LuBookOpen />
-                    </div>
-                    <div className="category_info">
-                      <h4>{category.name}</h4>
-                      <p>{category.count} files</p>
-                    </div>
-                  </div>
-                  <div className="category_actions">
-                    <button className="view">View Files</button>
-                    <button className="edit">Edit</button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        );
-      
       case 'uploads':
         return (
           <div className="content_section">
