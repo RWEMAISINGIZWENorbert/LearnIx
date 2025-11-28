@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './AssignmentSubmissions.css';
 import { FaArrowLeft, FaDownload, FaCheck, FaTimes } from 'react-icons/fa';
-import { LuCalendar, LuClock, LuFileText } from 'react-icons/lu';
+import { LuCalendar, LuClock, LuFileText ,  LuDownload, LuEye } from 'react-icons/lu';
 import { MdOutlineAssignment } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchSubmissionsByAssignment, selectAssignmentSubmissions, gradeSubmission } from '../../../features/submissions/submissionSlice';
@@ -143,6 +143,30 @@ export const AssignmentSubmissions = () => {
     const hours = String(date.getUTCHours()).padStart(2, '0');
     const minutes = String(date.getUTCMinutes()).padStart(2, '0');
     return `${day}-${month}-${year} ${hours}:${minutes}`;
+  }; 
+
+  const handleDownloadDocument = async (doc) => {
+    // In a real application, this would trigger a file download
+    if (doc.fileUrl) {
+      // const fileURL = URL.createObjectURL(doc.fileUrl);
+      const fileURL = doc.fileUrl;
+      const fileType = doc.fileUrl?.split('.').pop().toLowerCase();
+      const title = doc.title || doc.name;
+      const fileName = title + '.' + fileType;
+      //  alert(`The File Name to download  ${fileName}`);
+      const response = await fetch(fileURL);
+      const blob = await response.blob();
+
+       const link = document.createElement("a");
+       link.href = URL.createObjectURL(blob);
+       link.download = fileName;
+
+       document.body.appendChild(link);
+       link.click();
+       link.remove();
+    } else {
+      alert(`Downloading: ${doc.name}`);
+    }
   };
 
   const handleViewDocument = (document) => {
@@ -260,12 +284,18 @@ export const AssignmentSubmissions = () => {
                         <h4>{selectedSubmission.fileName}</h4>
                         <p>Submitted on {formatDate(selectedSubmission.createdAt)}</p>
                       </div>
-                     { selectedSubmission.fileUrl ? <button 
+                     {/* { selectedSubmission.fileUrl ? <button 
                       className="download_btn"
                       onClick={() => handleViewDocument(selectedSubmission)}
                       >
                         <FaDownload /> Download
                       </button>  : null  
+                    }  */}
+                     { selectedSubmission.fileUrl ?
+                      <div className="document_actions">
+                       <button className="view" onClick={() => handleViewDocument(selectedSubmission)} title="View document"><LuEye /></button>
+                       <button className="download" onClick={() => handleDownloadDocument(selectedSubmission)} title="Download document"><LuDownload /></button>
+                      </div>  : null  
                     } 
                     </div>
                   </div>

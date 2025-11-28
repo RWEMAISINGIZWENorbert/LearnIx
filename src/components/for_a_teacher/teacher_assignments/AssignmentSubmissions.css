@@ -255,6 +255,63 @@
     color: #6b7280;
 }
 
+/* In This section I try to add UI design for those buttom  icons */
+/* In This section I try to add UI design for those buttom  icons */
+/* In This section I try to add UI design for those buttom  icons */
+/* In This section I try to add UI design for those buttom  icons */
+/* In This section I try to add UI design for those buttom  icons */
+/* In This section I try to add UI design for those buttom  icons */
+/* In This section I try to add UI design for those buttom  icons */
+.document_actions {
+    display: flex;
+    gap: 10px;
+}
+
+.document_actions button {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.document_actions .view {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+}
+
+.document_actions .download {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+}
+
+.document_actions .edit {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+.document_actions .delete {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.document_actions button:hover {
+    transform: scale(1.1);
+}
+
+/* In This section I try to add UI design for those buttom  icons */
+/* In This section I try to add UI design for those buttom  icons */
+/* In This section I try to add UI design for those buttom  icons */
+/* In This section I try to add UI design for those buttom  icons */
+/* In This section I try to add UI design for those buttom  icons */
+/* In This section I try to add UI design for those buttom  icons */
+/* In This section I try to add UI design for those buttom  icons */
+
 .download_btn {
     padding: 10px 16px;
     border: none;
