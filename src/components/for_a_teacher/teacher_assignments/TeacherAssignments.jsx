@@ -221,37 +221,16 @@ export const TeacherAssignments = () => {
       console.error('Error creating assignment:', error);
     }
     
-    // // Reset form
-    // setShowCreateModal(false);
-    // setAssignmentTitle('');
-    // setAssignmentDescription('');
-    // setAssignmentDueDate('');
-    // setAssignmentClass('');
-    // setUploadedFile(null);
-    // cancelRecording();
-    
-  };    // alert('Assignment created successfully!');
-
-    console.log({
-      title: assignmentTitle,
-      description: assignmentDescription,
-      dueDate: assignmentDueDate,
-      class: assignmentClass,
-      file: uploadedFile,
-      audio: audioBlob
-    });
-
+    // Reset form
     setShowCreateModal(false);
-    setShowEditModal(false);
     setAssignmentTitle('');
     setAssignmentDescription('');
     setAssignmentDueDate('');
     setAssignmentClass('');
     setUploadedFile(null);
     cancelRecording();
-
-    alert('Assignment created successfully!');
-  };
+    
+  };    // alert('Assignment created successfully!');
 
   const handleUpdateAssignment = () => {
     if (!assignmentTitle || !assignmentDueDate || !assignmentClass) {
@@ -295,10 +274,10 @@ export const TeacherAssignments = () => {
   const minutes = String(date.getMinutes()).padStart(2, '0');
   
   return `${day}-${month}-${year} ${hours}:${minutes}`;
-};
+  };
 
-//  if(loading) return <div>Loading...</div>
-//  if(error) return <div>Error: {error}</div>
+  //  if(loading) return <div>Loading...</div>
+ //  if(error) return <div>Error: {error}</div>
   
   return (
     <div className='teacherAssignments'>
@@ -376,7 +355,7 @@ export const TeacherAssignments = () => {
               </div>
 
               <div className="view_edit_submissions">
-                <button className="view-btn" style={{background: assignment.color}} onClick={() => navigate(`/teacher/assignments/${assignment._id}/submissions`)}>View Submissions</button>
+                <button className="view-btn" style={{background: assignment.color != null ? assignment.color : '#10b981'}} onClick={() => navigate(`/teacher/assignments/${assignment._id}/submissions`)}>View Submissions</button>
                 <button className="edit-btn" 
                   onClick={() => {
                     setEditingAssignment(assignment); 
@@ -793,7 +772,5 @@ export const TeacherAssignments = () => {
 />
     </div>
     
-  );
-  
-// };
-
+  )
+  };
