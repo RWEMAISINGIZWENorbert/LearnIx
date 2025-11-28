@@ -5,17 +5,35 @@ import { MdOutlineAssignment, MdAdd, MdCheckCircle, MdPending } from 'react-icon
 import { LuClock, LuCalendar, LuUpload, LuX, LuMic, LuTrash2 } from 'react-icons/lu';
 import { HiOutlineBookOpen } from 'react-icons/hi';
 import { FaUsers, FaPause, FaPlay } from 'react-icons/fa';
+import { FiEdit } from 'react-icons/fi';
+import { IoTrashOutline } from 'react-icons/io5';
+import { DeleteConfirmation } from '../../shared/DeleteConfirmation';
+
 
 export const TeacherAssignments = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('active');
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [assignmentTitle, setAssignmentTitle] = useState('');
   const [assignmentDescription, setAssignmentDescription] = useState('');
   const [assignmentDueDate, setAssignmentDueDate] = useState('');
   const [assignmentClass, setAssignmentClass] = useState('');
   const [uploadedFile, setUploadedFile] = useState(null);
-  
+
+  const [editingAssignment, setEditingAssignment] = useState(null);
+
+
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [assignmentToDelete, setAssignmentToDelete] = useState(null);
+
+
+  const handleDeleteAssignment = (assignment) => {
+    setAssignmentToDelete(assignment);
+    setShowDeleteConfirm(true);
+  };
+
+
   // Audio recording states
   const [isRecording, setIsRecording] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -25,7 +43,7 @@ export const TeacherAssignments = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentPlayTime, setCurrentPlayTime] = useState(0);
   const [audioDuration, setAudioDuration] = useState(0);
-  
+
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
   const timerRef = useRef(null);
@@ -56,7 +74,7 @@ export const TeacherAssignments = () => {
       mediaRecorderRef.current.start();
       setIsRecording(true);
       setIsPaused(false);
-      
+
       // Start timer
       timerRef.current = setInterval(() => {
         setRecordingTime((prev) => prev + 1);
@@ -152,8 +170,7 @@ export const TeacherAssignments = () => {
       alert('Please fill in all required fields');
       return;
     }
-    
-    // Handle assignment creation logic here
+
     console.log({
       title: assignmentTitle,
       description: assignmentDescription,
@@ -162,18 +179,47 @@ export const TeacherAssignments = () => {
       file: uploadedFile,
       audio: audioBlob
     });
-    
-    // Reset form
+
     setShowCreateModal(false);
+    setShowEditModal(false);
     setAssignmentTitle('');
     setAssignmentDescription('');
     setAssignmentDueDate('');
     setAssignmentClass('');
     setUploadedFile(null);
     cancelRecording();
-    
+
     alert('Assignment created successfully!');
   };
+
+  const handleUpdateAssignment = () => {
+    if (!assignmentTitle || !assignmentDueDate || !assignmentClass) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    console.log({
+      id: editingAssignment.id,
+      title: assignmentTitle,
+      description: assignmentDescription,
+      dueDate: assignmentDueDate,
+      class: assignmentClass,
+      file: uploadedFile,
+      audio: audioBlob
+    });
+
+    alert('Assignment updated successfully!');
+
+    setShowEditModal(false);
+    setEditingAssignment(null);
+    setAssignmentTitle('');
+    setAssignmentDescription('');
+    setAssignmentDueDate('');
+    setAssignmentClass('');
+    setUploadedFile(null);
+    cancelRecording();
+  };
+
 
   const assignments = {
     active: [
@@ -311,7 +357,30 @@ export const TeacherAssignments = () => {
                 </div>
               </div>
 
-              <button className="view-btn" style={{background: assignment.color}} onClick={() => navigate(`/teacher/assignments/${assignment.id}/submissions`)}>View Submissions</button>
+              <div className="view_edit_submissions">
+                <button className="view-btn" style={{background: assignment.color}} onClick={() => navigate(`/teacher/assignments/${assignment.id}/submissions`)}>View Submissions</button>
+                <button className="edit-btn" 
+                  onClick={() => {
+                    setEditingAssignment(assignment); 
+                    setAssignmentTitle(assignment.title || '');
+                    setAssignmentDescription(assignment.description || '');
+                    if (assignment.dueDate) {
+                      const date = new Date(assignment.dueDate);
+                      const formattedDate = date.toISOString().slice(0,16); // YYYY-MM-DDTHH:mm
+                      setAssignmentDueDate(formattedDate);
+                    } else {
+                      setAssignmentDueDate('');
+                    }
+                    setAssignmentClass(assignment.class || '');
+                    setUploadedFile(assignment.file || null);
+                    setAudioBlob(assignment.audio || null);
+                    setAudioURL(assignment.audioURL || null);
+                    setShowEditModal(true);
+                  }} 
+                >
+                  <FiEdit/>
+                </button>
+              </div>
             </div>
           ))}
 
@@ -401,7 +470,7 @@ export const TeacherAssignments = () => {
                 </div>
               </div>
 
-              {/* File Upload Section */}
+              {/* File Upload */}
               <div className="form_group">
                 <label>Attach File (Optional)</label>
                 <div className="file_upload_area">
@@ -410,7 +479,7 @@ export const TeacherAssignments = () => {
                     id="assignmentFile"
                     onChange={handleFileUpload}
                     style={{ display: 'none' }}
-                    accept=".pdf,.doc,.docx,.ppt,.pptx,.txt,.zip,.mp3,.wav,.m4a,.ogg,.mp4,.avi,.mov,.mkv,.webm"
+                    accept=".pdf,.doc,.docx,.ppt,.pptx,.txt,.zip,.mp3,.wav,.m4a,.ogg,.mp4,.avi,.mov,.mkv,.webm,.png,.jpeg,.jpg"
                   />
                   <button 
                     className="upload_file_btn" 
@@ -427,7 +496,7 @@ export const TeacherAssignments = () => {
                 </div>
               </div>
 
-              {/* WhatsApp-style Audio Recording */}
+              {/* Audio Recording */}
               <div className="form_group">
                 <label>Voice Note (Optional)</label>
                 <div className="audio_recording_area">
@@ -470,7 +539,7 @@ export const TeacherAssignments = () => {
                               className="bar" 
                               style={{ 
                                 height: `${height}px`,
-                                background: i < (currentPlayTime / audioDuration * 30) ? 'var(--main_color)' : '#d1d5db'
+                                background: i < (currentPlayTime / (audioDuration || 1) * 30) ? 'var(--main_color)' : '#d1d5db'
                               }}
                             ></div>
                           ))}
@@ -502,6 +571,207 @@ export const TeacherAssignments = () => {
           </div>
         </div>
       )}
+
+      {/* Update Assignment Modal */}
+      {showEditModal && (
+        <div className="assignment_modal_overlay" onClick={() => setShowEditModal(false)}>
+          <div className="assignment_modal" onClick={(e) => e.stopPropagation()}>
+            <div className="assignment_modal_header">
+              <h3>Edit Assignment</h3>
+              <div className="action_edit_buttons">
+               <button 
+                  className="assignment_modal_close" 
+                  onClick={() => handleDeleteAssignment(editingAssignment)}
+                >
+                  <LuTrash2/>
+                </button>
+
+                <button className="assignment_modal_close" onClick={() => setShowEditModal(false)}>×</button>
+              </div>
+                
+            </div>
+
+            <div className="assignment_modal_body">
+              <div className="form_group">
+                <label>Title <span className="required">*</span></label>
+                <input
+                  type="text"
+                  value={assignmentTitle}
+                  onChange={(e) => setAssignmentTitle(e.target.value)}
+                  placeholder="Enter assignment title"
+                  required
+                />
+              </div>
+
+              <div className="form_group">
+                <label>Description</label>
+                <textarea
+                  rows="4"
+                  value={assignmentDescription}
+                  onChange={(e) => setAssignmentDescription(e.target.value)}
+                  placeholder="Describe the assignment requirements..."
+                />
+              </div>
+
+              <div className="form_row">
+                <div className="form_field">
+                  <label>Due Date <span className="required">*</span></label>
+                  <input
+                    type="datetime-local"
+                    value={assignmentDueDate}
+                    onChange={(e) => setAssignmentDueDate(e.target.value)}
+                  />
+                </div>
+
+                <div className="form_field">
+                  <label>Class <span className="required">*</span></label>
+                  <select value={assignmentClass} onChange={(e) => setAssignmentClass(e.target.value)}>
+                    <option value="">Select class</option>
+                    <option value="L5 SOD A">L5 SOD A</option>
+                    <option value="L5 SOD B">L5 SOD B</option>
+                    <option value="L6 SOD A">L6 SOD A</option>
+                    <option value="L6 SOD B">L6 SOD B</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* File Upload */}
+              <div className="form_group">
+                <label>Attach File (Optional)</label>
+                <div className="file_upload_area">
+                  <input
+                    type="file"
+                    id="editAssignmentFile"
+                    onChange={handleFileUpload}
+                    style={{ display: 'none' }}
+                    accept=".pdf,.doc,.docx,.ppt,.pptx,.txt,.zip,.mp3,.wav,.m4a,.ogg,.mp4,.avi,.mov,.mkv,.webm,.png,.jpeg,.jpg"
+                  />
+                  <button 
+                    className="upload_file_btn" 
+                    onClick={() => document.getElementById('editAssignmentFile').click()}
+                  >
+                    <LuUpload className="icon" />
+                    {uploadedFile ? uploadedFile.name : 'Choose file to upload'}
+                  </button>
+                  {uploadedFile && (
+                    <button className="remove_file_btn" onClick={() => setUploadedFile(null)}>
+                      <LuX /> Remove
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Audio Recording */}
+              <div className="form_group">
+                <label>Voice Note (Optional)</label>
+                <div className="audio_recording_area">
+                  {!audioURL && !isRecording && (
+                    <button className="record_btn start" onClick={startRecording}>
+                      <LuMic className="icon" />
+                      Press to Record
+                    </button>
+                  )}
+
+                  {isRecording && (
+                    <div className="recording_active">
+                      <div className="recording_indicator">
+                        <span className="recording_dot"></span>
+                        <span className="recording_time">{formatTime(recordingTime)}</span>
+                      </div>
+                      <div className="recording_controls">
+                        <button className="record_btn stop" onClick={stopRecording}>
+                          <FaPlay className="icon" />
+                          Stop
+                        </button>
+                        <button className="record_btn cancel" onClick={cancelRecording}>
+                          <LuTrash2 className="icon" />
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {audioURL && !isRecording && (
+                    <div className="whatsapp_audio_preview">
+                      <button className="play_pause_btn" onClick={togglePlayPause}>
+                        {isPlaying ? <FaPause /> : <FaPlay />}
+                      </button>
+                      <div className="audio_waveform">
+                        <div className="waveform_bars">
+                          {[3, 8, 4, 9, 5, 12, 7, 10, 6, 11, 4, 8, 5, 9, 6, 10, 7, 8, 5, 9, 4, 7, 6, 8, 5, 9, 7, 10, 6, 8].map((height, i) => (
+                            <div 
+                              key={i} 
+                              className="bar" 
+                              style={{ 
+                                height: `${height}px`,
+                                background: i < (currentPlayTime / (audioDuration || 1) * 30) ? 'var(--main_color)' : '#d1d5db'
+                              }}
+                            ></div>
+                          ))}
+                        </div>
+                        <div className="audio_times">
+                          <span className="current_time">{formatTime(currentPlayTime)}</span>
+                          <span className="total_time">{formatTime(audioDuration || recordingTime)}</span>
+                        </div>
+                      </div>
+                      <button className="delete_audio_icon_btn" onClick={deleteAudio}>
+                        <LuTrash2 />
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div className="assignment_modal_footer">
+              <button className="cancel_btn" onClick={() => setShowEditModal(false)}>Cancel</button>
+              <button 
+                className="submit_btn" 
+                onClick={handleUpdateAssignment}
+                disabled={!assignmentTitle || !assignmentDueDate || !assignmentClass}
+              >
+                Update Assignment
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      
+<DeleteConfirmation
+  isOpen={showDeleteConfirm}
+  onClose={() => {
+    setShowDeleteConfirm(false);
+    setAssignmentToDelete(null);
+  }}
+  onConfirm={() => {
+    if (!assignmentToDelete) return;
+
+    console.log(`Deleting assignment id: ${assignmentToDelete.id}`);
+
+    // Here you would call API to delete the assignment
+    // For now, just reset states
+    if (editingAssignment?.id === assignmentToDelete.id) {
+      setShowEditModal(false);
+      setEditingAssignment(null);
+    }
+
+    setAssignmentTitle('');
+    setAssignmentDescription('');
+    setAssignmentDueDate('');
+    setAssignmentClass('');
+    setUploadedFile(null);
+    cancelRecording();
+
+
+    setShowDeleteConfirm(false);
+    setAssignmentToDelete(null);
+  }}
+  itemName={assignmentToDelete?.title}
+  itemType="assignment"
+/>
     </div>
+    
   );
+  
 };
+
