@@ -347,11 +347,12 @@ export const TeacherAssignments = () => {
                 </div>
                 <div className="detail-row">
                   <FaUsers className="icon" />
-                  <span>{assignment.submitted}/{assignment.total} submitted</span>
+                  {/* <span>{assignment.submitted}/{assignment.total} submitted</span> */}
+                  <span>{assignment.gradedSubmissions + assignment.pendingSubmissions } submitted</span>
                 </div>
               </div>
 
-              <div className="progress-section">
+              { assignment.submissionProgress && <div className="progress-section">
                 <div className="progress-header">
                   <span>Submission Progress</span>
                   <span className="progress-value">{assignment.submitted > 0 ? Math.round((assignment.submitted / assignment.total) * 100) : 0}%</span>
@@ -359,16 +360,16 @@ export const TeacherAssignments = () => {
                 <div className="progress-bar">
                   <div className="progress" style={{width: `${(assignment.submitted / assignment.total) * 100}%`, background: assignment.color}}></div>
                 </div>
-              </div>
+              </div> }
 
               <div className="status-grid">
                 <div className="status-item graded">
                   <MdCheckCircle className="icon" />
-                  <span>{assignment.graded} Graded</span>
+                  <span>{assignment.gradedSubmissions} Graded</span>
                 </div>
                 <div className="status-item pending">
                   <MdPending className="icon" />
-                  <span>{assignment.pending} Pending</span>
+                  <span>{assignment.pendingSubmissions} Pending</span>
                 </div>
               </div>
 
