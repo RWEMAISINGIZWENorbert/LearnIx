@@ -344,3 +344,15 @@
     color: inherit;
     text-decoration: none;
 }
+.studentSidebar .box .lowerSection .profile .img{
+    width: 30%;
+}
+.studentSidebar .box .lowerSection .profile .info{
+    width: 65%;
+}
+.studentSidebar .box .lowerSection .profile .info p,
+.studentSidebar .box .lowerSection .profile .info h3{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

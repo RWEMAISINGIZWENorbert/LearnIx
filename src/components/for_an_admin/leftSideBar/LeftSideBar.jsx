@@ -75,7 +75,7 @@ export const LeftSideBar = () => {
                         <img src={`${import.meta.env.BASE_URL}assets/greenhills.png`} alt="LearnIX logo" />
                     </div>
                     <div className="info">
-                        <h3 className="name">Green Hills Academy</h3>
+                        <h3 className="name">Green Primary Academy</h3>
                         <p className="role">Administrator</p>
                     </div>
                 </div>

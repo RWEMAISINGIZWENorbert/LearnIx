@@ -47,7 +47,7 @@ export const StudentSidebar = () => {
                     </div>
                     <div className="info">
                         <h3 className="name">John Doe</h3>
-                        <p className="role">Student - L5 SOD A</p>
+                        <p className="role">Student - L5 SOD All</p>
                         <p className="id">ID: STU001</p>
                         <p className="school">Green Hills Academy</p>
                     </div>
