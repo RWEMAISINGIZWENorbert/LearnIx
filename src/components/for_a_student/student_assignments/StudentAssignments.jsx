@@ -28,112 +28,7 @@ export const StudentAssignments = () => {
   const [uploadedFile, setUploadedFile] = useState(null);
   const [comment, setComment] = useState('');
 
-  // const assignments = {
-  //   pending: [
-  //     {
-  //       id: 1,
-  //       title: 'Calculus Assignment - Integration',
-  //       course: 'Advanced Mathematics',
-  //       courseCode: 'MATH 301',
-  //       dueDate: '2025-10-28',
-  //       dueTime: '23:59',
-  //       description: 'Complete exercises on integration techniques',
-  //       points: 100,
-  //       urgent: true
-  //     },
-  //     {
-  //       id: 2,
-  //       title: 'Physics Lab Report',
-  //       course: 'Physics Laboratory',
-  //       courseCode: 'PHYS 201',
-  //       dueDate: '2025-10-30',
-  //       dueTime: '17:00',
-  //       description: 'Write a detailed lab report on the experiment',
-  //       points: 50,
-  //       urgent: false
-  //     },
-  //     {
-  //       id: 3,
-  //       title: 'Web Application Project',
-  //       course: 'Software Development',
-  //       courseCode: 'CS 401',
-  //       dueDate: '2025-11-05',
-  //       dueTime: '23:59',
-  //       description: 'Build a full-stack web application',
-  //       points: 200,
-  //       urgent: false
-  //     }
-  //   ],
-  //   submitted: [
-  //     {
-  //       id: 4,
-  //       title: 'Essay on Shakespeare',
-  //       course: 'English Literature',
-  //       courseCode: 'ENG 202',
-  //       submittedDate: '2025-10-20',
-  //       dueDate: '2025-10-22',
-  //       status: 'Under Review',
-  //       points: 100
-  //     },
-  //     {
-  //       id: 5,
-  //       title: 'Database Design Project',
-  //       course: 'Database Management',
-  //       courseCode: 'CS 301',
-  //       submittedDate: '2025-10-18',
-  //       dueDate: '2025-10-20',
-  //       status: 'Under Review',
-  //       points: 150
-  //     }
-  //   ],
-  //   graded: [
-  //     {
-  //       id: 6,
-  //       title: 'Algebra Quiz 2',
-  //       course: 'Advanced Mathematics',
-  //       courseCode: 'MATH 301',
-  //       submittedDate: '2025-10-10',
-  //       gradedDate: '2025-10-12',
-  //       score: 92,
-  //       points: 100,
-  //       feedback: 'Excellent work! Clear understanding of concepts.'
-  //     },
-  //     {
-  //       id: 7,
-  //       title: 'HTML/CSS Project',
-  //       course: 'Web Technologies',
-  //       courseCode: 'CS 402',
-  //       submittedDate: '2025-10-08',
-  //       gradedDate: '2025-10-10',
-  //       score: 95,
-  //       points: 100,
-  //       feedback: 'Outstanding design and implementation!'
-  //     },
-  //     {
-  //       id: 8,
-  //       title: 'Physics Quiz 3',
-  //       course: 'Physics Laboratory',
-  //       courseCode: 'PHYS 201',
-  //       submittedDate: '2025-10-05',
-  //       gradedDate: '2025-10-07',
-  //       score: 88,
-  //       points: 100,
-  //       feedback: 'Good understanding, minor calculation errors.'
-  //     }
-  //   ]
-  // };
 
-  // const { 
-  //   pendingAssignments = [], 
-  //   submittedAssignments = [], 
-  //   gradedAssignments = [],
-  //   loading,
-  //   error 
-  // } = useSelector((state) => ({
-  //   // ...state.assignments,
-  //   loading: selectAssignmentsLoading(state),
-  //   error: selectAssignmentsError(state)
-  // }));
   const loading = useSelector(selectAssignmentsLoading);
   const error = useSelector(selectAssignmentsError);
   const pendingAssignments =  useSelector(selectPendingAssignments);
@@ -192,29 +87,29 @@ export const StudentAssignments = () => {
   };
 
   const handleSubmitAssignment = async (assignmentId, formData) => {
-   try {
-    // Add assignmentId to the formData
-    console.log(`formData Description ${formData.get('description')}`);
-    console.log(`formData AssignmentIdssi ${formData.get('assignmentId')}`);
-    console.log(`formData Submission ${formData.get('submission')}`);
-
-    // const submissionData = {
-    //   ...formData,
-    //   assignmentId
-    // };
+  try {
+    const submissionData = new FormData();
+    submissionData.append('assignmentId', assignmentId);
+    submissionData.append('description', formData.get('description') || '');
+    submissionData.append('submission', formData.get('submission'));
+    console.log(`Call To submit Assignment`);
+    const resultAction = await dispatch(submitAssignment(submissionData));
     
-    // Dispatch the submitAssignment action
-    const resultAction = dispatch(submitAssignment(formData));
-    
-    // Check if the submission was successful
     if (submitAssignment.fulfilled.match(resultAction)) {
-       console.log('Assignment submitted successfully:', resultAction.payload);
-      dispatch(fetchAssignments());
+      // Refresh assignments to update the UI
+      await dispatch(fetchAssignments());
+      // Close the modal and reset form
       setShowUploadModal(false);
+      setUploadedFile(null);
+      setComment('');
+      // Show success message
+      alert('Assignment submitted successfully!');
+    } else if (submitAssignment.rejected.match(resultAction)) {
+      // Error is already handled in the slice
+      console.error('Submission failed:', resultAction.error);
     }
   } catch (error) {
-    console.error('Error submitting assignment:', error);
-    alert('Failed to submit assignment. Please try again.');
+    console.error('Error in submission process:', error);
   }
 };
 
@@ -444,7 +339,10 @@ export const StudentAssignments = () => {
             </div>
             <div className="modal-footer">
               <button className="btn-cancel" type='button' onClick={() => setShowUploadModal(false)}>Cancel</button>
-              <button className="btn-submit" type="submit">{!submissionsLoading ? 'Submit Assignment' : 'Submitting...'}</button>
+              <button 
+              className="btn-submit" 
+              disabled = {submissionsLoading}
+              type="submit">{!submissionsLoading ? 'Submit Assignment' : 'Submitting...'}</button>
             </div>
             </form>
           </div>

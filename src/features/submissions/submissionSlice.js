@@ -38,29 +38,49 @@ export const fetchSubmissionsByAssignment = createAsyncThunk(
 
 export const submitAssignment = createAsyncThunk(
   'submissions/create',
-  async (submissionData, { getState }) => {
+  async (submissionData, { getState, rejectWithValue }) => {
     const { auth } = getState();
-    const formData = new FormData();
-    formData.append('assignmentId', submissionData.assignmentId);
-    formData.append('description', submissionData.description);
-    if (submissionData.file) {
-      formData.append('submission', submissionData.file);
+    
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${auth.token}`,
+        },
+      };
+
+      console.log('Submitting assignment with data:', {
+        assignmentId: submissionData.get('assignmentId'),
+        hasFile: !!submissionData.get('submission'),
+        description: submissionData.get('description')
+      });
+
+      const response = await axios.post(
+        `${API_URL}/submissions/new`,
+        submissionData,
+        config
+      );
+      
+      console.log('Submission response:', response.data);
+      
+      if (response.data && response.data.data) {
+        return response.data.data;
+      }
+      return rejectWithValue('No data returned from server');
+    } catch (error) {
+      console.error('Submission error:', error.response?.data || error.message);
+      if (error.response) {
+        return rejectWithValue(
+          error.response.data?.message || 
+          error.response.data?.error || 
+          'Submission failed with server error'
+        );
+      } else if (error.request) {
+        return rejectWithValue('No response from server. Please check your connection.');
+      } else {
+        return rejectWithValue(error.message || 'Submission failed');
+      }
     }
-
-    const config = {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        'Authorization': `Bearer ${auth.token}`,
-      },
-    };
-
-    const response = await axios.post(
-      `${API_URL}/submissions/new`,
-      submissionData,
-      config
-    );
-     console.log('Submission response:', response.data);
-    return response.data.data;
   }
 );
 
@@ -117,11 +137,17 @@ const submissionsSlice = createSlice({
         state.assignmentSubmissions = action.payload;
       })
       // Submit assignment
+      .addCase(submitAssignment.pending, (state) => {
+         state.loading = true;
+         state.error = null
+      })
+      .addCase(submitAssignment.rejected, (state, action) => {
+         state.loading = false;
+         state.error = action.payload
+      })
       .addCase(submitAssignment.fulfilled, (state, action) => {
-        // state.submissions.unshift(action.payload);
-        // state.submissions.push(action.payload);
-        state.assignmentSubmissions = action.payload;
-        state.submissions = action.payload;
+        state.submissions = [action.payload, ...state.submissions];
+        state.assignmentSubmissions = [action.payload, ...state.assignmentSubmissions];
         state.loading = false;
       })
       // Grade submission
