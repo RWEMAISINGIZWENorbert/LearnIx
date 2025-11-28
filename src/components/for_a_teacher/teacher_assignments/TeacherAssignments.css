@@ -208,6 +208,28 @@
 .teacherAssignments .view-btn:hover {
     opacity: 0.9;
 }
+.teacherAssignments .view_edit_submissions button:nth-child(2):hover{
+    background: #f3f3f3;
+    transition: 0.3s;
+}
+.teacherAssignments .view_edit_submissions button:nth-child(2){
+    width: 20%;
+    background: none;
+    cursor: pointer;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+.teacherAssignments .view_edit_submissions{
+    display: flex;
+    gap: 10px;
+}
+
+.teacherAssignments .action_edit_buttons{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
 
 /* Assignment Modal */
 .assignment_modal_overlay {
