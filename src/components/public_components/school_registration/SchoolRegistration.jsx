@@ -536,7 +536,7 @@ export const SchoolRegistration = () => {
         return (
           <div className="step-content">
             <h3>Verify Your Account</h3>
-            <p className="step-desc">Enter the 6-digit code sent to your email</p>
+            <p className="step-desc">Enter the 4-digit code sent to your email</p>
             <div className="verification-section">
               <p className="verify-label">Email: {formData.adminEmail || formData.schoolEmail}</p>
               <div className="code-inputs">

@@ -4,7 +4,7 @@ import './App.css'
 import { Home } from './pages/public_pages/home/Home_page';
 import { Features } from './pages/public_pages/features/features_page';
 import { Schools } from './pages/public_pages/schools/Schools';
-import { Books } from './pages/public_pages/books/Books';
+// import { Books } from './pages/public_pages/books/Books';
 import { AuthFlow } from './components/public_components/auth/AuthFlow';
 import ClickSpark from './components/public_components/animations/ClickSpark';
 import { Not_found } from './pages/public_pages/Not_Found/Not_found';
@@ -21,7 +21,6 @@ import { Admin_academic_setup } from './pages/admin/admin_academic_setup/admin_a
 import { Admin_communications } from './pages/admin/admin_communications/admin_communications';
 import { AccessDenied } from './pages/public_pages/access_denied/AccessDenied';
 import { Admin_profile } from './pages/admin/admin_profile/admin_profile';
-import { Email_Verification_Page } from './pages/public_pages/email_verification/email_verification';
 import { School_Registration_Page } from './pages/public_pages/school_registration/school_registration';
 import { StudentApplication } from './pages/public_pages/student_application/StudentApplication';
 
@@ -65,12 +64,11 @@ function App() {
         <Route path='/' element={<Home/>}/>
         <Route path='/features' element={<Features/>}/>
         <Route path='/schools' element={<Schools/>}/>
-        <Route path='/books' element={<Books/>}/>
+        {/* <Route path='/books' element={<Books/>}/> */}
         <Route path='/dev_team' element={<Developers/>}/>
-        <Route path='/signup' element={<AuthFlow/>}/>
+        <Route path='/signin' element={<AuthFlow/>}/>
         <Route path='/login' element={<AuthFlow/>}/>
         <Route path='/school-registration' element={<School_Registration_Page/>}/>
-        <Route path='/email-verification' element={<Email_Verification_Page/>}/>
         <Route path='/student-application' element={<StudentApplication/>}/>
 
         {/* Admin page routes */}
