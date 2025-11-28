@@ -186,7 +186,7 @@ export const StudentAssignments = () => {
                           <span>{assignment.subject} {assignment.courseCode}</span>
                         </div>
                       </div>
-                      {daysLeft <= 1 && <span className="urgent-badge">Urgent</span>}
+                      {/* {daysLeft <= 1 && <span className="urgent-badge">Urgent</span>} */}
                     </div>
 
                     <p className="description">{assignment.description}</p>
@@ -223,7 +223,9 @@ export const StudentAssignments = () => {
 
           {activeTab === 'submitted' && (
             <div className="assignments-list">
-              {submittedAssignments.map(assignment => (
+              {submittedAssignments.map(assignment => { 
+                const isExpired = new Date(assignment.dueDate) <= new Date();
+                return (
                 <div key={assignment.id} className="assignment-card submitted">
                   <div className="assignment-header">
                     <div className="icon-wrapper submitted">
@@ -236,7 +238,8 @@ export const StudentAssignments = () => {
                         <span>{assignment.course} ({assignment.courseCode})</span>
                       </div>
                     </div>
-                    <span className="status-badge">{assignment.status}</span>
+                    {/* <span className="status-badge">{assignment.status}</span> */}
+                    <span className="status-badge">{isExpired ? 'Completed' : 'Active'}</span>
                   </div>
 
                   <div className="assignment-meta">
@@ -247,17 +250,19 @@ export const StudentAssignments = () => {
                       <span>Due Date: {new Date(assignment.dueDate).toLocaleDateString()}</span>
                     </div>
                     <div className="meta-item">
-                      <span className="points">{assignment.points || Number(assignment.grade)} points</span>
+                    { (assignment.points || assignment.grade) && <span className="points">{Number(assignment.points) || Number(assignment.grade)} points</span>}
                     </div>
                   </div>
                 </div>
-              ))}
+              )})}
             </div>
           )}
 
           {activeTab === 'graded' && (
             <div className="assignments-list">
-              {gradedAssignments.map(assignment => (
+              {gradedAssignments.map(assignment => {
+                const isExpired = new Date(assignment.dueDate) <= new Date();
+                return (
                 <div key={assignment.id} className="assignment-card graded">
                   <div className="assignment-header">
                     <div className="icon-wrapper graded">
@@ -287,7 +292,7 @@ export const StudentAssignments = () => {
                     </div>
                   </div>
                 </div>
-              ))}
+              )})}
             </div>
           )}
         </div>
