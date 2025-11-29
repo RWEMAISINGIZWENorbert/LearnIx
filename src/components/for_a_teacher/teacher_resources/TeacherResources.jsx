@@ -89,46 +89,6 @@ export const TeacherResources = () => {
     setDeleteType('');
   };
 
-
-
-  // const handleFileSelect = (e) => {
-  //   const file = e.target.files[0];
-  //   if (file) {
-  //     // Reset form
-  //     setFileName('');
-  //     setFileCategory('');
-  //     setFileDescription('');
-      
-  //     // Set the file name for display
-  //     setFileName(file.name);
-      
-  //     // You can add file validation here if needed
-  //     const formData = new FormData();
-  //     formData.append('image', file);
-  //     formData.append('title', file.name.split('.')[0]); // Use filename as title
-  //     if (fileCategory) formData.append('category', fileCategory);
-  //     if (fileDescription) formData.append('description', fileDescription);
-      
-  //     // Dispatch the createResource action
-  //     dispatch(createResource(formData))
-  //       .unwrap()
-  //       .then(() => {
-  //         // Refresh the resources list
-  //         dispatch(fetchAllResources());
-  //         // Reset form
-  //         setFileName('');
-  //         setFileCategory('');
-  //         setFileDescription('');
-  //         setUploadedFile(null);
-  //       })
-  //       .catch(error => {
-  //         console.error('Error uploading file:', error);
-  //         // Handle error (show error message to user)
-  //       });
-  //     setUploadedFile(file);
-  //     setFileName(file.name);
-  //   }
-  // };
    
   
   // Handle file selection

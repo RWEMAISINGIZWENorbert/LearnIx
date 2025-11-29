@@ -38,17 +38,6 @@ export const createAssignment = createAsyncThunk(
   'assignments/create',
   async (assignmentData, { getState }) => {
     const { auth } = getState();
-    // const formData = new FormData();
-    // formData.append('title', assignmentData.title);
-    // formData.append('description', assignmentData.description);
-    // formData.append('dueDate', assignmentData.dueDate);
-    // if (assignmentData.file) {
-    //   formData.append('assignment', assignmentData.file);
-    // }
-    // console.log(`The Assignments Title ${assignmentData.get('title')}`);
-    // console.log(`The Assignments descr ${assignmentData.get('description')}`);
-    // console.log(`The Assignments Data ${assignmentData.get('dueDate')}`);
-    // console.log(`The Assignments File Url ${assignmentData.get('assignment')}`);
     const config = {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -64,20 +53,41 @@ export const createAssignment = createAsyncThunk(
 
 export const updateAssignment = createAsyncThunk(
   'assignments/update',
-  async ({ id, assignmentData }, { getState }) => {
+  async ({ id, assignmentData }, { getState, rejectWithValue }) => {
+     console.log(`The Assignment Data Called to update ${assignmentData}`);
     const { auth } = getState();
-    const config = {
+     
+     try {
+      const config = {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${auth.token}`,
       },
-    };
+    }
     const response = await axios.put(
       `${API_URL}/assignments/update/${id}`,
       assignmentData,
       config
     );
-    return response.data.data;
+    console.log(`Response Status ${response.status}`);
+    console.log(`Response Data ${response.data}`);
+    if(response.status == 200 || response.status == 201){
+    return response.data;
+    }else if(response.status == 400 || response.status == 403 || response.status == 404) { 
+       console.log(`Error: ${response.data?.msg}`);
+      return rejectWithValue({
+         msg: response.data?.msg || 'Unknow Error Occured'
+      });
+    }else {
+       return rejectWithValue({
+         msg: response.data?.msg || 'Unknow Error Occured'
+      });
+    }
+     } catch (error) {
+        return rejectWithValue({
+           msg: error.message || error.msg || 'Unkwoen Error Occured please try again'
+        })
+     }
   }
 );
 
@@ -149,7 +159,19 @@ const assignmentsSlice = createSlice({
         state.assignments.unshift(action.payload);
       })
       // Update assignment
+      .addCase(updateAssignment.pending, (state) => {
+         state.loading = true;
+         state.error = null;
+      })
+      .addCase(updateAssignment.rejected, (state, action) => {
+         state.loading = false;
+         state.error = {
+           msg: action.payload.msg
+         }
+      })
       .addCase(updateAssignment.fulfilled, (state, action) => {
+         state.loading = false;
+         state.error = null;
         const index = state.assignments.findIndex(
           (a) => a._id === action.payload._id
         );

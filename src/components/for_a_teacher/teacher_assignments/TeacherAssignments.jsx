@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 import { 
   fetchAssignments, 
   createAssignment,
+  updateAssignment,
   selectAssignments,
   selectAssignmentsLoading,
   selectAssignmentsError
@@ -29,6 +30,12 @@ export const TeacherAssignments = () => {
    useEffect(() => {
     dispatch(fetchAssignments());
   }, [dispatch, fetchAssignments ]);
+
+  useEffect(() => {
+      if (error && error.msg) {
+            alert(error.msg);
+          }
+  }, [error, dispatch]);
 
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('active');
@@ -232,32 +239,32 @@ export const TeacherAssignments = () => {
     
   };    // alert('Assignment created successfully!');
 
-  const handleUpdateAssignment = () => {
-    if (!assignmentTitle || !assignmentDueDate || !assignmentClass) {
+  const handleUpdateAssignment = async () => {
+    if (!assignmentTitle || !assignmentDueDate) {
       alert('Please fill in all required fields');
       return;
     }
 
-    console.log({
-      id: editingAssignment.id,
-      title: assignmentTitle,
-      description: assignmentDescription,
-      dueDate: assignmentDueDate,
-      class: assignmentClass,
-      file: uploadedFile,
-      audio: audioBlob
-    });
+    let formDataToSend = new FormData();
+    formDataToSend.append('title', assignmentTitle);
+    formDataToSend.append('description', assignmentDescription);
+    formDataToSend.append('dueDate', assignmentDueDate);
+    formDataToSend.append('assignment', uploadedFile);
 
-    alert('Assignment updated successfully!');
-
-    setShowEditModal(false);
-    setEditingAssignment(null);
-    setAssignmentTitle('');
-    setAssignmentDescription('');
-    setAssignmentDueDate('');
-    setAssignmentClass('');
-    setUploadedFile(null);
-    cancelRecording();
+    const updatedAssignmentAction = await dispatch(updateAssignment({ id: editingAssignment._id, assignmentData: formDataToSend }));
+      console.log(`Updated Assignment Action Data in the UI ${updatedAssignmentAction}`);
+    if(updateAssignment.fulfilled.match(updatedAssignmentAction)) {
+      setShowEditModal(false);
+      setEditingAssignment(null);
+      setAssignmentTitle('');
+      setAssignmentDescription('');
+      setAssignmentDueDate('');
+      setAssignmentClass('');
+      setUploadedFile(null);
+      cancelRecording();
+      dispatch(fetchAssignments());
+      alert('Assignment updated Succesfully');
+    }
   };
 
    
@@ -731,7 +738,7 @@ export const TeacherAssignments = () => {
                 onClick={handleUpdateAssignment}
                 disabled={!assignmentTitle || !assignmentDueDate || !assignmentClass}
               >
-                Update Assignment
+               { loading ? 'Updating' : 'Update Assignment'}
               </button>
             </div>
           </div>
