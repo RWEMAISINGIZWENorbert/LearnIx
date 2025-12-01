@@ -88,7 +88,8 @@ export const StudentApplication = () => {
   try {
     const result = dispatch(submitApplication(formDataToSend));
      console.log(`The result ${result}`);
-    if (applicationSuccess) {
+    // if (applicationSuccess) {
+    if (submitApplication.fulfilled.match(result)) {
       alert('Application submitted successfully!');
       
       // Reset form

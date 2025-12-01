@@ -84,6 +84,12 @@ export const updateAssignment = createAsyncThunk(
       });
     }
      } catch (error) {
+        if(error.response){
+           console.log(`${error.response}`);
+           return rejectWithValue({
+         msg: response.data?.msg || 'Unknow Error Occured'
+        });
+        }
         return rejectWithValue({
            msg: error.message || error.msg || 'Unkwoen Error Occured please try again'
         })
@@ -93,15 +99,24 @@ export const updateAssignment = createAsyncThunk(
 
 export const deleteAssignment = createAsyncThunk(
   'assignments/delete',
-  async (id, { getState }) => {
+  async (id, { getState, rejectWithValue }) => {
     const { auth } = getState();
-    const config = {
-      headers: {
-        'Authorization': `Bearer ${auth.token}`,
-      },
-    };
-    await axios.delete(`${API_URL}/assignments/delete/${id}`, config);
-    return id;
+    try {
+      const config = {
+        headers: {
+          'Authorization': `Bearer ${auth.token}`,
+        },
+      };
+      const response = await axios.delete(`${API_URL}/assignments/delete/${id}`, config);
+      if(response.status === 200 || response.status === 201) {
+        return id; // Return the deleted assignment ID
+      }
+      return rejectWithValue({ msg: 'Failed to delete assignment' });
+    } catch (error) {
+      return rejectWithValue({
+        msg: error.response?.data?.msg || 'Failed to delete assignment'
+      });
+    }
   }
 );
 
@@ -181,7 +196,18 @@ const assignmentsSlice = createSlice({
         state.currentAssignment = action.payload;
       })
       // Delete assignment
+      .addCase(deleteAssignment.pending, (state) =>{
+         state.loading = true;
+         state.error = null;
+      })
+      .addCase(deleteAssignment.rejected, (state, action) => {
+          state.loading = false;
+          state.error = {
+            msg: action.payload.msg
+         }
+      })
       .addCase(deleteAssignment.fulfilled, (state, action) => {
+        state.loading = false;
         state.assignments = state.assignments.filter(
           (a) => a._id !== action.payload
         );

@@ -11,6 +11,7 @@ import {
   fetchAssignments, 
   createAssignment,
   updateAssignment,
+  deleteAssignment,
   selectAssignments,
   selectAssignmentsLoading,
   selectAssignmentsError
@@ -33,8 +34,9 @@ export const TeacherAssignments = () => {
 
   useEffect(() => {
       if (error && error.msg) {
+        console.log(`Error: ${error}`)
             alert(error.msg);
-          }
+         }
   }, [error, dispatch]);
 
   const navigate = useNavigate();
@@ -312,7 +314,7 @@ export const TeacherAssignments = () => {
           </button>
         </div>
         {loading && <div className="loading">Loading assignments...</div>}
-        {error && <div className="error">{error}</div>}
+        {/* {error && <div className="error">{error}</div>} */}
         <div className="assignments-grid">
           {activeTab === 'active' &&
            
@@ -751,28 +753,58 @@ export const TeacherAssignments = () => {
     setShowDeleteConfirm(false);
     setAssignmentToDelete(null);
   }}
-  onConfirm={() => {
+  onConfirm={async () => {
     if (!assignmentToDelete) return;
 
-    console.log(`Deleting assignment id: ${assignmentToDelete.id}`);
+    console.log(`Deleting assignment id: ${assignmentToDelete._id}`);
 
     // Here you would call API to delete the assignment
-    // For now, just reset states
-    if (editingAssignment?.id === assignmentToDelete.id) {
+    // This is Demo Bro For now, just reset states
+    // if (editingAssignment?.id === assignmentToDelete.id) {
+    //   setShowEditModal(false);
+    //   setEditingAssignment(null);
+    // }
+
+    try {
+      const result = await dispatch(deleteAssignment(assignmentToDelete._id)).unwrap();
+      console.log('Assignment deleted successfully:', result);
+      
+      // Reset form field
+      setAssignmentTitle('');
+      setAssignmentDescription('');
+      setAssignmentDueDate('');
+      setAssignmentClass('');
+      setUploadedFile(null);
       setShowEditModal(false);
-      setEditingAssignment(null);
+      cancelRecording();
+      
+      // Close the delete confirmation and clear the assignment to delete
+      setShowDeleteConfirm(false);
+      setAssignmentToDelete(null);
+
+      
+      // Optionally show a success message
+      // You can use a toast or alert here if you have one
+      console.log('Assignment deleted successfully');
+    } catch (error) {
+       if (error && error.msg) {
+        // console.log(`Error: ${error}`)
+            alert(error.msg);          
+         }else if(error){
+           alert('Assignment failed to be deleted please try again');         
+         }
+
+      fetchAssignments();
+      setShowDeleteConfirm(false);
+      setAssignmentToDelete(null);    
+      setAssignmentTitle('');
+      setAssignmentDescription('');
+      setAssignmentDueDate('');
+      setAssignmentClass('');
+      setUploadedFile(null);
+      setShowEditModal(false);
+      cancelRecording();  
     }
-
-    setAssignmentTitle('');
-    setAssignmentDescription('');
-    setAssignmentDueDate('');
-    setAssignmentClass('');
-    setUploadedFile(null);
-    cancelRecording();
-
-
-    setShowDeleteConfirm(false);
-    setAssignmentToDelete(null);
   }}
   itemName={assignmentToDelete?.title}
   itemType="assignment"
