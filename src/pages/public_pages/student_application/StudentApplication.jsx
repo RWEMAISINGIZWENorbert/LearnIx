@@ -5,7 +5,7 @@ import { FaFileUpload, FaCheckCircle, FaTimes } from 'react-icons/fa';
 import { useLocation } from 'react-router-dom';
 import { FiAlertTriangle } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
-import { submitApplication } from '../../../features/applications/applicationsSlice';
+import { submitApplication, resetApplicationState } from '../../../features/applications/applicationsSlice';
 import { useNavigate } from 'react-router-dom';
 
 export const StudentApplication = () => {
@@ -63,19 +63,6 @@ export const StudentApplication = () => {
       formDataToSend.append(key, value);
     }
   });
-  // // Append all form data
-  // Object.keys(formData).forEach(key => {
-  //   if (formData[key] !== null && formData[key] !== undefined) {
-  //     formDataToSend.append(key, formData[key]);
-  //   }
-  // });
-
-  // Append non-file fields
-  // Object.entries(otherData).forEach(([key, value]) => {
-  //   if (value !== null && value !== undefined) {
-  //     formDataToSend.append(key, value);
-  //   }
-  // });
 
   // Add files from uploadedFiles state if they exist
   if (uploadedFiles.progressReport) {
@@ -86,11 +73,12 @@ export const StudentApplication = () => {
   }
 
   try {
+      dispatch(resetApplicationState());
     const result = dispatch(submitApplication(formDataToSend));
+        alert(result.message || 'Application submitted successfully!');
      console.log(`The result ${result}`);
     // if (applicationSuccess) {
-    if (submitApplication.fulfilled.match(result)) {
-      alert('Application submitted successfully!');
+    // if (submitApplication.fulfilled.match(result)) {
       
       // Reset form
       setFormData({
@@ -118,9 +106,9 @@ export const StudentApplication = () => {
       
       // Navigate back to schools page
       navigate('/schools');
-    }
+    // }
   } catch (error) {
-    console.error('Error submitting application:', error);
+      alert(error || 'Failed to submit application. Please try again.');
   }
 };
 

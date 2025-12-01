@@ -48,11 +48,13 @@ export const submitApplication = createAsyncThunk(
         }
       );
       
-      console.log(`The response ${response.data}`);
-      return response.data;
+       return {
+        message: response.data.msg,
+        application: response.data.data
+      };
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || 'Failed to submit application'
+        error.response?.data?.msg || error.response?.data?.message || 'Failed to submit application'
       );
     }
   }
@@ -151,14 +153,15 @@ const applicationsSlice = createSlice({
         state.success = false;
       })
       .addCase(submitApplication.fulfilled, (state, action) => {
-        state.loading = false;
-        state.success = true;
-        state.currentApplication = action.payload.data;
+         state.loading = false;
+         state.success = true;
+         state.error = null;
+         state.currentApplication = action.payload.application;
       })
       .addCase(submitApplication.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-        state.success = false;
+        state.error = action.payload || 'Failed to submit application';
       })
       
       // Accept Application
