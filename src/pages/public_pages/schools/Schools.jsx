@@ -183,11 +183,12 @@ export const Schools = () => {
                     <FaEnvelope className="icon" />
                     <span>{school.email}</span>
                   </div>
-                  <div className="info-item">
+                  { school.students &&  <div className="info-item">
                     <FaGraduationCap className="icon" />
-                    <span>{school.students} Students</span>
-                  </div>
-                </div>
+                     <span>{school.students} Students</span>
+                    </div> 
+                    }
+                </div> 
                 <button 
                   className="visit-btn" 
                   onClick={() => navigate('/student-application', { state: { school } })}
