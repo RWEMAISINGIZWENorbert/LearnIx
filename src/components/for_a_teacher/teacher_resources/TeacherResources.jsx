@@ -65,9 +65,13 @@ export const TeacherResources = () => {
   const getFileIcon = (type) => {
     switch(type) {
       case 'pdf': return <FaFilePdf className="icon pdf" />;
-      case 'docx': return <FaFileWord className="icon word" />;
-      case 'png': case 'jpg': case 'jpeg': return <FaFileImage className="icon image" />;
-      case 'mp4': case 'avi': return <FaFileVideo className="icon video" />;
+      case 'docx': 
+      case 'doc': return <FaFileWord className="icon word" />;
+      case 'png': 
+      case 'jpg': 
+      case 'jpeg': return <FaFileImage className="icon image" />;
+      case 'mp4': 
+      case 'avi': return <FaFileVideo className="icon video" />;
       default: return <LuFileText className="icon default" />;
     }
   };
@@ -234,7 +238,8 @@ export const TeacherResources = () => {
               {documents.map(document => (
                 <div key={document.id} className="document_card">
                   <div className="document_icon">
-                    {getFileIcon(document.type)}
+                    {/* {getFileIcon(document.type)} */}
+                    {getFileIcon(document.fileUrl?.split('.').pop() || '')}
                   </div>
                   <div className="document_info">
                     <h4>{document.name}</h4>
