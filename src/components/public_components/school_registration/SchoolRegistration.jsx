@@ -416,7 +416,7 @@ export const SchoolRegistration = () => {
               </div>
             </div>
             <div className="dontHaveCode">
-              <p className="step-desc">Register your school <span><a href="#">here</a></span></p>
+              <p className="step-desc">Register your school <span><a href="https://forms.gle/CPgHMBFAKN21GSep6">here</a></span></p>
             </div>
           </div>
         );
