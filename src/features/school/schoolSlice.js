@@ -55,7 +55,7 @@ export const fetchAllSchools = createAsyncThunk(
 
 export const registerSchoolNameAndType = createAsyncThunk(
   'school/registerName',
-  async ({ name, type }, { rejectWithValue }) => {
+  async ({ name, type, schoolCode }, { rejectWithValue }) => {
     try {
       // Client-side validation
       if (!name || !type) {
@@ -74,7 +74,7 @@ export const registerSchoolNameAndType = createAsyncThunk(
 
       const response = await axios.post(
         `${API_BASE_URL}/schools/registerName`, 
-        { name, type },
+        { name, type, schoolCode },
         {
           headers: {
             'Content-Type': 'application/json',

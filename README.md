@@ -66,6 +66,8 @@ Make sure you have the following installed:
 
 ---
 
+School registration form link: https://forms.gle/CPgHMBFAKN21GSep6
+
 ### ⚙️ Installation
 
 1. **Clone the repository**
