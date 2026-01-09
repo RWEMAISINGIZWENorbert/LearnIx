@@ -35,25 +35,6 @@ export const SchoolRegistration = () => {
   const [profileImage, setProfileImage] = useState(null);
 
 
-  // const [formData, setFormData] = useState({
-  //   schoolName: '',
-  //   schoolType: '',
-  //   schoolEmail: '',
-  //   schoolPhone: '',
-  //   schoolAddress: '',
-  //   city: '',
-  //   country: '',
-  //   sector: '',
-  //   website: '',
-  //   studentCapacity: '',
-  //   establishedYear: '',
-  //   adminName: '',
-  //   adminEmail: '',
-  //   adminPhone: '',
-  //   verificationCode: ['', '', '', '', '', ''],
-  //   password: '',
-  //   confirmPassword: ''
-  // });
 
   const [formData, setFormData] = useState({
     // Step 0: Admin ID
@@ -167,16 +148,6 @@ export const SchoolRegistration = () => {
     }
   }
 
-  // const handleImageUpload = (e) => {
-  //   const file = e.target.files[0];
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       setProfileImage(reader.result);
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // };
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
