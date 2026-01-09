@@ -38,6 +38,11 @@ const initialState = {
 };
 
 // Async Thunks
+
+export const setSchoolCodeLocalStorage = (schoolCode) => {
+  localStorage.setItem('schoolCode', schoolCode);
+};
+
 export const fetchAllSchools = createAsyncThunk(
   'schools/fetchAll',
   async (_, { rejectWithValue }) => {

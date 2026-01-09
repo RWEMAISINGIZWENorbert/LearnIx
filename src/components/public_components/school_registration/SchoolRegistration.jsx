@@ -237,6 +237,7 @@ export const SchoolRegistration = () => {
             setLocalError('Please enter Admin ID');
             return;
           }
+          dispatch(setSchoolCodeLocalStorage(formData.adminID));
           dispatch(nextStep());
           break;
 
