@@ -19,6 +19,7 @@ import {
   nextStep,
   prevStep,
   uploadSchoolLogo,
+  setSchoolCodeLocalStorage,
   updateFormData
 } from '../../../features/school/schoolSlice';
 
@@ -237,7 +238,7 @@ export const SchoolRegistration = () => {
             setLocalError('Please enter Admin ID');
             return;
           }
-          dispatch(setSchoolCodeLocalStorage(formData.adminID));
+          await setSchoolCodeLocalStorage(formData.adminID);
           dispatch(nextStep());
           break;
 
@@ -412,7 +413,7 @@ export const SchoolRegistration = () => {
                 />
               </div>
             </div>
-            <div className="form-group">
+            {/* <div className="form-group">
               <label>School Type</label>
               <div className="input-wrapper">
                 <MdBusiness className="input-icon" />
@@ -430,7 +431,7 @@ export const SchoolRegistration = () => {
                   <option value="other">Other</option>
                 </select>
               </div>
-            </div>
+            </div> */}
           </div>
         );
 

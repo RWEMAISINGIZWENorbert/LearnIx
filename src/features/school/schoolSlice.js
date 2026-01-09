@@ -39,8 +39,8 @@ const initialState = {
 
 // Async Thunks
 
-export const setSchoolCodeLocalStorage = (schoolCode) => {
-  localStorage.setItem('schoolCode', schoolCode);
+export const setSchoolCodeLocalStorage = async (schoolCode) => {
+   await localStorage.setItem('schoolCode', schoolCode);
 };
 
 export const fetchAllSchools = createAsyncThunk(
@@ -60,7 +60,7 @@ export const fetchAllSchools = createAsyncThunk(
 
 export const registerSchoolNameAndType = createAsyncThunk(
   'school/registerName',
-  async ({ name, type, schoolCode }, { rejectWithValue }) => {
+  async ({ name, type }, { rejectWithValue }) => {
     try {
       // Client-side validation
       if (!name || !type) {
@@ -76,7 +76,7 @@ export const registerSchoolNameAndType = createAsyncThunk(
           field: 'name'
         });
       }
-
+      let schoolCode = await localStorage.getItem('schoolCode');
       const response = await axios.post(
         `${API_BASE_URL}/schools/registerName`, 
         { name, type, schoolCode },
@@ -563,7 +563,7 @@ const schoolSlice = createSlice({
     },
     // Action to go to the previous step
     prevStep: (state) => {
-      if (state.currentStep > 1) {
+      if (state.currentStep >= 1) {
         state.currentStep -= 1;
       }
     },
