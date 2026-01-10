@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './SchoolRegistration.css';
-import { FaSchool, FaLock, FaEnvelope, FaPhone, FaMapMarkerAlt, FaArrowRight, FaArrowLeft, FaCheckCircle, FaCamera, FaIdCard, FaGlobe, FaUsers } from 'react-icons/fa';
+import { FaSchool, FaLock, FaEnvelope,FaUserLock, FaPhone, FaMapMarkerAlt, FaArrowRight, FaArrowLeft, FaCheckCircle, FaCamera, FaIdCard, FaGlobe, FaUsers } from 'react-icons/fa';
 import { MdBusiness } from 'react-icons/md';
 
 
@@ -206,7 +206,8 @@ export const SchoolRegistration = () => {
 };
 
 
-  const steps = [
+const steps = [
+    { title: 'Admin ID', icon: <FaUserLock /> },
     { title: 'School Details', icon: <FaSchool /> },
     { title: 'Location', icon: <FaMapMarkerAlt /> },
     { title: 'Contact Info', icon: <FaPhone /> },
@@ -384,6 +385,30 @@ export const SchoolRegistration = () => {
     const stepTitle = steps[currentStep]?.title;
 
     switch (stepTitle) {
+      case 'Admin ID':
+              return (
+                <div className="step-content">
+                  <h3>Admin ID</h3>
+                  <p className="step-desc">Provide an admin ID our support team gave you</p>
+                  <div className="form-group">
+                    <label>Admin ID</label>
+                    <div className="input-wrapper">
+                      <FaUserLock className="input-icon" />
+                      <input
+                        type="text"
+                        name="adminID"
+                        value={formData.schoolName || ''}
+                        onChange={handleInputChange}
+                        placeholder="Enter school Admin ID"
+                        autoFocus
+                      />
+                    </div>
+                  </div>
+                  <div className="dontHaveCode">
+                    <p className="step-desc">Register your school <span><a href="#">here</a></span></p>
+                  </div>
+                </div>
+              );
       case 'School Details':
         return (
           <div className="step-content">
