@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './SchoolRegistration.css';
-import { FaSchool, FaLock, FaEnvelope,FaUserLock, FaPhone, FaMapMarkerAlt, FaArrowRight, FaArrowLeft, FaCheckCircle, FaCamera, FaIdCard, FaGlobe, FaUsers } from 'react-icons/fa';
+import { FaSchool, FaLock, FaEnvelope, FaPhone, FaMapMarkerAlt, FaArrowRight, FaArrowLeft, FaCheckCircle, FaCamera, FaIdCard, FaUserLock, FaGlobe, FaUsers } from 'react-icons/fa';
 import { MdBusiness } from 'react-icons/md';
 
 
 import { useDispatch, useSelector } from 'react-redux';
-import { 
+import {
   registerSchoolNameAndType,
   registerSchoolLocation,
   registerEmailAndTel,
@@ -19,14 +19,15 @@ import {
   nextStep,
   prevStep,
   uploadSchoolLogo,
+  setSchoolCodeLocalStorage,
   updateFormData
 } from '../../../features/school/schoolSlice';
 
 export const SchoolRegistration = () => {
-   
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+
   // Selectors from Redux
   const currentStep = useSelector(selectSchoolStep);
   const isLoading = useSelector(selectIsLoading);
@@ -34,28 +35,11 @@ export const SchoolRegistration = () => {
   const isSuccess = useSelector(selectIsSuccess);
   const [profileImage, setProfileImage] = useState(null);
 
-   
-  // const [formData, setFormData] = useState({
-  //   schoolName: '',
-  //   schoolType: '',
-  //   schoolEmail: '',
-  //   schoolPhone: '',
-  //   schoolAddress: '',
-  //   city: '',
-  //   country: '',
-  //   sector: '',
-  //   website: '',
-  //   studentCapacity: '',
-  //   establishedYear: '',
-  //   adminName: '',
-  //   adminEmail: '',
-  //   adminPhone: '',
-  //   verificationCode: ['', '', '', '', '', ''],
-  //   password: '',
-  //   confirmPassword: ''
-  // });
+
 
   const [formData, setFormData] = useState({
+    // Step 0: Admin ID
+    adminID: '',
     // Step 1: School Info
     schoolName: '',
     schoolType: '',
@@ -81,10 +65,10 @@ export const SchoolRegistration = () => {
     logo: null
   });
 
-   const [localError, setLocalError] = useState(null);
+  const [localError, setLocalError] = useState(null);
 
   // Handle navigation on success
-   useEffect(() => {
+  useEffect(() => {
     if (isSuccess && currentStep < steps.length - 1) {
       dispatch(nextStep());
     } else if (isSuccess && currentStep === steps.length - 1) {
@@ -112,10 +96,10 @@ export const SchoolRegistration = () => {
   //   });
   // };
 
-   
-    const handleInputChange = (e) => {
+
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
-      console.log(`The Handle Input Change ${name} ${value}`);
+    console.log(`The Handle Input Change ${name} ${value}`);
     // Handle nested state for location and contact
     if (name.startsWith('location')) {
       const field = name.split('.')[1];
@@ -141,23 +125,23 @@ export const SchoolRegistration = () => {
         [name]: value
       }));
     }
-    
+
     // Clear error when user types
     if (localError) setLocalError(null);
   };
 
- const handleCodeChange = (index, value) => {
+  const handleCodeChange = (index, value) => {
     if (/^\d?$/.test(value) && value.length <= 1) {
-       console.log(`The Value There I have ${value}`);
+      console.log(`The Value There I have ${value}`);
       const newCode = [...formData.verificationCode];
       newCode[index] = value;
-      
+
       setFormData(prev => ({
         ...prev,
         verificationCode: newCode,
         otp: newCode.join('') // Also update the otp string
       }));
-      
+
       // Auto-focus next input if a digit was entered
       if (value && index < 3) {
         document.getElementById(`code-${index + 1}`)?.focus();
@@ -165,48 +149,38 @@ export const SchoolRegistration = () => {
     }
   }
 
-  // const handleImageUpload = (e) => {
-  //   const file = e.target.files[0];
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       setProfileImage(reader.result);
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // };
-   
+
   const handleImageUpload = (e) => {
-  const file = e.target.files[0];
-  if (file) {
-     console.log(`The File Loaded There ${file}`);
-    // Validate file type
-    if (!file.type.match('image/.*')) {
-      alert('Please upload a valid image file');
-      setLocalError('Please upload a valid image file');
-      return;
+    const file = e.target.files[0];
+    if (file) {
+      console.log(`The File Loaded There ${file}`);
+      // Validate file type
+      if (!file.type.match('image/.*')) {
+        alert('Please upload a valid image file');
+        setLocalError('Please upload a valid image file');
+        return;
+      }
+
+      // Validate file size (e.g., 2MB max)
+      if (file.size > 2 * 1024 * 1024) {
+        alert('Image size should be less than 2MB');
+        setLocalError('Image size should be less than 2MB');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData(prev => ({
+          ...prev,
+          logo: reader.result  // This will be a base64 string of the image
+        }));
+      };
+      reader.readAsDataURL(file);
     }
-
-    // Validate file size (e.g., 2MB max)
-    if (file.size > 2 * 1024 * 1024) {
-      alert('Image size should be less than 2MB');
-      setLocalError('Image size should be less than 2MB');
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setFormData(prev => ({
-        ...prev,
-        logo: reader.result  // This will be a base64 string of the image
-      }));
-    };
-    reader.readAsDataURL(file);
-  }
-};
+  };
 
 
-const steps = [
+  const steps = [
     { title: 'Admin ID', icon: <FaUserLock /> },
     { title: 'School Details', icon: <FaSchool /> },
     { title: 'Location', icon: <FaMapMarkerAlt /> },
@@ -248,17 +222,27 @@ const steps = [
   //     navigate('/login');
   //   }
   // }
-    
+
   // };
 
-   
+
   const handleSubmitStep = async () => {
     try {
       setLocalError(null);
-       console.log(`Chek The Current Step ${currentStep}`);
-       console.log(`Check The Form Data ${formData}`);
+      console.log(`Chek The Current Step ${currentStep}`);
+      console.log(`Check The Form Data ${formData}`);
       switch (currentStep) {
-        case 0: // School Details
+        case 0: // Admin ID
+          if (!formData.adminID) {
+            alert('Please enter Admin ID');
+            setLocalError('Please enter Admin ID');
+            return;
+          }
+          await setSchoolCodeLocalStorage(formData.adminID);
+          dispatch(nextStep());
+          break;
+
+        case 1: // School Details
           if (!formData.schoolName || !formData.schoolType) {
             setLocalError('Please fill in all required fields');
             alert('Please fill in all required fields');
@@ -270,21 +254,21 @@ const steps = [
           })).unwrap();
           break;
 
-        case 1: // Location
+        case 2: // Location
           if (!formData.location.country || !formData.location.province) {
             alert('Please provide location details');
             setLocalError('Please provide location details');
             alert('Please provide location details');
             return;
           }
-          
+
           await dispatch(registerSchoolLocation({
             // schoolId: /* get from Redux store if needed */,
             ...formData.location
           })).unwrap();
           break;
 
-        case 2: // Contact Info
+        case 3: // Contact Info
           if (!formData.contact.email || !formData.contact.tel) {
             setLocalError('Please provide all contact information');
             alert('Please provide all contact information');
@@ -296,7 +280,7 @@ const steps = [
           })).unwrap();
           break;
 
-        case 3: // Verification
+        case 4: // Verification
           if (formData.otp.length !== 4) {
             setLocalError('Please enter the 4-digit verification code');
             alert('Please enter the 4-digit verification code');
@@ -309,7 +293,7 @@ const steps = [
           })).unwrap();
           break;
 
-        case 4: // Password
+        case 5: // Password
           if (formData.password !== formData.confirmPassword) {
             setLocalError('Passwords do not match');
             alert('Passwords do not match');
@@ -329,36 +313,36 @@ const steps = [
           })).unwrap();
           break;
 
-        case 5: // Logo (optional)
+        case 6: // Logo (optional)
           // Handle logo upload if needed
           if (formData.logo) {
-          const schoolId = localStorage.getItem('schoolId');
-          if (!schoolId) {
-            throw new Error('School ID not found. Please start the registration process again.');
-          }
-          
-          // Convert base64 to file object
-          const file = await fetch(formData.logo)
-            .then(res => res.blob())
-            .then(blob => {
-              const file = new File([blob], 'school-logo.jpg', { type: 'image/jpeg' });
-              return file;
-            });
+            const schoolId = localStorage.getItem('schoolId');
+            if (!schoolId) {
+              throw new Error('School ID not found. Please start the registration process again.');
+            }
 
-          await dispatch(uploadSchoolLogo({ 
-            schoolId, 
-            logo: file 
-          })).unwrap();
-        }
-        // Proceed to next step even if no logo was uploaded
-        dispatch(nextStep());
-        break;
+            // Convert base64 to file object
+            const file = await fetch(formData.logo)
+              .then(res => res.blob())
+              .then(blob => {
+                const file = new File([blob], 'school-logo.jpg', { type: 'image/jpeg' });
+                return file;
+              });
+
+            await dispatch(uploadSchoolLogo({
+              schoolId,
+              logo: file
+            })).unwrap();
+          }
+          // Proceed to next step even if no logo was uploaded
+          dispatch(nextStep());
+          break;
 
         default:
           break;
       }
-    } catch (error) { 
-       alert(`Error Occured, ${error}`);
+    } catch (error) {
+      alert(`Error Occured, ${error}`);
       console.error('Step submission error:', error);
       // Error is already handled by the Redux slice
     }
@@ -386,29 +370,30 @@ const steps = [
 
     switch (stepTitle) {
       case 'Admin ID':
-              return (
-                <div className="step-content">
-                  <h3>Admin ID</h3>
-                  <p className="step-desc">Provide an admin ID our support team gave you</p>
-                  <div className="form-group">
-                    <label>Admin ID</label>
-                    <div className="input-wrapper">
-                      <FaUserLock className="input-icon" />
-                      <input
-                        type="text"
-                        name="adminID"
-                        value={formData.schoolName || ''}
-                        onChange={handleInputChange}
-                        placeholder="Enter school Admin ID"
-                        autoFocus
-                      />
-                    </div>
-                  </div>
-                  <div className="dontHaveCode">
-                    <p className="step-desc">Register your school <span><a href="#">here</a></span></p>
-                  </div>
-                </div>
-              );
+        return (
+          <div className="step-content">
+            <h3>Admin ID</h3>
+            <p className="step-desc">Provide an admin ID our support team gave you</p>
+            <div className="form-group">
+              <label>Admin ID</label>
+              <div className="input-wrapper">
+                <FaUserLock className="input-icon" />
+                <input
+                  type="text"
+                  name="adminID"
+                  value={formData.adminID || ''}
+                  onChange={handleInputChange}
+                  placeholder="Enter school Admin ID"
+                // autoFocus
+                />
+              </div>
+            </div>
+            <div className="dontHaveCode">
+              <p className="step-desc">Register your school <span><a target='_blank' href="https://forms.gle/CPgHMBFAKN21GSep6">here</a></span></p>
+            </div>
+          </div>
+        );
+
       case 'School Details':
         return (
           <div className="step-content">
@@ -428,7 +413,7 @@ const steps = [
                 />
               </div>
             </div>
-            <div className="form-group">
+            {/* <div className="form-group">
               <label>School Type</label>
               <div className="input-wrapper">
                 <MdBusiness className="input-icon" />
@@ -446,7 +431,7 @@ const steps = [
                   <option value="other">Other</option>
                 </select>
               </div>
-            </div>
+            </div> */}
           </div>
         );
 
@@ -679,17 +664,17 @@ const steps = [
           <div className="branding-content">
             <h1><span className="learn">Learn</span>Ix</h1>
             <p className="tagline">School Management System</p>
-            
+
             <div className="registration-info">
               <div className="info-card">
                 <FaSchool className="info-icon" />
                 <h3>Register Your School</h3>
                 <p>
-                  Join thousands of schools using LearnIx to streamline their operations, 
+                  Join thousands of schools using LearnIx to streamline their operations,
                   enhance learning experiences, and build better educational environments.
                 </p>
               </div>
-              
+
               <div className="benefits-list">
                 <h4>What you'll get:</h4>
                 <ul>
@@ -749,8 +734,8 @@ const steps = [
                   <span>Loading...</span>
                 ) : (
                   <>
-                  {currentStep === steps.length - 1 ? 'Complete Registration' : 'Next'}
-                  <FaArrowRight />
+                    {currentStep === steps.length - 1 ? 'Complete Registration' : 'Next'}
+                    <FaArrowRight />
                   </>
                 )}
               </button>
