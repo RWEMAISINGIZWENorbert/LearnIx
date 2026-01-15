@@ -315,6 +315,29 @@
 
 .required { color: #ef4444; }
 
+.security_options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 14px;
+    color: #4b5563;
+    justify-content: center;
+}
+
+.security_options label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.security_options input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    margin-right: 10px;
+
+}
+
 /* File Upload Area */
 .file_upload_area {
     display: flex;

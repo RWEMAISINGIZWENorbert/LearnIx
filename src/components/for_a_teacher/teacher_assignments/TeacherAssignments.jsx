@@ -16,8 +16,8 @@ import {
   selectAssignmentsLoading,
   selectAssignmentsError
 } from '../../../features/assignement/assignementSlice';
+import { fetchClasses, selectAllClasses } from '../../../features/classes/classesSlice';
 import { FiEdit } from 'react-icons/fi';
-import { IoTrashOutline } from 'react-icons/io5';
 import { DeleteConfirmation } from '../../shared/DeleteConfirmation';
 
 
@@ -27,10 +27,12 @@ export const TeacherAssignments = () => {
   const assignments = useSelector(selectAssignments);
   const loading = useSelector(selectAssignmentsLoading);
   const error = useSelector(selectAssignmentsError);
+  const classes = useSelector(selectAllClasses);
 
    useEffect(() => {
     dispatch(fetchAssignments());
-  }, [dispatch, fetchAssignments ]);
+    dispatch(fetchClasses());
+  }, [dispatch]);
 
   useEffect(() => {
       if (error && error.msg) {
@@ -43,11 +45,24 @@ export const TeacherAssignments = () => {
   const [activeTab, setActiveTab] = useState('active');
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [assignmentType, setAssignmentType] = useState('HOMEWORK');
   const [assignmentTitle, setAssignmentTitle] = useState('');
   const [assignmentDescription, setAssignmentDescription] = useState('');
   const [assignmentDueDate, setAssignmentDueDate] = useState('');
   const [assignmentClass, setAssignmentClass] = useState('');
+  const [assignmentClassId, setAssignmentClassId] = useState('');
   const [uploadedFile, setUploadedFile] = useState(null);
+
+  // Exam scheduling
+  const [startDateTime, setStartDateTime] = useState('');
+  const [endDateTime, setEndDateTime] = useState('');
+  const [durationMinutes, setDurationMinutes] = useState('');
+
+  // Exam security flags
+  const [securityFullscreen, setSecurityFullscreen] = useState(true);
+  const [securityBlockCopyPaste, setSecurityBlockCopyPaste] = useState(true);
+  const [securityDetectTabSwitch, setSecurityDetectTabSwitch] = useState(true);
+  const [securityDetectScreenshot, setSecurityDetectScreenshot] = useState(false);
 
   const [editingAssignment, setEditingAssignment] = useState(null);
 
@@ -194,8 +209,15 @@ export const TeacherAssignments = () => {
   };
 
   const handleCreateAssignment = () => {
-         if (!assignmentTitle || !assignmentDueDate || !assignmentClass) {
+    const isExam = assignmentType === 'EXAM';
+
+    if (!assignmentTitle || !assignmentDueDate || !assignmentClass) {
       alert('Please fill in all required fields');
+      return;
+    }
+
+    if (isExam && (!startDateTime || !durationMinutes)) {
+      alert('Please provide start time and duration for exams');
       return;
     }
     
@@ -211,19 +233,50 @@ export const TeacherAssignments = () => {
 
     let formDataToSend = new FormData();
     formDataToSend.append('title', assignmentTitle);
+    formDataToSend.append('type', assignmentType);
     formDataToSend.append('description', assignmentDescription);
     formDataToSend.append('dueDate', assignmentDueDate);
+
+    // Targeting – link to academic structure / class
+    formDataToSend.append('className', assignmentClass);
+    if (assignmentClassId) {
+      formDataToSend.append('classId', assignmentClassId);
+    }
+
+    // Scheduling – align with spec
+    formDataToSend.append('startTime', isExam ? startDateTime : '');
+    formDataToSend.append(
+      'endTime',
+      isExam ? (endDateTime || assignmentDueDate) : assignmentDueDate
+    );
+    formDataToSend.append('durationMinutes', isExam ? durationMinutes : '');
+
+    // Security flags – used for secure exams
+    formDataToSend.append('fullscreen', isExam ? securityFullscreen : false);
+    formDataToSend.append('blockCopyPaste', isExam ? securityBlockCopyPaste : false);
+    formDataToSend.append('detectTabSwitch', isExam ? securityDetectTabSwitch : false);
+    formDataToSend.append('detectScreenshot', isExam ? securityDetectScreenshot : false);
+
     formDataToSend.append('assignment', uploadedFile);
     try {
       dispatch(createAssignment(formDataToSend));
       //  alert('Assignment created successfully!');
        setShowCreateModal(false);
       // Reset form
+      setAssignmentType('HOMEWORK');
       setAssignmentTitle('');
       setAssignmentDescription('');
       setAssignmentDueDate('');
       setAssignmentClass('');
+      setAssignmentClassId('');
       setUploadedFile(null);
+      setStartDateTime('');
+      setEndDateTime('');
+      setDurationMinutes('');
+      setSecurityFullscreen(true);
+      setSecurityBlockCopyPaste(true);
+      setSecurityDetectTabSwitch(true);
+      setSecurityDetectScreenshot(false);
       cancelRecording();
       fetchAssignments();
     } catch (error) {
@@ -232,25 +285,60 @@ export const TeacherAssignments = () => {
     
     // Reset form
     setShowCreateModal(false);
+    setAssignmentType('HOMEWORK');
     setAssignmentTitle('');
     setAssignmentDescription('');
     setAssignmentDueDate('');
     setAssignmentClass('');
+    setAssignmentClassId('');
     setUploadedFile(null);
+    setStartDateTime('');
+    setEndDateTime('');
+    setDurationMinutes('');
+    setSecurityFullscreen(true);
+    setSecurityBlockCopyPaste(true);
+    setSecurityDetectTabSwitch(true);
+    setSecurityDetectScreenshot(false);
     cancelRecording();
     
   };    // alert('Assignment created successfully!');
 
   const handleUpdateAssignment = async () => {
-    if (!assignmentTitle || !assignmentDueDate) {
+    const isExam = assignmentType === 'EXAM';
+
+    if (!assignmentTitle || !assignmentDueDate || !assignmentClass) {
       alert('Please fill in all required fields');
+      return;
+    }
+
+    if (isExam && (!startDateTime || !durationMinutes)) {
+      alert('Please provide start time and duration for exams');
       return;
     }
 
     let formDataToSend = new FormData();
     formDataToSend.append('title', assignmentTitle);
+    formDataToSend.append('type', assignmentType);
     formDataToSend.append('description', assignmentDescription);
     formDataToSend.append('dueDate', assignmentDueDate);
+
+    formDataToSend.append('className', assignmentClass);
+    if (assignmentClassId) {
+      formDataToSend.append('classId', assignmentClassId);
+    }
+
+    formDataToSend.append('startTime', isExam ? startDateTime : '');
+    formDataToSend.append(
+      'endTime',
+      isExam ? (endDateTime || assignmentDueDate) : assignmentDueDate
+    );
+    formDataToSend.append('durationMinutes', isExam ? durationMinutes : '');
+
+    formDataToSend.append('fullscreen', isExam ? securityFullscreen : false);
+    formDataToSend.append('blockCopyPaste', isExam ? securityBlockCopyPaste : false);
+    formDataToSend.append('detectTabSwitch', isExam ? securityDetectTabSwitch : false);
+    formDataToSend.append('detectScreenshot', isExam ? securityDetectScreenshot : false);
+
     formDataToSend.append('assignment', uploadedFile);
 
     const updatedAssignmentAction = await dispatch(updateAssignment({ id: editingAssignment._id, assignmentData: formDataToSend }));
@@ -258,11 +346,20 @@ export const TeacherAssignments = () => {
     if(updateAssignment.fulfilled.match(updatedAssignmentAction)) {
       setShowEditModal(false);
       setEditingAssignment(null);
+      setAssignmentType('HOMEWORK');
       setAssignmentTitle('');
       setAssignmentDescription('');
       setAssignmentDueDate('');
       setAssignmentClass('');
+      setAssignmentClassId('');
       setUploadedFile(null);
+      setStartDateTime('');
+      setEndDateTime('');
+      setDurationMinutes('');
+      setSecurityFullscreen(true);
+      setSecurityBlockCopyPaste(true);
+      setSecurityDetectTabSwitch(true);
+      setSecurityDetectScreenshot(false);
       cancelRecording();
       dispatch(fetchAssignments());
       alert('Assignment updated Succesfully');
@@ -449,6 +546,17 @@ export const TeacherAssignments = () => {
               </div>
 
               <div className="form_group">
+                <label>Assignment Type <span className="required">*</span></label>
+                <select
+                  value={assignmentType}
+                  onChange={(e) => setAssignmentType(e.target.value)}
+                >
+                  <option value="HOMEWORK">Homework or Assignment</option>
+                  <option value="EXAM">Exam or Assessment</option>
+                </select>
+              </div>
+
+              <div className="form_group">
                 <label>Description</label>
                 <textarea
                   rows="4"
@@ -460,7 +568,7 @@ export const TeacherAssignments = () => {
 
               <div className="form_row">
                 <div className="form_field">
-                  <label>Due Date <span className="required">*</span></label>
+                  <label>Due / End Date &amp; Time <span className="required">*</span></label>
                   <input
                     type="datetime-local"
                     value={assignmentDueDate}
@@ -470,15 +578,96 @@ export const TeacherAssignments = () => {
 
                 <div className="form_field">
                   <label>Class <span className="required">*</span></label>
-                  <select value={assignmentClass} onChange={(e) => setAssignmentClass(e.target.value)}>
+                  <select
+                    value={assignmentClassId}
+                    onChange={(e) => {
+                      const id = e.target.value;
+                      setAssignmentClassId(id);
+                      const cls = classes.find((c) => c._id === id);
+                      setAssignmentClass(cls ? cls.name : '');
+                    }}
+                  >
                     <option value="">Select class</option>
-                    <option value="L5 SOD A">L5 SOD A</option>
-                    <option value="L5 SOD B">L5 SOD B</option>
-                    <option value="L6 SOD A">L6 SOD A</option>
-                    <option value="L6 SOD B">L6 SOD B</option>
+                    {classes.map((cls) => (
+                      <option key={cls._id} value={cls._id}>
+                        {cls.name}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
+
+              {assignmentType === 'EXAM' && (
+                <>
+                  <div className="form_row">
+                    <div className="form_field">
+                      <label>Start Date &amp; Time <span className="required">*</span></label>
+                      <input
+                        type="datetime-local"
+                        value={startDateTime}
+                        onChange={(e) => setStartDateTime(e.target.value)}
+                      />
+                    </div>
+                    <div className="form_field">
+                      <label>Exam End Time</label>
+                      <input
+                        type="datetime-local"
+                        value={endDateTime}
+                        onChange={(e) => setEndDateTime(e.target.value)}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form_group">
+                    <label>Exam Duration (minutes) <span className="required">*</span></label>
+                    <input
+                      type="number"
+                      min="1"
+                      value={durationMinutes}
+                      onChange={(e) => setDurationMinutes(e.target.value)}
+                      placeholder="e.g. 90"
+                    />
+                  </div>
+
+                  <div className="form_group">
+                    <label>Security Settings</label>
+                    <div className="security_options">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={securityFullscreen}
+                          onChange={(e) => setSecurityFullscreen(e.target.checked)}
+                        />
+                        Enforce fullscreen during exam
+                      </label>
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={securityBlockCopyPaste}
+                          onChange={(e) => setSecurityBlockCopyPaste(e.target.checked)}
+                        />
+                        Disable copy / paste
+                      </label>
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={securityDetectTabSwitch}
+                          onChange={(e) => setSecurityDetectTabSwitch(e.target.checked)}
+                        />
+                        Detect tab switching
+                      </label>
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={securityDetectScreenshot}
+                          onChange={(e) => setSecurityDetectScreenshot(e.target.checked)}
+                        />
+                        Detect screenshots (where supported)
+                      </label>
+                    </div>
+                  </div>
+                </>
+              )}
 
               {/* File Upload */}
               <div className="form_group">
@@ -614,6 +803,17 @@ export const TeacherAssignments = () => {
               </div>
 
               <div className="form_group">
+                <label>Assignment Type <span className="required">*</span></label>
+                <select
+                  value={assignmentType}
+                  onChange={(e) => setAssignmentType(e.target.value)}
+                >
+                  <option value="HOMEWORK">Homework</option>
+                  <option value="EXAM">Exam (Secure)</option>
+                </select>
+              </div>
+
+              <div className="form_group">
                 <label>Description</label>
                 <textarea
                   rows="4"
@@ -625,7 +825,7 @@ export const TeacherAssignments = () => {
 
               <div className="form_row">
                 <div className="form_field">
-                  <label>Due Date <span className="required">*</span></label>
+                  <label>Due / End Date &amp; Time <span className="required">*</span></label>
                   <input
                     type="datetime-local"
                     value={assignmentDueDate}
@@ -635,15 +835,96 @@ export const TeacherAssignments = () => {
 
                 <div className="form_field">
                   <label>Class <span className="required">*</span></label>
-                  <select value={assignmentClass} onChange={(e) => setAssignmentClass(e.target.value)}>
+                  <select
+                    value={assignmentClassId}
+                    onChange={(e) => {
+                      const id = e.target.value;
+                      setAssignmentClassId(id);
+                      const cls = classes.find((c) => c._id === id);
+                      setAssignmentClass(cls ? cls.name : '');
+                    }}
+                  >
                     <option value="">Select class</option>
-                    <option value="L5 SOD A">L5 SOD A</option>
-                    <option value="L5 SOD B">L5 SOD B</option>
-                    <option value="L6 SOD A">L6 SOD A</option>
-                    <option value="L6 SOD B">L6 SOD B</option>
+                    {classes.map((cls) => (
+                      <option key={cls._id} value={cls._id}>
+                        {cls.name}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
+
+              {assignmentType === 'EXAM' && (
+                <>
+                  <div className="form_row">
+                    <div className="form_field">
+                      <label>Start Date &amp; Time <span className="required">*</span></label>
+                      <input
+                        type="datetime-local"
+                        value={startDateTime}
+                        onChange={(e) => setStartDateTime(e.target.value)}
+                      />
+                    </div>
+                    <div className="form_field">
+                      <label>Exam End Time</label>
+                      <input
+                        type="datetime-local"
+                        value={endDateTime}
+                        onChange={(e) => setEndDateTime(e.target.value)}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form_group">
+                    <label>Exam Duration (minutes) <span className="required">*</span></label>
+                    <input
+                      type="number"
+                      min="1"
+                      value={durationMinutes}
+                      onChange={(e) => setDurationMinutes(e.target.value)}
+                      placeholder="e.g. 90"
+                    />
+                  </div>
+
+                  <div className="form_group">
+                    <label>Security Settings</label>
+                    <div className="security_options">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={securityFullscreen}
+                          onChange={(e) => setSecurityFullscreen(e.target.checked)}
+                        />
+                        Enforce fullscreen during exam
+                      </label>
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={securityBlockCopyPaste}
+                          onChange={(e) => setSecurityBlockCopyPaste(e.target.checked)}
+                        />
+                        Disable copy / paste
+                      </label>
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={securityDetectTabSwitch}
+                          onChange={(e) => setSecurityDetectTabSwitch(e.target.checked)}
+                        />
+                        Detect tab switching
+                      </label>
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={securityDetectScreenshot}
+                          onChange={(e) => setSecurityDetectScreenshot(e.target.checked)}
+                        />
+                        Detect screenshots (where supported)
+                      </label>
+                    </div>
+                  </div>
+                </>
+              )}
 
               {/* File Upload */}
               <div className="form_group">
@@ -770,10 +1051,12 @@ export const TeacherAssignments = () => {
       console.log('Assignment deleted successfully:', result);
       
       // Reset form field
+      setAssignmentType('HOMEWORK');
       setAssignmentTitle('');
       setAssignmentDescription('');
       setAssignmentDueDate('');
       setAssignmentClass('');
+      setAssignmentClassId('');
       setUploadedFile(null);
       setShowEditModal(false);
       cancelRecording();
