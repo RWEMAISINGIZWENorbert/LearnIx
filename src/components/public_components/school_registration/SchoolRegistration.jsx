@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './SchoolRegistration.css';
 import { FaSchool, FaLock, FaEnvelope, FaPhone, FaMapMarkerAlt, FaArrowRight, FaArrowLeft, FaCheckCircle, FaCamera, FaIdCard, FaUserLock, FaGlobe, FaUsers } from 'react-icons/fa';
 import { MdBusiness } from 'react-icons/md';
+
+import { Prompt } from '../../shared/Prompt';
 
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -67,24 +69,32 @@ export const SchoolRegistration = () => {
 
   const [localError, setLocalError] = useState(null);
 
+  const [promptOpen, setPromptOpen] = useState(false);
+  const [prompt, setPrompt] = useState({ variant: 'success', title: '', message: '' });
+
+  const openPrompt = useCallback((variant, title, message) => {
+    setPrompt({ variant, title, message });
+    setPromptOpen(true);
+  }, []);
+
   // Handle navigation on success
   useEffect(() => {
     if (isSuccess && currentStep < steps.length - 1) {
       dispatch(nextStep());
     } else if (isSuccess && currentStep === steps.length - 1) {
       // Final step completed
-      alert('School registered successful!');
+      openPrompt('success', 'Success', 'School registered successful!');
       navigate('/login');
     }
-  }, [isSuccess, currentStep, dispatch, navigate]);
+  }, [isSuccess, currentStep, dispatch, navigate, openPrompt]);
 
   // Handle errors
   useEffect(() => {
     if (error) {
       setLocalError(error.msg || 'An error occurred. Please try again.');
-      alert(error.msg || 'An error occurred. Please try again.');
+      openPrompt('error', 'Error', error.msg || 'An error occurred. Please try again.');
     }
-  }, [error]);
+  }, [error, openPrompt]);
 
 
 
@@ -156,14 +166,14 @@ export const SchoolRegistration = () => {
       console.log(`The File Loaded There ${file}`);
       // Validate file type
       if (!file.type.match('image/.*')) {
-        alert('Please upload a valid image file');
+        openPrompt('error', 'Validation', 'Please upload a valid image file');
         setLocalError('Please upload a valid image file');
         return;
       }
 
       // Validate file size (e.g., 2MB max)
       if (file.size > 2 * 1024 * 1024) {
-        alert('Image size should be less than 2MB');
+        openPrompt('error', 'Validation', 'Image size should be less than 2MB');
         setLocalError('Image size should be less than 2MB');
         return;
       }
@@ -234,7 +244,7 @@ export const SchoolRegistration = () => {
       switch (currentStep) {
         case 0: // Admin ID
           if (!formData.adminID) {
-            alert('Please enter Admin ID');
+            openPrompt('error', 'Validation', 'Please enter Admin ID');
             setLocalError('Please enter Admin ID');
             return;
           }
@@ -245,7 +255,7 @@ export const SchoolRegistration = () => {
         case 1: // School Details
           if (!formData.schoolName || !formData.schoolType) {
             setLocalError('Please fill in all required fields');
-            alert('Please fill in all required fields');
+            openPrompt('error', 'Validation', 'Please fill in all required fields');
             return;
           }
           await dispatch(registerSchoolNameAndType({
@@ -256,9 +266,8 @@ export const SchoolRegistration = () => {
 
         case 2: // Location
           if (!formData.location.country || !formData.location.province) {
-            alert('Please provide location details');
+            openPrompt('error', 'Validation', 'Please provide location details');
             setLocalError('Please provide location details');
-            alert('Please provide location details');
             return;
           }
 
@@ -271,7 +280,7 @@ export const SchoolRegistration = () => {
         case 3: // Contact Info
           if (!formData.contact.email || !formData.contact.tel) {
             setLocalError('Please provide all contact information');
-            alert('Please provide all contact information');
+            openPrompt('error', 'Validation', 'Please provide all contact information');
             return;
           }
           await dispatch(registerEmailAndTel({
@@ -283,7 +292,7 @@ export const SchoolRegistration = () => {
         case 4: // Verification
           if (formData.otp.length !== 4) {
             setLocalError('Please enter the 4-digit verification code');
-            alert('Please enter the 4-digit verification code');
+            openPrompt('error', 'Validation', 'Please enter the 4-digit verification code');
             return;
           }
           await dispatch(verifyEmailOtp({
@@ -296,12 +305,12 @@ export const SchoolRegistration = () => {
         case 5: // Password
           if (formData.password !== formData.confirmPassword) {
             setLocalError('Passwords do not match');
-            alert('Passwords do not match');
+            openPrompt('error', 'Validation', 'Passwords do not match');
             return;
           }
           if (formData.password.length < 8) {
             setLocalError('Password must be at least 8 characters long');
-            alert('Password must be at least 8 characters long');
+            openPrompt('error', 'Validation', 'Password must be at least 8 characters long');
             return;
           }
           await dispatch(confirmSchoolPassword({
@@ -342,7 +351,7 @@ export const SchoolRegistration = () => {
           break;
       }
     } catch (error) {
-      alert(`Error Occured, ${error}`);
+      openPrompt('error', 'Error', `Error Occured, ${error}`);
       console.error('Step submission error:', error);
       // Error is already handled by the Redux slice
     }
@@ -743,6 +752,14 @@ export const SchoolRegistration = () => {
           </div>
         </div>
       </div>
+
+      <Prompt
+        isOpen={promptOpen}
+        onClose={() => setPromptOpen(false)}
+        title={prompt.title}
+        message={prompt.message}
+        variant={prompt.variant}
+      />
     </div>
   );
 };

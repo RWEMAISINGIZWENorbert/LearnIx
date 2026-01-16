@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSchoolProfile } from '../../../features/school/schoolSlice';
 import { fetchUserProfile } from '../../../features/auth/authSlice';
@@ -6,6 +6,7 @@ import './AdminProfile.css';
 import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaCalendar, FaCamera, FaEdit, FaSave, FaGlobe } from 'react-icons/fa';
 import { MdSchool, MdSecurity } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
+import { Prompt } from '../../shared/Prompt';
 
 export const AdminProfile = () => {
   const dispatch = useDispatch();
@@ -72,6 +73,14 @@ export const AdminProfile = () => {
   }
   }, [school,userProfile]);
   const navigate = useNavigate();
+
+  const [promptOpen, setPromptOpen] = useState(false);
+  const [prompt, setPrompt] = useState({ variant: 'success', title: '', message: '' });
+
+  const openPrompt = useCallback((variant, title, message) => {
+    setPrompt({ variant, title, message });
+    setPromptOpen(true);
+  }, []);
    useEffect(() => {
     dispatch(getSchoolProfile());
     dispatch(fetchUserProfile(navigate));
@@ -105,7 +114,7 @@ export const AdminProfile = () => {
 
   const handleSave = () => {
     setIsEditing(false);
-    alert('Profile updated successfully!');
+    openPrompt('success', 'Success', 'Profile updated successfully!');
   };
 
    if(profileLoading){
@@ -364,6 +373,14 @@ export const AdminProfile = () => {
           </div>
         </div>
       </div>
+
+      <Prompt
+        isOpen={promptOpen}
+        onClose={() => setPromptOpen(false)}
+        title={prompt.title}
+        message={prompt.message}
+        variant={prompt.variant}
+      />
     </div>
   );
 };

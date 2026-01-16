@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import './resources_management.css'
 import { FaArrowLeft } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
 import { DeleteConfirmation } from '../../shared/DeleteConfirmation';
+import { Prompt } from '../../shared/Prompt';
 import { LuBookOpen, LuFileText, LuDownload, LuUpload, LuEye, LuTrash, LuPlus } from 'react-icons/lu';
 import { MdOutlineSubject } from 'react-icons/md';
 import { FaFilePdf, FaFileWord, FaFileImage, FaFileVideo } from "react-icons/fa";
@@ -21,6 +22,14 @@ export const Resources_management = () => {
   const [fileCategory, setFileCategory] = useState('');
   const [fileDescription, setFileDescription] = useState('');
   const [viewedDocument, setViewedDocument] = useState(null);
+
+  const [promptOpen, setPromptOpen] = useState(false);
+  const [prompt, setPrompt] = useState({ variant: 'success', title: '', message: '' });
+
+  const openPrompt = useCallback((variant, title, message) => {
+    setPrompt({ variant, title, message });
+    setPromptOpen(true);
+  }, []);
 
   const dispatch = useDispatch();
   const loading = useSelector(selectResourcesLoading);
@@ -99,9 +108,9 @@ useEffect(() => {
 
   useEffect(() => {
       if (error && error.msg) {
-        alert(error.msg);
+        openPrompt('error', 'Error', error.msg);
       }
-  }, [error, dispatch]);
+  }, [error, dispatch, openPrompt]);
 
   const formatFileSize = (bytes) => {
   if (bytes === 0) return '0 Bytes';
@@ -190,7 +199,7 @@ const getFileIcon = (type) => {
  
    const handleFileUpload = async () => {
        if (!uploadedFile || !fileName || !fileCategory) {
-         alert('Please fill in all required fields');
+         openPrompt('error', 'Validation', 'Please fill in all required fields');
          return;
        }
    
@@ -211,7 +220,7 @@ const getFileIcon = (type) => {
            await dispatch(fetchAllResources());
            
            // Show success message
-           alert('Resource uploaded successfully!');
+           openPrompt('success', 'Success', 'Resource uploaded successfully!');
            
            // Reset the form
            setFileName('');
@@ -227,7 +236,7 @@ const getFileIcon = (type) => {
          }
        } catch (error) {
          console.error('Error uploading file:', error);
-         alert(`Error: ${error.message}`);
+         openPrompt('error', 'Error', `Error: ${error.message}`);
        }
      };
    
@@ -236,7 +245,7 @@ const getFileIcon = (type) => {
       if (document.fileUrl) {
         setViewedDocument(document);
       } else {
-        alert(`Viewing: ${document.name}\nThis would open the document in a viewer.`);
+        openPrompt('error', 'Error', `Viewing: ${document.name}`);
       }
     };
   
@@ -277,7 +286,7 @@ const getFileIcon = (type) => {
        link.click();
        link.remove();
     } else {
-      alert(`Downloading: ${doc.name}`);
+      openPrompt('error', 'Error', `Downloading: ${doc.name}`);
     }
   };
 
@@ -455,6 +464,14 @@ const getFileIcon = (type) => {
           itemName={itemToDelete?.name}
           itemType={deleteType}
         />
+
+        <Prompt
+          isOpen={promptOpen}
+          onClose={() => setPromptOpen(false)}
+          title={prompt.title}
+          message={prompt.message}
+          variant={prompt.variant}
+        />
     </div>
-  )
-}
+  );
+};

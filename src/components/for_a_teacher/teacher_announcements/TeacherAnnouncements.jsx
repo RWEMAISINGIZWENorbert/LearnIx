@@ -1,8 +1,9 @@
-import React , { useEffect } from 'react';
+import React , { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './TeacherAnnouncements.css';
 import { MdAdd } from 'react-icons/md';
 import { FaBullhorn } from 'react-icons/fa';
+import { Prompt } from '../../shared/Prompt';
 import {
   fetchAllAnnouncements,
   createAnnouncement,
@@ -25,6 +26,14 @@ export const TeacherAnnouncements = () => {
   const [formPriority, setFormPriority] = React.useState('normal');
   const classesOptions = ['All Classes', 'L5 SOD A', 'L5 SOD B', 'L6 SOD A', 'L6 SOD B'];
   const [selectedClasses, setSelectedClasses] = React.useState(['All Classes']);
+
+  const [promptOpen, setPromptOpen] = React.useState(false);
+  const [prompt, setPrompt] = React.useState({ variant: 'success', title: '', message: '' });
+
+  const openPrompt = useCallback((variant, title, message) => {
+    setPrompt({ variant, title, message });
+    setPromptOpen(true);
+  }, []);
 
   const dispatch = useDispatch();
   const announcements = useSelector(selectAnnouncements);
@@ -94,9 +103,10 @@ export const TeacherAnnouncements = () => {
       
       // Refresh the announcements list
       dispatch(fetchAllAnnouncements());
+      openPrompt('success', 'Success', 'Announcement created successfully!');
     } catch (error) {
       console.error('Failed to create announcement:', error);
-      alert('Failed to create announcement. Please try again.');
+      openPrompt('error', 'Error', 'Failed to create announcement. Please try again.');
     }
   };
 
@@ -199,6 +209,14 @@ export const TeacherAnnouncements = () => {
           </div>
         </div>
       )}
+
+      <Prompt
+        isOpen={promptOpen}
+        onClose={() => setPromptOpen(false)}
+        title={prompt.title}
+        message={prompt.message}
+        variant={prompt.variant}
+      />
     </div>
   );
 };

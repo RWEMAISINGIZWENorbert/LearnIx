@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './admissions.css';
 import { FaArrowLeft, FaCircleXmark, FaEye, FaTrash } from 'react-icons/fa6';
@@ -8,6 +8,8 @@ import { MdEmail, MdOutlinePhone } from 'react-icons/md';
 import { LuCalendar, LuClock, LuFileText } from 'react-icons/lu';
 import { FaCheckCircle } from 'react-icons/fa';
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+import { DeleteConfirmation } from '../../shared/DeleteConfirmation';
+import { Prompt } from '../../shared/Prompt';
 import { 
   fetchApplicationsBySchool, 
   selectApplications, 
@@ -25,6 +27,17 @@ export const Aadmissions = () => {
     
     const [selectedStatus, setSelectedStatus] = useState('all');
     const [searchTerm, setSearchTerm] = useState('');
+
+    const [promptOpen, setPromptOpen] = useState(false);
+    const [prompt, setPrompt] = useState({ variant: 'success', title: '', message: '' });
+
+    const [showRejectConfirm, setShowRejectConfirm] = useState(false);
+    const [applicationToReject, setApplicationToReject] = useState(null);
+
+    const openPrompt = useCallback((variant, title, message) => {
+      setPrompt({ variant, title, message });
+      setPromptOpen(true);
+    }, []);
     
     useEffect(() => {
         // Fetch applications when component mounts
@@ -62,23 +75,29 @@ export const Aadmissions = () => {
         try {
             await dispatch(acceptApplication(id)).unwrap();
             // Show success message or update UI as needed
-            alert('Application approved successfully');
+            openPrompt('success', 'Success', 'Application approved successfully');
         } catch (error) {
             console.error('Failed to approve application:', error);
-            alert(`Failed to approve application: ${error}`);
+            openPrompt('error', 'Error', `Failed to approve application: ${error}`);
         }
     };
 
     const handleReject = async (id) => {
-        if (window.confirm('Are you sure you want to reject this application?')) {
-            try {
-                await dispatch(rejectApplication(id)).unwrap();
-                // Show success message or update UI as needed
-                alert('Application rejected successfully');
-            } catch (error) {
-                console.error('Failed to reject application:', error);
-                alert(`Failed to reject application: ${error}`);
-            }
+        setApplicationToReject({ id });
+        setShowRejectConfirm(true);
+    };
+
+    const confirmReject = async () => {
+        if (!applicationToReject?.id) return;
+        try {
+            await dispatch(rejectApplication(applicationToReject.id)).unwrap();
+            openPrompt('success', 'Success', 'Application rejected successfully');
+        } catch (error) {
+            console.error('Failed to reject application:', error);
+            openPrompt('error', 'Error', `Failed to reject application: ${error}`);
+        } finally {
+            setShowRejectConfirm(false);
+            setApplicationToReject(null);
         }
     };
 
@@ -184,6 +203,25 @@ export const Aadmissions = () => {
               ))}
             </div>
         </div>
+
+        <DeleteConfirmation
+          isOpen={showRejectConfirm}
+          onClose={() => {
+            setShowRejectConfirm(false);
+            setApplicationToReject(null);
+          }}
+          onConfirm={confirmReject}
+          itemName={applicationToReject?.id}
+          itemType="application"
+        />
+
+        <Prompt
+          isOpen={promptOpen}
+          onClose={() => setPromptOpen(false)}
+          title={prompt.title}
+          message={prompt.message}
+          variant={prompt.variant}
+        />
     </div>
   )
 }

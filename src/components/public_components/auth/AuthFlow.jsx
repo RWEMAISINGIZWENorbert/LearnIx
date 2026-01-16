@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import './AuthFlow.css';
 import { FaUser, FaLock, FaEnvelope, FaPhone, FaIdCard, FaSchool, FaArrowRight, FaArrowLeft, FaCheckCircle, FaCamera } from 'react-icons/fa';
 import { MdPerson } from 'react-icons/md';
+import { Prompt } from '../../shared/Prompt';
 import {
   registerPersonalInfo,
   verifyOtp,
@@ -50,6 +51,14 @@ export const AuthFlow = () => {
     password: '',
     confirmPassword: ''
   });
+
+  const [promptOpen, setPromptOpen] = useState(false);
+  const [prompt, setPrompt] = useState({ variant: 'success', title: '', message: '' });
+
+  const openPrompt = useCallback((variant, title, message) => {
+    setPrompt({ variant, title, message });
+    setPromptOpen(true);
+  }, []);
   const navigate = useNavigate();
 
   // School codes mapping
@@ -225,11 +234,11 @@ useEffect(() => {
   // Show error messages as popup alerts
   useEffect(() => {
     if (error && error.msg) {
-      alert(error.msg);
+      openPrompt('error', 'Error', error.msg);
       // Clear error after showing
       dispatch(clearError());
     }
-  }, [error, dispatch]);
+  }, [error, dispatch, openPrompt]);
 
   // Show success messages as popup alerts
   useEffect(() => {
@@ -238,11 +247,11 @@ useEffect(() => {
       // Don't show the alert here, it will be shown in handleNext
       dispatch(clearSuccess());
     } else {
-      alert(successMessage);
+      openPrompt('success', 'Success', successMessage);
       dispatch(clearSuccess());
     }
   }
-}, [successMessage, dispatch]);
+}, [successMessage, dispatch, openPrompt]);
 
   const handleNext = async () => {
     const stepTitle = steps[currentStep]?.title;
@@ -255,14 +264,14 @@ useEffect(() => {
       if (currentStep === 0) {
         // Email step - just move to next
         if (!formData.email) {
-          alert('Please enter your email');
+          openPrompt('error', 'Validation', 'Please enter your email');
           return;
         }
         setCurrentStep(currentStep + 1);
       } else if (currentStep === 1) {
         // Password step - Call login API
         if (!formData.password) {
-          alert('Please enter your password');
+          openPrompt('error', 'Validation', 'Please enter your password');
           return;
         }
 
@@ -285,7 +294,7 @@ useEffect(() => {
       case 'User ID':
         // Step 0 - Validate User ID
         if (!formData.userId || !userType) {
-          alert('Please enter a valid user ID');
+          openPrompt('error', 'Validation', 'Please enter a valid user ID');
           return;
         }
          console.log(`The Cuuernt Step ${currentStep}`);
@@ -296,7 +305,7 @@ useEffect(() => {
       case 'Personal Info':
         // Step 1 - Call registerPersonalInfo API
        if (!formData.fullName || !formData.email || !formData.phone) {
-         alert('Please fill all required fields');
+         openPrompt('error', 'Validation', 'Please fill all required fields');
         return;
         }
 
@@ -315,7 +324,7 @@ useEffect(() => {
       case 'Guardian Info':
         // Step 2 (Students only) - Just validate and move forward
         if (!formData.guardianName || !formData.guardianPhone) {
-          alert('Please fill guardian information');
+          openPrompt('error', 'Validation', 'Please fill guardian information');
           return;
         }
         setCurrentStep(currentStep + 1);
@@ -325,7 +334,7 @@ useEffect(() => {
         // Step 3 - Call verifyOtp API
         const otpCode = formData.verificationCode.join('');
         if (otpCode.length !== 4) {
-          alert('Please enter the complete 4-digit verification code');
+          openPrompt('error', 'Validation', 'Please enter the complete 4-digit verification code');
           return;
         }
 
@@ -342,15 +351,15 @@ useEffect(() => {
       case 'Password':
         // Step 4 - Call confirmPassword API
         if (!formData.password || !formData.confirmPassword) {
-          alert('Please enter and confirm your password');
+          openPrompt('error', 'Validation', 'Please enter and confirm your password');
           return;
         }
         if (formData.password !== formData.confirmPassword) {
-          alert('Passwords do not match');
+          openPrompt('error', 'Validation', 'Passwords do not match');
           return;
         }
         if (formData.password.length < 6) {
-          alert('Password must be at least 6 characters');
+          openPrompt('error', 'Validation', 'Password must be at least 6 characters');
           return;
         }
 
@@ -388,7 +397,7 @@ useEffect(() => {
 
       case 'Profile Photo':
         // Final step - Complete registration
-        alert('Registration completed successfully! Please login.');
+        openPrompt('success', 'Success', 'Registration completed successfully! Please login.');
         setIsLogin(true);
         setCurrentStep(0);
         // Reset form
@@ -801,6 +810,14 @@ useEffect(() => {
           </div>
         </div>
       </div>
+
+      <Prompt
+        isOpen={promptOpen}
+        onClose={() => setPromptOpen(false)}
+        title={prompt.title}
+        message={prompt.message}
+        variant={prompt.variant}
+      />
     </div>
   );
 };

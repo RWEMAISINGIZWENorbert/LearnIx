@@ -3,9 +3,10 @@ import { MdOutlineAssignment, MdUpload, MdCheckCircle } from 'react-icons/md';
 import { LuClock, LuCalendar } from 'react-icons/lu';
 import { HiOutlineBookOpen } from 'react-icons/hi';
 import { BiPaperclip } from 'react-icons/bi';
-import React, { useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { Prompt } from '../../shared/Prompt';
 import { 
   fetchAssignments, 
   selectAssignments,
@@ -27,6 +28,14 @@ export const StudentAssignments = () => {
   const navigate = useNavigate();
   const [uploadedFile, setUploadedFile] = useState(null);
   const [comment, setComment] = useState('');
+
+  const [promptOpen, setPromptOpen] = useState(false);
+  const [prompt, setPrompt] = useState({ variant: 'success', title: '', message: '' });
+
+  const openPrompt = useCallback((variant, title, message) => {
+    setPrompt({ variant, title, message });
+    setPromptOpen(true);
+  }, []);
 
 
   const loading = useSelector(selectAssignmentsLoading);
@@ -103,7 +112,7 @@ export const StudentAssignments = () => {
       setUploadedFile(null);
       setComment('');
       // Show success message
-      alert('Assignment submitted successfully!');
+      openPrompt('success', 'Success', 'Assignment submitted successfully!');
     } else if (submitAssignment.rejected.match(resultAction)) {
       // Error is already handled in the slice
       console.error('Submission failed:', resultAction.error);
@@ -299,9 +308,9 @@ export const StudentAssignments = () => {
       </div>
 
       {/* Upload Modal */}
-      {showUploadModal && selectedAssignment && (
-        <div className="modal-overlay" onClick={() => setShowUploadModal(false)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
+      {showUploadModal && (
+        <div className="upload_modal_overlay" onClick={() => setShowUploadModal(false)}>
+          <div className="upload_modal" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h3>Submit Assignment</h3>
               <button onClick={() => setShowUploadModal(false)}>×</button>
@@ -353,6 +362,14 @@ export const StudentAssignments = () => {
           </div>
         </div>
       )}
+
+      <Prompt
+        isOpen={promptOpen}
+        onClose={() => setPromptOpen(false)}
+        title={prompt.title}
+        message={prompt.message}
+        variant={prompt.variant}
+      />
     </div>
   )
 }

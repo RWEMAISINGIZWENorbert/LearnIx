@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { formatDistanceToNow } from 'date-fns';
 import './TeacherResources.css';
 import { DeleteConfirmation } from '../../shared/DeleteConfirmation';
+import { Prompt } from '../../shared/Prompt';
 import { LuBookOpen, LuFileText, LuDownload, LuUpload, LuEye, LuTrash, LuPlus } from 'react-icons/lu';
 import { MdOutlineSubject } from 'react-icons/md';
 import { FaFilePdf, FaFileWord, FaFileImage, FaFileVideo } from "react-icons/fa";
@@ -19,6 +20,14 @@ export const TeacherResources = () => {
   const [fileName, setFileName] = useState('');
   const [fileCategory, setFileCategory] = useState('');
   const [fileDescription, setFileDescription] = useState('');
+
+  const [promptOpen, setPromptOpen] = useState(false);
+  const [prompt, setPrompt] = useState({ variant: 'success', title: '', message: '' });
+
+  const openPrompt = useCallback((variant, title, message) => {
+    setPrompt({ variant, title, message });
+    setPromptOpen(true);
+  }, []);
   
   const dispatch = useDispatch();
   const resources = useSelector(selectResources);
@@ -45,9 +54,9 @@ export const TeacherResources = () => {
 
   useEffect(() => {
         if (error && error.msg) {
-          alert(error.msg);
+          openPrompt('error', 'Error', error.msg);
         }
-    }, [error, dispatch]);
+    }, [error, dispatch, openPrompt]);
   
   
   // Helper function to get file type from URL
@@ -91,6 +100,7 @@ export const TeacherResources = () => {
     setShowDeleteConfirm(false);
     setItemToDelete(null);
     setDeleteType('');
+    openPrompt('success', 'Success', 'Deleted successfully');
   };
 
    
@@ -110,7 +120,7 @@ export const TeacherResources = () => {
   // Handle form submission
   const handleFileUpload = async () => {
     if (!uploadedFile || !fileName || !fileCategory) {
-      alert('Please fill in all required fields');
+      openPrompt('error', 'Validation', 'Please fill in all required fields');
       return;
     }
 
@@ -143,7 +153,7 @@ export const TeacherResources = () => {
         await dispatch(fetchAllResources());
         
         // Show success message
-        alert('Resource uploaded successfully!');
+        openPrompt('success', 'Success', 'Resource uploaded successfully!');
         
         // Reset the form
         setFileName('');
@@ -159,7 +169,7 @@ export const TeacherResources = () => {
       }
     } catch (error) {
       console.error('Error uploading file:', error);
-      alert(`Error: ${error.message}`);
+      openPrompt('error', 'Error', `Error: ${error.message}`);
     }
   };
 
@@ -177,7 +187,7 @@ export const TeacherResources = () => {
     if (document.fileUrl) {
       setViewedDocument(document);
     } else {
-      alert(`Viewing: ${document.name}\nThis would open the document in a viewer.`);
+      openPrompt('error', 'Error', `Viewing: ${document.name}`);
     }
   };
 
@@ -217,7 +227,7 @@ export const TeacherResources = () => {
        link.click();
        link.remove();
     } else {
-      alert(`Downloading: ${doc.name}`);
+      openPrompt('error', 'Error', `Downloading: ${doc.name}`);
     }
   };
 
@@ -374,6 +384,14 @@ export const TeacherResources = () => {
           onConfirm={confirmDelete}
           itemName={itemToDelete?.name}
           itemType={deleteType}
+        />
+
+        <Prompt
+          isOpen={promptOpen}
+          onClose={() => setPromptOpen(false)}
+          title={prompt.title}
+          message={prompt.message}
+          variant={prompt.variant}
         />
     </div>
   )

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './AssignmentSubmissions.css';
 import { FaArrowLeft, FaDownload, FaCheck, FaTimes } from 'react-icons/fa';
@@ -7,6 +7,7 @@ import { MdOutlineAssignment } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchSubmissionsByAssignment, selectAssignmentSubmissions, gradeSubmission } from '../../../features/submissions/submissionSlice';
 import FileViewer from '../../Docs/FileViewer';
+import { Prompt } from '../../shared/Prompt';
 
 export const AssignmentSubmissions = () => {
   const navigate = useNavigate();
@@ -15,6 +16,14 @@ export const AssignmentSubmissions = () => {
   const [grade, setGrade] = useState(0);
   const [feedback, setFeedBack] = useState("");
   const [viewedDocument, setViewedDocument] = useState(null);
+
+  const [promptOpen, setPromptOpen] = useState(false);
+  const [prompt, setPrompt] = useState({ variant: 'success', title: '', message: '' });
+
+  const openPrompt = useCallback((variant, title, message) => {
+    setPrompt({ variant, title, message });
+    setPromptOpen(true);
+  }, []);
 
 
   const { 
@@ -165,7 +174,7 @@ export const AssignmentSubmissions = () => {
        link.click();
        link.remove();
     } else {
-      alert(`Downloading: ${doc.name}`);
+      openPrompt('error', 'Error', `Downloading: ${doc.name}`);
     }
   };
 
@@ -174,7 +183,7 @@ export const AssignmentSubmissions = () => {
        console.log(`The Document File Url ${document.fileUrl}`);
       setViewedDocument(document);
     } else {
-      alert(`Viewing: ${document.name}\nThis would open the document in a viewer.`);
+      openPrompt('error', 'Error', `Viewing: ${document.name}`);
     }
   };
 
@@ -351,6 +360,14 @@ export const AssignmentSubmissions = () => {
           )}
         </div>
       </div>
+
+      <Prompt
+        isOpen={promptOpen}
+        onClose={() => setPromptOpen(false)}
+        title={prompt.title}
+        message={prompt.message}
+        variant={prompt.variant}
+      />
     </div>
   );
 };

@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import './communications_management.css';
 import { DeleteConfirmation } from '../../shared/DeleteConfirmation';
+import { Prompt } from '../../shared/Prompt';
 import { FaPlus, FaBullhorn, FaEnvelope, FaSms, FaEdit, FaTrash, FaEye, FaPaperPlane } from 'react-icons/fa';
 import { MdNotifications } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,6 +25,14 @@ export const Communications_management = () => {
   const [itemToDelete, setItemToDelete] = useState(null);
   const [deleteType, setDeleteType] = useState('');
 
+  const [promptOpen, setPromptOpen] = useState(false);
+  const [prompt, setPrompt] = useState({ variant: 'success', title: '', message: '' });
+
+  const openPrompt = useCallback((variant, title, message) => {
+    setPrompt({ variant, title, message });
+    setPromptOpen(true);
+  }, []);
+
   const dispatch = useDispatch();
   const announcements = useSelector(selectAnnouncements);
   const loading = useSelector(selectAnnouncementsLoading);
@@ -36,12 +45,10 @@ export const Communications_management = () => {
     };
   }, [dispatch]);
 
-  const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this announcement?')) {
-      await dispatch(deleteAnnouncement(id));
-    }
-    // Show success message
-    alert('Announcement deleted successfully!');
+  const handleDelete = (item, type = 'announcement') => {
+    setItemToDelete(item);
+    setDeleteType(type);
+    setShowDeleteConfirm(true);
   };
 
 
@@ -144,11 +151,30 @@ export const Communications_management = () => {
   };
 
   const confirmDelete = () => {
-    // Handle actual deletion logic here
-    console.log(`Deleting ${deleteType}:`, itemToDelete);
-    setShowDeleteConfirm(false);
-    setItemToDelete(null);
-    setDeleteType('');
+    if (!itemToDelete?._id && !itemToDelete?.id) return;
+    if (deleteType !== 'announcement') {
+      setShowDeleteConfirm(false);
+      setItemToDelete(null);
+      setDeleteType('');
+      openPrompt('success', 'Success', 'Deleted successfully!');
+      return;
+    }
+
+    const id = itemToDelete._id || itemToDelete.id;
+    dispatch(deleteAnnouncement(id))
+      .unwrap()
+      .then(() => {
+        openPrompt('success', 'Success', 'Announcement deleted successfully!');
+        dispatch(fetchAllAnnouncements());
+      })
+      .catch(() => {
+        openPrompt('error', 'Error', 'Failed to delete announcement. Please try again.');
+      })
+      .finally(() => {
+        setShowDeleteConfirm(false);
+        setItemToDelete(null);
+        setDeleteType('');
+      });
   };
 
  
@@ -160,7 +186,7 @@ export const Communications_management = () => {
     await dispatch(createAnnouncement(formData)).unwrap();
     
     // Show success message
-    alert('Announcement created successfully!');
+    openPrompt('success', 'Success', 'Announcement created successfully!');
     
     // Close the modal and reset form
     setShowNewModal(false);
@@ -178,7 +204,7 @@ export const Communications_management = () => {
     
   } catch (error) {
     console.error('Failed to create announcement:', error);
-    alert('Failed to create announcement. Please try again.');
+    openPrompt('error', 'Error', 'Failed to create announcement. Please try again.');
   }
 };
 
@@ -249,7 +275,7 @@ export const Communications_management = () => {
                     <button className="communications_management_action_btn edit">
                       <FaEdit />
                     </button>
-                    <button className="communications_management_action_btn delete" onClick={() => handleDelete(announcement._id || announcement.id, 'announcement')}>
+                    <button className="communications_management_action_btn delete" onClick={() => handleDelete(announcement, 'announcement')}>
                       <FaTrash />
                     </button>
                   </div>
@@ -465,6 +491,14 @@ export const Communications_management = () => {
         onConfirm={confirmDelete}
         itemName={itemToDelete?.title || itemToDelete?.subject}
         itemType={deleteType}
+      />
+
+      <Prompt
+        isOpen={promptOpen}
+        onClose={() => setPromptOpen(false)}
+        title={prompt.title}
+        message={prompt.message}
+        variant={prompt.variant}
       />
     </div>
   );

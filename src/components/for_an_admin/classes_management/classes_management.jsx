@@ -3,16 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import './classes_management.css'
 import { FaArrowLeft } from 'react-icons/fa6';
 import { useNavigate, Link } from 'react-router-dom';
-import { DeleteConfirmation } from '../../shared/DeleteConfirmation';
 import { CiSearch } from 'react-icons/ci';
 import { LuUsers } from 'react-icons/lu';
 import { IoTimeOutline } from 'react-icons/io5';
-import { FaLongArrowAltRight, FaUpload } from "react-icons/fa";
-import { HiOutlineArchiveBoxArrowDown } from "react-icons/hi2";
-import { BiEdit } from "react-icons/bi";
+import { FaLongArrowAltRight, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { FaSpinner } from "react-icons/fa";
 import { HiOutlineAcademicCap } from "react-icons/hi2";
 import { MdOutlineClass } from "react-icons/md";
+import * as XLSX from 'xlsx';
 
 import { 
   fetchClasses, 
@@ -31,6 +29,7 @@ export const Classes_management = () => {
   let navigate = useNavigate();
 
   const CUSTOM_COMBINATIONS_STORAGE_KEY = 'learnix_custom_combinations';
+  const CUSTOM_LEVELS_STORAGE_KEY = 'learnix_custom_levels';
 
   const classes = useSelector(selectAllClasses);
   const loading = useSelector(selectClassesLoading);
@@ -38,21 +37,62 @@ export const Classes_management = () => {
   const createStatus = useSelector(selectCreateStatus);
   const createError = useSelector(selectCreateError);
 
-  const [activeTab, setActiveTab] = useState('active');
-  const [showAddModal, setShowAddModal] = useState(false);
+  const [activeTab, setActiveTab] = useState('classes');
+  const [academicSidebarCollapsed, setAcademicSidebarCollapsed] = useState(false);
+  const [academicSection, setAcademicSection] = useState('levels');
   const [showAcademicWizard, setShowAcademicWizard] = useState(false);
-  const [showArchiveConfirm, setShowArchiveConfirm] = useState(false);
-  const [classToArchive, setClassToArchive] = useState(null);
-  const [uploadedFile, setUploadedFile] = useState(null);
-  const [formData, setFormData] = useState({
-    name: '',
-  });
+  const [showAddStudentsWizard, setShowAddStudentsWizard] = useState(false);
+  const [studentsWizardStep, setStudentsWizardStep] = useState(0);
+  const [studentsWizardClassName, setStudentsWizardClassName] = useState('');
+  const [studentsWizardMode, setStudentsWizardMode] = useState('single');
+  const [singleStudentName, setSingleStudentName] = useState('');
+  const [bulkStudentsFile, setBulkStudentsFile] = useState(null);
+  const [bulkStudents, setBulkStudents] = useState([]);
+  const [bulkStudentsError, setBulkStudentsError] = useState('');
 
   const academicWizardSteps = [
     { title: 'Level', icon: <MdOutlineClass /> },
     { title: 'Combinations', icon: <HiOutlineAcademicCap /> },
     { title: 'Streams', icon: <LuUsers /> },
   ];
+
+  const defaultLevels = [
+    { code: 'S1', name: 'Senior 1' },
+    { code: 'S2', name: 'Senior 2' },
+    { code: 'S3', name: 'Senior 3' },
+    { code: 'S4', name: 'Senior 4' },
+    { code: 'S5', name: 'Senior 5' },
+    { code: 'S6', name: 'Senior 6' },
+    { code: 'L1', name: 'Level 1' },
+    { code: 'L2', name: 'Level 2' },
+    { code: 'L3', name: 'Level 3' },
+    { code: 'L4', name: 'Level 4' },
+    { code: 'L5', name: 'Level 5' },
+  ];
+
+  const [levels, setLevels] = useState(() => {
+    try {
+      const raw = localStorage.getItem(CUSTOM_LEVELS_STORAGE_KEY);
+      const parsed = raw ? JSON.parse(raw) : [];
+      const custom = Array.isArray(parsed) ? parsed : [];
+      const merged = [...defaultLevels, ...custom]
+        .reduce((acc, item) => {
+          const code = String(item?.code || '').trim().toUpperCase();
+          const name = String(item?.name || '').trim();
+          if (!code || !name) return acc;
+          if (acc.some((l) => l.code === code)) return acc;
+          acc.push({ code, name });
+          return acc;
+        }, []);
+      return merged;
+    } catch {
+      return defaultLevels;
+    }
+  });
+
+  const [showAddLevelForm, setShowAddLevelForm] = useState(false);
+  const [levelCreateForm, setLevelCreateForm] = useState({ code: '', name: '' });
+  const [levelFormError, setLevelFormError] = useState('');
 
   const availableCombinations = [
     { code: 'MCB', name: 'Mathematics – Chemistry – Biology' },
@@ -88,10 +128,7 @@ export const Classes_management = () => {
     }, []);
 
   const [academicStep, setAcademicStep] = useState(0);
-  const [levelForm, setLevelForm] = useState({
-    code: '',
-    name: '',
-  });
+  const [selectedLevelCode, setSelectedLevelCode] = useState('');
   const [usesCombinations, setUsesCombinations] = useState(null);
   const [selectedCombinations, setSelectedCombinations] = useState([]);
   const [streamFormat, setStreamFormat] = useState('alphabetical');
@@ -100,7 +137,7 @@ export const Classes_management = () => {
 
   const resetAcademicWizard = () => {
     setAcademicStep(0);
-    setLevelForm({ code: '', name: '' });
+    setSelectedLevelCode('');
     setUsesCombinations(null);
     setSelectedCombinations([]);
     setStreamFormat('alphabetical');
@@ -134,7 +171,7 @@ export const Classes_management = () => {
   };
 
   const generateClassNames = () => {
-    const levelCode = (levelForm.code || '').trim().toUpperCase();
+    const levelCode = (selectedLevelCode || '').trim().toUpperCase();
     if (!levelCode) return [];
 
     if (!usesCombinations) {
@@ -161,13 +198,6 @@ export const Classes_management = () => {
     dispatch(fetchClasses());
   }, [dispatch]);
 
-  // Reset create status when modal is opened/closed
-  useEffect(() => {
-    if (!showAddModal && createStatus !== 'idle') {
-      dispatch(resetCreateStatus());
-    }
-  }, [showAddModal, createStatus, dispatch]);
-
   useEffect(() => {
     if (!showAcademicWizard) {
       resetAcademicWizard();
@@ -192,35 +222,125 @@ export const Classes_management = () => {
   //   { id: 11, name: "L5 SOD A", teacher: "SHEMA Valentin", students: 39, created: "Mon, August 12, 2025 8:34:12 a.m", status: "active" }
   // ]);
 
-  const handleArchiveClass = (classItem) => {
-    setClassToArchive(classItem);
-    setShowArchiveConfirm(true);
+  const resetStudentsWizard = () => {
+    setStudentsWizardStep(0);
+    setStudentsWizardClassName('');
+    setStudentsWizardMode('single');
+    setSingleStudentName('');
+    setBulkStudentsFile(null);
+    setBulkStudents([]);
+    setBulkStudentsError('');
   };
 
-  // const confirmArchive = () => {
-  //   if (classToArchive) {
-  //     setClasses(classes.map(c => 
-  //       c.id === classToArchive.id ? { ...c, status: 'archived' } : c
-  //     ));
-  //     setShowArchiveConfirm(false);
-  //     setClassToArchive(null);
-  //   }
-  // };
-   
-  const confirmArchive = () => {
-    // I Wiil Handle this Later
-    // In this Version not ready 
-    setShowArchiveConfirm(false);
-    setClassToArchive(null);
+  useEffect(() => {
+    if (!showAddStudentsWizard) {
+      resetStudentsWizard();
+    }
+  }, [showAddStudentsWizard]);
+
+  const parseStudentsFromCsvText = (text) => {
+    const rawLines = String(text || '')
+      .replace(/\r\n/g, '\n')
+      .replace(/\r/g, '\n')
+      .split('\n')
+      .map((l) => l.trim())
+      .filter(Boolean);
+
+    if (!rawLines.length) return [];
+
+    const splitLine = (line) => {
+      const delimiter = line.includes(';') && !line.includes(',') ? ';' : ',';
+      return line
+        .split(delimiter)
+        .map((v) => String(v || '').trim())
+        .filter((v) => v !== '');
+    };
+
+    const header = splitLine(rawLines[0]).map((h) => h.toLowerCase());
+    const hasHeader = header.some((h) => ['name', 'student', 'student_name', 'studentname', 'full_name', 'fullname'].includes(h));
+    const nameIndex = hasHeader
+      ? Math.max(0, header.findIndex((h) => ['name', 'student', 'student_name', 'studentname', 'full_name', 'fullname'].includes(h)))
+      : 0;
+
+    const startIndex = hasHeader ? 1 : 0;
+    const names = [];
+
+    for (let i = startIndex; i < rawLines.length; i += 1) {
+      const cols = splitLine(rawLines[i]);
+      const name = String(cols[nameIndex] || cols[0] || '').trim();
+      if (!name) continue;
+      names.push(name);
+    }
+
+    return names;
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    const nextValue = name === 'name' ? String(value || '').toUpperCase() : value;
-    setFormData(prev => ({
-      ...prev,
-      [name]: nextValue
-    }));
+  const parseStudentsFromFile = async (file) => {
+    if (!file) return [];
+    const ext = String(file.name || '').split('.').pop()?.toLowerCase();
+
+    if (ext === 'csv') {
+      const text = await file.text();
+      return parseStudentsFromCsvText(text);
+    }
+
+    if (ext === 'xlsx' || ext === 'xls') {
+      const buffer = await file.arrayBuffer();
+      const workbook = XLSX.read(buffer, { type: 'array' });
+      const sheetName = workbook.SheetNames?.[0];
+      if (!sheetName) return [];
+      const sheet = workbook.Sheets[sheetName];
+      const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, blankrows: false });
+      if (!Array.isArray(rows) || !rows.length) return [];
+      const headerRow = (rows[0] || []).map((h) => String(h || '').trim().toLowerCase());
+      const hasHeader = headerRow.some((h) => ['name', 'student', 'student_name', 'studentname', 'full_name', 'fullname'].includes(h));
+      const nameIndex = hasHeader
+        ? Math.max(0, headerRow.findIndex((h) => ['name', 'student', 'student_name', 'studentname', 'full_name', 'fullname'].includes(h)))
+        : 0;
+      const startIndex = hasHeader ? 1 : 0;
+      const names = [];
+      for (let i = startIndex; i < rows.length; i += 1) {
+        const row = rows[i] || [];
+        const name = String(row[nameIndex] || row[0] || '').trim();
+        if (!name) continue;
+        names.push(name);
+      }
+      return names;
+    }
+
+    throw new Error('Unsupported file type. Please upload CSV, XLSX, or XLS.');
+  };
+
+  const persistCustomLevels = (nextLevels) => {
+    const defaultsCodes = new Set(defaultLevels.map((l) => l.code));
+    const customOnly = nextLevels.filter((l) => !defaultsCodes.has(l.code));
+    try {
+      localStorage.setItem(CUSTOM_LEVELS_STORAGE_KEY, JSON.stringify(customOnly));
+    } catch {
+      // ignore persistence errors
+    }
+  };
+
+  const handleSaveLevel = () => {
+    const code = String(levelCreateForm.code || '').trim().toUpperCase();
+    const name = toTitleCase(levelCreateForm.name);
+
+    if (!code || !name) {
+      setLevelFormError('Please provide both level code and level name.');
+      return;
+    }
+
+    if (levels.some((l) => l.code === code)) {
+      setLevelFormError('This level code already exists.');
+      return;
+    }
+
+    const next = [...levels, { code, name }];
+    setLevels(next);
+    persistCustomLevels(next);
+    setShowAddLevelForm(false);
+    setLevelCreateForm({ code: '', name: '' });
+    setLevelFormError('');
   };
 
   const handleSubmit = async (e) => {
@@ -262,15 +382,11 @@ export const Classes_management = () => {
     });
   };
 
-  const filteredClasses = classes.filter(c => {
-    if (activeTab === 'active') return c.status !== 'archived';
-    if (activeTab === 'archived') return c.status === 'archived';
-    return true;
-  });
+  const displayedClasses = classes;
 
   const canGoNextAcademic = () => {
     if (academicStep === 0) {
-      return Boolean((levelForm.code || '').trim() && (levelForm.name || '').trim());
+      return Boolean((selectedLevelCode || '').trim());
     }
     if (academicStep === 1) {
       if (usesCombinations !== true && usesCombinations !== false) return false;
@@ -352,11 +468,17 @@ export const Classes_management = () => {
       }
 
       setShowAcademicWizard(false);
+      setActiveTab('academic_structure');
+      setAcademicSection('streams');
+      setAcademicSidebarCollapsed(false);
       dispatch(fetchClasses());
     } catch (error) {
       console.error('Failed to create generated classes:', error);
     }
   };
+
+  const sortedClasses = (Array.isArray(classes) ? [...classes] : [])
+    .sort((a, b) => String(a?.name || '').localeCompare(String(b?.name || ''), undefined, { numeric: true, sensitivity: 'base' }));
 
   return (
     <div className='classes_management'>
@@ -381,76 +503,239 @@ export const Classes_management = () => {
                       <button>Search</button>
                     </div>
                   </div>
-                  <div className="new" onClick={() => setShowAcademicWizard(true)}>
-                    <div className="left"><div className="icon"><BiEdit/></div></div>
-                    <div className="right">
-                      <span>Academic setup</span>
-                      <p>current : {classes?.length || 0} classes</p>
-                    </div>
-                  </div>
-                  <div className="new secondary" onClick={() => setShowAddModal(true)}>
-                    <div className="left"><div className="icon"><BiEdit/></div></div>
-                    <div className="right">
-                      <span>Create class (manual)</span>
-                      <p>single class</p>
-                    </div>
-                  </div>
                 </div>
             </div>
 
             {/* Tabs */}
             <div className="tabs">
               <button 
-                className={activeTab === 'active' ? 'active' : ''} 
-                onClick={() => setActiveTab('active')}
+                className={activeTab === 'classes' ? 'active' : ''} 
+                onClick={() => setActiveTab('classes')}
               >
-                Classes ({classes.filter(c => c.status !== 'archived').length})
+                Classes ({classes.length})
               </button>
               <button 
-                className={activeTab === 'archived' ? 'active' : ''} 
-                onClick={() => setActiveTab('archived')}
+                className={activeTab === 'academic_structure' ? 'active' : ''} 
+                onClick={() => setActiveTab('academic_structure')}
               >
-                Archived Classes ({classes.filter(c => c.status === 'archived').length})
+                Academic structure
               </button>
             </div>
 
-            <div className="middle">
-              {loading ? (
-                <div className="loading-state">
-                   Loading classes...
-                </div>
-              ) : error ? (
-                <div className="error-state">
-                  Error loading classes: {error}
-                </div>
-              ) : filteredClasses.length === 0 ? (
-                <div className="empty-state">
-                  No {activeTab === 'active' ? 'active' : 'archived'} classes found.
-                </div>
-              ) : (
-                filteredClasses.map(classItem => (
-                <div className="class" key={classItem._id || classItem.id}>
-                  <div className="up">
-                    <h4 className="name">{classItem.name}</h4>
+            {activeTab === 'classes' ? (
+              <div className="middle">
+                {loading ? (
+                  <div className="loading-state">
+                     Loading classes...
                   </div>
-                  <div className="details">
-                    <p><div className="icon"><IoTimeOutline/></div><span>created <span>{formatDate(classItem.createdAt || classItem.created)}</span></span></p>
-                    <p><div className="icon"><LuUsers/></div><span>{classItem.students || 0} students</span></p>
+                ) : error ? (
+                  <div className="error-state">
+                    Error loading classes: {error}
                   </div>
-                  <div className="down">
-                    <Link to={`/admin/students?class=${classItem.name}`} style={{ textDecoration: 'none', flex: 1 }}>
-                      <button className='more'><span>View students</span><div className="icon"><FaLongArrowAltRight/></div></button>
-                    </Link>
-                    <button 
-                    className='archive'
-                    disabled={classItem.status === 'archived'}
-                    onClick={() => handleArchiveClass(classItem)}>
-                      <span>Archive</span><div className="icon"><HiOutlineArchiveBoxArrowDown/></div>
+                ) : displayedClasses.length === 0 ? (
+                  <div className="empty-state">
+                    No classes found.
+                  </div>
+                ) : (
+                  displayedClasses.map(classItem => (
+                  <div className="class" key={classItem._id || classItem.id}>
+                    <div className="up">
+                      <h4 className="name">{classItem.name}</h4>
+                    </div>
+                    <div className="details">
+                      <p><div className="icon"><IoTimeOutline/></div><span>created <span>{formatDate(classItem.createdAt || classItem.created)}</span></span></p>
+                      <p><div className="icon"><LuUsers/></div><span>{classItem.students || 0} students</span></p>
+                    </div>
+                    <div className="down">
+                      <Link to={`/admin/students?class=${classItem.name}`} style={{ textDecoration: 'none', flex: 1 }}>
+                        <button className='more'><span>View students</span><div className="icon"><FaLongArrowAltRight/></div></button>
+                      </Link>
+                    </div>
+                  </div>
+                ))) }
+              </div>
+            ) : (
+              <div className={`academic_structure_layout ${academicSidebarCollapsed ? 'collapsed' : ''}`}>
+                {!academicSidebarCollapsed ? (
+                  <div className="academic_structure_sidebar">
+                    <button
+                      type="button"
+                      className={`academic_sidebar_item ${academicSection === 'levels' ? 'active' : ''}`}
+                      onClick={() => setAcademicSection('levels')}
+                    >
+                      <div className="icon"><MdOutlineClass /></div>
+                      <div className="text">
+                        <span>Levels</span>
+                        <p>{levels.length} total</p>
+                      </div>
+                    </button>
+
+                    <button
+                      type="button"
+                      className={`academic_sidebar_item ${academicSection === 'combinations' ? 'active' : ''}`}
+                      onClick={() => setAcademicSection('combinations')}
+                    >
+                      <div className="icon"><HiOutlineAcademicCap /></div>
+                      <div className="text">
+                        <span>Combinations</span>
+                        <p>{allCombinations.length} total</p>
+                      </div>
+                    </button>
+
+                    <button
+                      type="button"
+                      className={`academic_sidebar_item ${academicSection === 'streams' ? 'active' : ''}`}
+                      onClick={() => setAcademicSection('streams')}
+                    >
+                      <div className="icon"><LuUsers /></div>
+                      <div className="text">
+                        <span>Streams</span>
+                        <p>{classes.length} classes</p>
+                      </div>
+                    </button>
+
+                    <button
+                      type="button"
+                      className="academic_sidebar_collapse"
+                      onClick={() => setAcademicSidebarCollapsed(true)}
+                    >
+                      <div className="icon"><FaChevronLeft /></div>
+                      <span>Collapse</span>
                     </button>
                   </div>
+                ) : null}
+
+                <div className="academic_structure_content">
+                  {academicSidebarCollapsed ? (
+                    <div className="academic_sidebar_expand_wrap">
+                      <button type="button" className="academic_sidebar_expand" onClick={() => setAcademicSidebarCollapsed(false)}>
+                        <FaChevronRight />
+                      </button>
+                    </div>
+                  ) : null}
+
+                  {academicSection === 'levels' && (
+                    <div className="academic_panel">
+                      <div className="academic_panel_header">
+                        <div>
+                          <h4>Levels</h4>
+                          <p>Manage your school levels (e.g., Senior 1, Level 5).</p>
+                        </div>
+                        <button type="button" className="academic_panel_action" onClick={() => {
+                          setShowAddLevelForm((v) => !v);
+                          setLevelFormError('');
+                        }}>
+                          {showAddLevelForm ? 'Close' : 'Add level'}
+                        </button>
+                      </div>
+
+                      {showAddLevelForm && (
+                        <div className="academic_form">
+                          {levelFormError && <div className="error-message">{levelFormError}</div>}
+                          <div className="wizard_form_group">
+                            <label>Level Code *</label>
+                            <input
+                              type="text"
+                              value={levelCreateForm.code}
+                              onChange={(e) => {
+                                setLevelCreateForm((p) => ({ ...p, code: String(e.target.value || '').toUpperCase() }));
+                                if (levelFormError) setLevelFormError('');
+                              }}
+                              placeholder="L5"
+                            />
+                          </div>
+                          <div className="wizard_form_group">
+                            <label>Level Name *</label>
+                            <input
+                              type="text"
+                              value={levelCreateForm.name}
+                              onChange={(e) => {
+                                setLevelCreateForm((p) => ({ ...p, name: e.target.value }));
+                                if (levelFormError) setLevelFormError('');
+                              }}
+                              placeholder="Level 5"
+                            />
+                          </div>
+                          <div className="academic_form_footer">
+                            <button type="button" className="wizard_btn_next" onClick={handleSaveLevel}>
+                              Save level
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="academic_list">
+                        {levels.map((l) => (
+                          <div key={l.code} className="academic_list_item">
+                            <strong>{l.code}</strong>
+                            <span>{l.name}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {academicSection === 'combinations' && (
+                    <div className="academic_panel">
+                      <div className="academic_panel_header">
+                        <div>
+                          <h4>Combinations</h4>
+                          <p>Create and manage subject combinations.</p>
+                        </div>
+                        <button type="button" className="academic_panel_action" onClick={() => {
+                          setShowAddCombinationModal(true);
+                          setCombinationFormError('');
+                        }}>
+                          Add combination
+                        </button>
+                      </div>
+
+                      <div className="academic_list">
+                        {allCombinations.map((c) => (
+                          <div key={c.code} className="academic_list_item">
+                            <strong>{c.code}</strong>
+                            <span>{c.name}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {academicSection === 'streams' && (
+                    <div className="academic_panel">
+                      <div className="academic_panel_header">
+                        <div>
+                          <h4>Streams / Classes</h4>
+                          <p>Create classes for a level using streams and (optionally) combinations.</p>
+                        </div>
+                        <button type="button" className="academic_panel_action" onClick={() => setShowAcademicWizard(true)}>
+                          Add classes
+                        </button>
+                      </div>
+
+                      <div className="academic_list">
+                        {sortedClasses.map((c) => (
+                          <div key={c._id || c.id || c.name} className="academic_list_item">
+                            <strong>{c.name}</strong>
+                            <span>{formatDate(c.createdAt || c.created)}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
-              ))) }
-            </div>
+
+                {activeTab === 'academic_structure' && academicSection === 'streams' ? (
+                  <button
+                    type="button"
+                    className="add_students_fab"
+                    onClick={() => setShowAddStudentsWizard(true)}
+                  >
+                    Add students
+                  </button>
+                ) : null}
+              </div>
+            )}
           </div>
 
       {/* Academic Setup Wizard */}
@@ -483,29 +768,23 @@ export const Classes_management = () => {
 
               {academicStep === 0 && (
                 <div className="wizard_step_content">
-                  <h4>Create Level</h4>
-                  <p className="wizard_desc">Level codes are like S1, S4. Class names will be auto-generated.</p>
+                  <h4>Select Level</h4>
+                  <p className="wizard_desc">Select a created level. Streams will generate class names automatically.</p>
 
                   <div className="wizard_form_group">
-                    <label>Level Code *</label>
-                    <input
-                      type="text"
-                      value={levelForm.code}
-                      onChange={(e) => setLevelForm((p) => ({ ...p, code: String(e.target.value || '').toUpperCase() }))}
-                      placeholder="S4"
+                    <label>Level *</label>
+                    <select
+                      value={selectedLevelCode}
+                      onChange={(e) => setSelectedLevelCode(e.target.value)}
                       disabled={createStatus === 'loading'}
-                    />
-                  </div>
-
-                  <div className="wizard_form_group">
-                    <label>Level Name *</label>
-                    <input
-                      type="text"
-                      value={levelForm.name}
-                      onChange={(e) => setLevelForm((p) => ({ ...p, name: toTitleCase(e.target.value) }))}
-                      placeholder="Senior 4"
-                      disabled={createStatus === 'loading'}
-                    />
+                    >
+                      <option value="">Select level</option>
+                      {levels.map((l) => (
+                        <option key={l.code} value={l.code}>
+                          {l.code} - {l.name}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
               )}
@@ -684,61 +963,6 @@ export const Classes_management = () => {
                 </div>
               )}
 
-              {showAddCombinationModal && (
-                <div className="combination_modal_overlay" onClick={() => setShowAddCombinationModal(false)}>
-                  <div className="combination_modal" onClick={(e) => e.stopPropagation()}>
-                    <div className="combination_modal_header">
-                      <h3>Add Combination</h3>
-                      <button className="combination_modal_close" onClick={() => setShowAddCombinationModal(false)} disabled={createStatus === 'loading'}>×</button>
-                    </div>
-
-                    <div className="combination_modal_body">
-                      {combinationFormError && (
-                        <div className="error-message">
-                          {combinationFormError}
-                        </div>
-                      )}
-
-                      <div className="wizard_form_group">
-                        <label>Combination Code *</label>
-                        <input
-                          type="text"
-                          value={combinationForm.code}
-                          onChange={(e) => {
-                            setCombinationForm((p) => ({ ...p, code: String(e.target.value || '').toUpperCase() }));
-                            if (combinationFormError) setCombinationFormError('');
-                          }}
-                          placeholder="MCB"
-                          disabled={createStatus === 'loading'}
-                        />
-                      </div>
-
-                      <div className="wizard_form_group">
-                        <label>Combination Name *</label>
-                        <input
-                          type="text"
-                          value={combinationForm.name}
-                          onChange={(e) => {
-                            setCombinationForm((p) => ({ ...p, name: toTitleCase(e.target.value) }));
-                            if (combinationFormError) setCombinationFormError('');
-                          }}
-                          placeholder="Mathematics – Chemistry – Biology"
-                          disabled={createStatus === 'loading'}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="combination_modal_footer">
-                      <button type="button" className="wizard_btn_back" onClick={() => setShowAddCombinationModal(false)} disabled={createStatus === 'loading'}>
-                        Cancel
-                      </button>
-                      <button type="button" className="wizard_btn_next" onClick={handleSaveNewCombination} disabled={createStatus === 'loading'}>
-                        Save Combination
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
 
             <div className="academic_wizard_footer">
@@ -770,161 +994,213 @@ export const Classes_management = () => {
         </div>
       )}
 
-      {/* Add Class Modal */}
-      {showAddModal && (
-        <div className="add_class_modal_overlay" onClick={() => setShowAddModal(false)}>
-          <div className="add_class_modal" onClick={(e) => e.stopPropagation()}>
-            <div className="add_class_modal_header">
-              <h3>Create New Class</h3>
-              <button 
-              className="add_class_modal_close" 
-              onClick={() => setShowAddModal(false)}
-              disabled={createStatus === 'loading'}
-              >×</button>
+      {showAddCombinationModal && (
+        <div
+          className="combination_modal_overlay"
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowAddCombinationModal(false);
+          }}
+        >
+          <div className="combination_modal" onClick={(e) => e.stopPropagation()}>
+            <div className="combination_modal_header">
+              <h3>Add Combination</h3>
+              <button className="combination_modal_close" onClick={() => setShowAddCombinationModal(false)} disabled={createStatus === 'loading'}>×</button>
             </div>
-            
-            {/* <div className="add_class_modal_body">
-              <div className="add_class_form_group">
-                <label>Class Name</label>
-                <input type="text" placeholder="Enter class name (e.g., L5 SOD A)" />
-              </div>
 
-              <div className="add_class_form_group">
-                <label>Assign Teacher</label>
-                <select>
-                  <option value="">Select a teacher</option>
-                  <option value="SHEMA Valentin">SHEMA Valentin</option>
-                  <option value="Franco Nelly">Franco Nelly</option>
-                  <option value="RWEMA Nobii">RWEMA Nobii</option>
-                </select>
-              </div>
-
-              <div className="add_class_form_group">
-                <label>Import Students (CSV or Excel)</label>
-                <div 
-                  className="file_upload_area" 
-                  onClick={() => document.getElementById('file-input').click()}
-                >
-                  <input 
-                    id="file-input"
-                    type="file" 
-                    accept=".csv,.xlsx,.xls"
-                    onChange={(e) => setUploadedFile(e.target.files[0])}
-                  />
-                  <div className="file_upload_icon">
-                    <FaUpload />
-                  </div>
-                  <div className="file_upload_text">
-                    <h4>Click to upload or drag and drop</h4>
-                    <p>CSV or Excel files only (MAX. 5MB)</p>
-                  </div>
-                  {uploadedFile && (
-                    <div className="file_upload_selected">
-                      ✓ {uploadedFile.name}
-                    </div>
-                  )}
+            <div className="combination_modal_body">
+              {combinationFormError && (
+                <div className="error-message">
+                  {combinationFormError}
                 </div>
+              )}
+
+              <div className="wizard_form_group">
+                <label>Combination Code *</label>
+                <input
+                  type="text"
+                  value={combinationForm.code}
+                  onChange={(e) => {
+                    setCombinationForm((p) => ({ ...p, code: String(e.target.value || '').toUpperCase() }));
+                    if (combinationFormError) setCombinationFormError('');
+                  }}
+                  placeholder="MCB"
+                  disabled={createStatus === 'loading'}
+                />
               </div>
-            </div> */}
-            {/* <div className="add_class_modal_footer">
-              <button className="cancel_btn" onClick={() => setShowAddModal(false)}>
+
+              <div className="wizard_form_group">
+                <label>Combination Name *</label>
+                <input
+                  type="text"
+                  value={combinationForm.name}
+                  onChange={(e) => {
+                    setCombinationForm((p) => ({ ...p, name: e.target.value }));
+                    if (combinationFormError) setCombinationFormError('');
+                  }}
+                  placeholder="Mathematics – Chemistry – Biology"
+                  disabled={createStatus === 'loading'}
+                />
+              </div>
+            </div>
+
+            <div className="combination_modal_footer">
+              <button type="button" className="wizard_btn_back" onClick={() => setShowAddCombinationModal(false)} disabled={createStatus === 'loading'}>
                 Cancel
               </button>
-              <button className="submit_btn" onClick={() => {
-                // Handle class creation logic here
-                setShowAddModal(false);
-                setUploadedFile(null);
-              }}>
-                Create Class
+              <button type="button" className="wizard_btn_next" onClick={handleSaveNewCombination} disabled={createStatus === 'loading'}>
+                Save Combination
               </button>
-            </div> */}
-            <form onSubmit={handleSubmit}>
-              <div className="add_class_modal_body">
-                {createError && (
-                  <div className="error-message">
-                    {createError}
-                  </div>
-                )}
-                
-                <div className="add_class_form_group">
-                  <label>Class Name *</label>
-                  <input 
-                    type="text" 
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    placeholder="Enter class name (e.g., L5 SOD A)" 
-                    required
-                    disabled={createStatus === 'loading'}
-                  />
-                </div>
-
-                <div className="add_class_form_group">
-                  <label>Import Students (CSV or Excel) - Optional</label>
-                  <div 
-                    className="file_upload_area" 
-                    onClick={() => document.getElementById('file-input').click()}
-                  >
-                    <input 
-                      id="file-input"
-                      type="file" 
-                      accept=".csv,.xlsx,.xls"
-                      onChange={(e) => setUploadedFile(e.target.files[0])}
-                      disabled={createStatus === 'loading'}
-                    />
-                    <div className="file_upload_icon">
-                      <FaUpload />
-                    </div>
-                    <div className="file_upload_text">
-                      <h4>Click to upload or drag and drop</h4>
-                      <p>CSV or Excel files only (MAX. 5MB)</p>
-                    </div>
-                    {uploadedFile && (
-                      <div className="file_upload_selected">
-                        ✓ {uploadedFile.name}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              <div className="add_class_modal_footer">
-                <button 
-                  type="button"
-                  className="cancel_btn" 
-                  onClick={() => setShowAddModal(false)}
-                  disabled={createStatus === 'loading'}
-                >
-                  Cancel
-                </button>
-                <button 
-                  type="submit" 
-                  className="submit_btn" 
-                  disabled={!formData.name || !formData.teacherId || createStatus === 'loading'}
-                >
-                  {createStatus === 'loading' ? (
-                    <>
-                      <FaSpinner className="spinner" /> Creating...
-                    </>
-                  ) : 'Create Class'}
-                </button>
-              </div>
-            </form>
+            </div>
           </div>
         </div>
       )}
 
-      {/* Archive Confirmation Dialog */}
-      <DeleteConfirmation
-        isOpen={showArchiveConfirm}
-        onClose={() => {
-          setShowArchiveConfirm(false);
-          setClassToArchive(null);
-        }}
-        onConfirm={confirmArchive}
-        itemName={classToArchive?.name}
-        itemType="class"
-      />
+      {showAddStudentsWizard && (
+        <div className="academic_wizard_overlay" onClick={() => setShowAddStudentsWizard(false)}>
+          <div className="academic_wizard_modal" onClick={(e) => e.stopPropagation()}>
+            <div className="academic_wizard_header">
+              <h3>Add Students</h3>
+              <button className="academic_wizard_close" onClick={() => setShowAddStudentsWizard(false)}>×</button>
+            </div>
+
+            <div className="academic_wizard_body">
+              {bulkStudentsError ? <div className="error-message">{bulkStudentsError}</div> : null}
+
+              {studentsWizardStep === 0 && (
+                <div className="wizard_step_content">
+                  <h4>Select Class</h4>
+                  <p className="wizard_desc">Choose the class where you want to add students.</p>
+                  <div className="wizard_form_group">
+                    <label>Class *</label>
+                    <select value={studentsWizardClassName} onChange={(e) => setStudentsWizardClassName(e.target.value)}>
+                      <option value="">Select class</option>
+                      {sortedClasses.map((c) => (
+                        <option key={c._id || c.id || c.name} value={c.name}>{c.name}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              )}
+
+              {studentsWizardStep === 1 && (
+                <div className="wizard_step_content">
+                  <h4>Choose method</h4>
+                  <p className="wizard_desc">Add a single student or import many students.</p>
+                  <div className="wizard_radio_group">
+                    <label className={`wizard_radio ${studentsWizardMode === 'single' ? 'active' : ''}`}>
+                      <input type="radio" checked={studentsWizardMode === 'single'} onChange={() => setStudentsWizardMode('single')} />
+                      <span>Add single student</span>
+                    </label>
+                    <label className={`wizard_radio ${studentsWizardMode === 'many' ? 'active' : ''}`}>
+                      <input type="radio" checked={studentsWizardMode === 'many'} onChange={() => setStudentsWizardMode('many')} />
+                      <span>Add many students</span>
+                    </label>
+                  </div>
+                </div>
+              )}
+
+              {studentsWizardStep === 2 && studentsWizardMode === 'single' && (
+                <div className="wizard_step_content">
+                  <h4>Add single student</h4>
+                  <p className="wizard_desc">Enter the student name.</p>
+                  <div className="wizard_form_group">
+                    <label>Student name *</label>
+                    <input
+                      type="text"
+                      value={singleStudentName}
+                      onChange={(e) => setSingleStudentName(e.target.value)}
+                      placeholder="Student full name"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {studentsWizardStep === 2 && studentsWizardMode === 'many' && (
+                <div className="wizard_step_content">
+                  <h4>Import many students</h4>
+                  <p className="wizard_desc">Upload CSV/XLSX/XLS. We will extract names and preview them.</p>
+                  <div className="wizard_form_group">
+                    <label>Upload file *</label>
+                    <input
+                      type="file"
+                      accept=".csv,.xlsx,.xls"
+                      onChange={async (e) => {
+                        const f = e.target.files?.[0];
+                        setBulkStudentsFile(f || null);
+                        setBulkStudentsError('');
+                        setBulkStudents([]);
+                        if (!f) return;
+                        try {
+                          const names = await parseStudentsFromFile(f);
+                          setBulkStudents(names);
+                        } catch (err) {
+                          setBulkStudentsError(String(err?.message || err || 'Failed to parse file'));
+                        }
+                      }}
+                    />
+                  </div>
+
+                  {bulkStudentsFile ? (
+                    <div className="wizard_note">Loaded: {bulkStudentsFile.name} ({bulkStudents.length} names)</div>
+                  ) : null}
+
+                  {bulkStudents.length ? (
+                    <div className="wizard_preview">
+                      <h5>Students</h5>
+                      <div className="wizard_preview_list">
+                        {bulkStudents.map((n) => (
+                          <span key={n} className="wizard_preview_item">{n}</span>
+                        ))}
+                      </div>
+                    </div>
+                  ) : null}
+                </div>
+              )}
+            </div>
+
+            <div className="academic_wizard_footer">
+              {studentsWizardStep > 0 ? (
+                <button className="wizard_btn_back" onClick={() => setStudentsWizardStep((s) => Math.max(0, s - 1))}>
+                  <FaArrowLeft /> Back
+                </button>
+              ) : (
+                <div />
+              )}
+
+              {studentsWizardStep < 2 ? (
+                <button
+                  className="wizard_btn_next"
+                  onClick={() => {
+                    if (studentsWizardStep === 0 && !studentsWizardClassName) return;
+                    setStudentsWizardStep((s) => Math.min(2, s + 1));
+                  }}
+                  disabled={studentsWizardStep === 0 && !studentsWizardClassName}
+                >
+                  Next
+                </button>
+              ) : (
+                <button
+                  className="wizard_btn_next"
+                  onClick={() => {
+                    if (!studentsWizardClassName) return;
+                    if (studentsWizardMode === 'single' && !String(singleStudentName || '').trim()) return;
+                    if (studentsWizardMode === 'many' && !bulkStudents.length) return;
+                    setShowAddStudentsWizard(false);
+                  }}
+                  disabled={
+                    !studentsWizardClassName ||
+                    (studentsWizardMode === 'single' && !String(singleStudentName || '').trim()) ||
+                    (studentsWizardMode === 'many' && !bulkStudents.length)
+                  }
+                >
+                  Insert
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
       </div>
   )
 }

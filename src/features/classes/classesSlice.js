@@ -43,13 +43,10 @@ export const createNewClass = createAsyncThunk(
           Authorization: `Bearer ${auth.token}`,
         },
       };
-      console.log(`Class Data : Name ${classData.name} Teacher ID ${classData.teacherId} Status ${classData.status} Teacher Name ${classData.teacherName}`);
       const response = await axios.post(
         `${API_BASE_URL}/classes/create`,
         {
           name: classData.name,
-          teacherId: classData.teacherId,
-          teacherName: classData.teacherName,  // Include teacher's name
           status: classData.status
         },
         config

@@ -878,3 +878,246 @@ box-shadow: none;
 grid-template-columns: 1fr;
 }
 }
+
+.academic_structure_layout {
+display: flex;
+gap: 18px;
+margin-top: 20px;
+}
+
+.academic_structure_sidebar {
+width: 320px;
+min-width: 280px;
+border: 1px solid rgba(0, 0, 0, 0.08);
+border-radius: 14px;
+padding: 12px;
+height: fit-content;
+position: sticky;
+top: 18px;
+background: white;
+}
+
+.academic_sidebar_item {
+width: 100%;
+display: flex;
+align-items: center;
+gap: 12px;
+padding: 12px;
+border-radius: 12px;
+border: 2px solid transparent;
+background: transparent;
+cursor: pointer;
+text-align: left;
+transition: all 0.25s ease;
+}
+
+.academic_sidebar_item:hover {
+background: rgba(0, 0, 0, 0.04);
+}
+
+.academic_sidebar_item.active {
+border-color: rgba(160, 90, 200, 0.35);
+background: rgba(160, 90, 200, 0.06);
+}
+
+.academic_sidebar_item .icon {
+width: 44px;
+height: 44px;
+border-radius: 12px;
+display: flex;
+align-items: center;
+justify-content: center;
+background: rgba(160, 90, 200, 0.12);
+color: var(--main_color);
+font-size: 20px;
+}
+
+.academic_sidebar_item .text {
+display: flex;
+flex-direction: column;
+gap: 3px;
+}
+
+.academic_sidebar_item .text span {
+font-weight: 800;
+color: #111827;
+}
+
+.academic_sidebar_item .text p {
+margin: 0;
+font-size: 12px;
+opacity: 0.7;
+}
+
+.academic_sidebar_collapse {
+width: 100%;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 10px;
+margin-top: 12px;
+padding: 10px 12px;
+border-radius: 12px;
+border: 2px dashed rgba(0, 0, 0, 0.12);
+background: rgba(0, 0, 0, 0.02);
+cursor: pointer;
+font-weight: 800;
+color: #374151;
+transition: all 0.25s ease;
+}
+
+.academic_sidebar_collapse:hover {
+border-color: rgba(160, 90, 200, 0.35);
+color: var(--main_color);
+background: rgba(160, 90, 200, 0.06);
+}
+
+.academic_structure_content {
+flex: 1;
+min-width: 0;
+}
+
+.academic_sidebar_expand_wrap {
+display: flex;
+justify-content: flex-start;
+margin-bottom: 12px;
+}
+
+.academic_sidebar_expand {
+width: 44px;
+height: 44px;
+border-radius: 12px;
+border: 2px solid rgba(0, 0, 0, 0.08);
+background: white;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+transition: all 0.25s ease;
+}
+
+.academic_sidebar_expand:hover {
+border-color: rgba(160, 90, 200, 0.35);
+box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+}
+
+.academic_panel {
+border: 1px solid rgba(0, 0, 0, 0.08);
+border-radius: 14px;
+padding: 16px;
+background: white;
+}
+
+.academic_panel_header {
+display: flex;
+align-items: flex-start;
+justify-content: space-between;
+gap: 12px;
+margin-bottom: 14px;
+}
+
+.academic_panel_header h4 {
+margin: 0;
+font-size: 18px;
+color: #111827;
+}
+
+.academic_panel_header p {
+margin: 6px 0 0 0;
+font-size: 13px;
+color: #6b7280;
+}
+
+.academic_panel_action {
+padding: 10px 14px;
+border-radius: 12px;
+border: 2px solid rgba(160, 90, 200, 0.35);
+background: rgba(160, 90, 200, 0.06);
+color: var(--main_color);
+font-weight: 900;
+cursor: pointer;
+transition: all 0.25s ease;
+text-wrap: nowrap;
+}
+
+.academic_panel_action:hover {
+background: rgba(160, 90, 200, 0.12);
+transform: translateY(-1px);
+}
+
+.academic_form {
+border: 1px solid rgba(0, 0, 0, 0.08);
+border-radius: 14px;
+padding: 14px;
+background: rgba(160, 90, 200, 0.03);
+margin-bottom: 14px;
+}
+
+.academic_form_footer {
+display: flex;
+justify-content: flex-end;
+margin-top: 10px;
+}
+
+.academic_list {
+display: grid;
+grid-template-columns: repeat(2, minmax(0, 1fr));
+gap: 10px;
+}
+
+.academic_list_item {
+border: 1px solid rgba(0, 0, 0, 0.06);
+border-radius: 12px;
+padding: 12px;
+display: flex;
+flex-direction: column;
+gap: 6px;
+background: white;
+}
+
+.academic_list_item strong {
+font-weight: 900;
+color: #111827;
+}
+
+.academic_list_item span {
+font-size: 12px;
+color: #6b7280;
+}
+
+.add_students_fab {
+position: fixed;
+right: 24px;
+bottom: 24px;
+padding: 14px 18px;
+border-radius: 999px;
+background: var(--main_color);
+color: white;
+border: none;
+font-weight: 900;
+cursor: pointer;
+box-shadow: 0 16px 40px rgba(160, 90, 200, 0.35);
+z-index: 9998;
+}
+
+.add_students_fab:hover {
+background: #8a4aaa;
+transform: translateY(-2px);
+transition: 0.2s ease;
+}
+
+@media (max-width: 900px) {
+.academic_structure_layout {
+flex-direction: column;
+}
+
+.academic_structure_sidebar {
+width: 100%;
+position: relative;
+top: auto;
+}
+
+.academic_list {
+grid-template-columns: 1fr;
+}
+}

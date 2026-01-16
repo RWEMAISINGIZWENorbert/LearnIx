@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import './StudentResources.css';
 import { GrResources } from 'react-icons/gr';
 import { BiDownload, BiFile } from 'react-icons/bi';
@@ -9,10 +9,18 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchAllResources, selectResources, selectResourcesLoading, selectResourcesError } from '../../../features/resources/resourcesSlice';
 import FileViewer from  '../../Docs/FileViewer';
 import { FaFilePdf, FaFileWord, FaFileImage, FaFileVideo } from "react-icons/fa";
+import { Prompt } from '../../shared/Prompt';
 
 export const StudentResources = () => {
   const [filter, setFilter] = useState('all');
   const [viewedDocument, setViewedDocument] = useState(null);
+  const [promptOpen, setPromptOpen] = useState(false);
+  const [prompt, setPrompt] = useState({ variant: 'success', title: '', message: '' });
+
+  const openPrompt = useCallback((variant, title, message) => {
+    setPrompt({ variant, title, message });
+    setPromptOpen(true);
+  }, []);
   const dispatch = useDispatch();
   const resources = useSelector(selectResources);
   const loading = useSelector(selectResourcesLoading);
@@ -58,7 +66,7 @@ export const StudentResources = () => {
       if (document.fileUrl) {
         setViewedDocument(document);
       } else {
-        alert(`Viewing: ${document.name}\nThis would open the document in a viewer.`);
+        openPrompt('error', 'Error', `Viewing: ${document.name}`);
       }
     };
   
@@ -98,7 +106,7 @@ export const StudentResources = () => {
        link.click();
        link.remove();
     } else {
-      alert(`Downloading: ${doc.name}`);
+      openPrompt('error', 'Error', `Downloading: ${doc.name}`);
     }
   };
 
@@ -168,6 +176,14 @@ export const StudentResources = () => {
           ))}
         </div>
       </div>
+
+      <Prompt
+        isOpen={promptOpen}
+        onClose={() => setPromptOpen(false)}
+        title={prompt.title}
+        message={prompt.message}
+        variant={prompt.variant}
+      />
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import './StudentApplication.css';
 import { Navbar } from '../../../components/public_components/navbar/navbar';
 import { FaFileUpload, FaCheckCircle, FaTimes } from 'react-icons/fa';
@@ -7,6 +7,7 @@ import { FiAlertTriangle } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
 import { submitApplication, resetApplicationState } from '../../../features/applications/applicationsSlice';
 import { useNavigate } from 'react-router-dom';
+import { Prompt } from '../../../components/shared/Prompt';
 
 export const StudentApplication = () => {
   const location = useLocation();
@@ -16,6 +17,14 @@ export const StudentApplication = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate(); 
   const { loading, error, success } = useSelector((state) => state.applications);
+
+  const [promptOpen, setPromptOpen] = useState(false);
+  const [prompt, setPrompt] = useState({ variant: 'success', title: '', message: '' });
+
+  const openPrompt = useCallback((variant, title, message) => {
+    setPrompt({ variant, title, message });
+    setPromptOpen(true);
+  }, []);
 
   const [formData, setFormData] = useState({
     schoolId: selectedSchool?._id || selectedSchool?.id || '',
@@ -75,7 +84,7 @@ export const StudentApplication = () => {
   try {
       dispatch(resetApplicationState());
     const result = dispatch(submitApplication(formDataToSend));
-        alert(result.message || 'Application submitted successfully!');
+        openPrompt('success', 'Success', result?.message || 'Application submitted successfully!');
      console.log(`The result ${result}`);
     // if (applicationSuccess) {
     // if (submitApplication.fulfilled.match(result)) {
@@ -108,7 +117,7 @@ export const StudentApplication = () => {
       navigate('/schools');
     // }
   } catch (error) {
-      alert(error || 'Failed to submit application. Please try again.');
+      openPrompt('error', 'Error', error || 'Failed to submit application. Please try again.');
   }
 };
 
@@ -181,13 +190,13 @@ const handleFileChange = (e, fieldName) => {
     if (file) {
       // Check file size (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
-        alert('File size should not exceed 5MB');
+        openPrompt('error', 'Validation', 'File size should not exceed 5MB');
         return;
       }
       // Check file type
       const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
       if (!allowedTypes.includes(file.type)) {
-        alert('Only PDF, JPG, and PNG files are allowed');
+        openPrompt('error', 'Validation', 'Only PDF, JPG, and PNG files are allowed');
         return;
       }
       setUploadedFiles({
@@ -243,9 +252,7 @@ const handleFileChange = (e, fieldName) => {
   // };
 
   return (
-    <div>
-      <Navbar />
-      <div className='application-page'>
+    <div className='student-application-page'>
         <div className="gradient"></div>
         <div className="container">
           <div className="header">
@@ -570,7 +577,13 @@ const handleFileChange = (e, fieldName) => {
             </form>
           )}
         </div>
-      </div>
+      <Prompt
+        isOpen={promptOpen}
+        onClose={() => setPromptOpen(false)}
+        title={prompt.title}
+        message={prompt.message}
+        variant={prompt.variant}
+      />
     </div>
   );
 };

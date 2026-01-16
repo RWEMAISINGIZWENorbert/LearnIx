@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import './TeacherProfile.css';
 import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaCalendar, FaUser, FaCamera, FaEdit, FaSave, FaGraduationCap } from 'react-icons/fa';
 import { MdSchool, MdPerson } from 'react-icons/md';
@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getSchoolProfile } from '../../../features/school/schoolSlice';
 import { fetchUserProfile } from '../../../features/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
+import { Prompt } from '../../shared/Prompt';
 
 export const TeacherProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -45,6 +46,14 @@ export const TeacherProfile = () => {
     profileImage: `${import.meta.env.BASE_URL}assets/profile_pic_blank.png`
   });
  const navigate = useNavigate();
+
+  const [promptOpen, setPromptOpen] = useState(false);
+  const [prompt, setPrompt] = useState({ variant: 'success', title: '', message: '' });
+
+  const openPrompt = useCallback((variant, title, message) => {
+    setPrompt({ variant, title, message });
+    setPromptOpen(true);
+  }, []);
   useEffect(() => {
     dispatch(fetchUserProfile(navigate));
     dispatch(getSchoolProfile());
@@ -100,7 +109,7 @@ export const TeacherProfile = () => {
 
   const handleSave = () => {
     setIsEditing(false);
-    alert('Profile updated successfully!');
+    openPrompt('success', 'Success', 'Profile updated successfully!');
   };
 
   if (profileLoading || schoolLoading) {
@@ -325,6 +334,14 @@ export const TeacherProfile = () => {
           </div>
         </div>
       </div>
+
+      <Prompt
+        isOpen={promptOpen}
+        onClose={() => setPromptOpen(false)}
+        title={prompt.title}
+        message={prompt.message}
+        variant={prompt.variant}
+      />
     </div>
   );
 };
