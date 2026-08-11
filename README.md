@@ -84,25 +84,3 @@ School registration form link: https://forms.gle/CPgHMBFAKN21GSep6
 ✅ By default, your frontend will be served at [http://localhost:5173](http://localhost:5173)
 
 ---
-
-## 📧 Contact & Links for Front-End Developer
-
-For collaboration or inquiries, feel free to reach out:
-
-- **Developer:** IRADUKUNDA Franco Nelly  
-- **Email:** [franconellyiradukunda@gmail.com](mailto:franconellyiradukunda@gmail.com)  
-- **GitHub:** [@franco-nelly](https://github.com/franco-nelly)  
-- **Instagram:** [@franco__nelly](https://www.instagram.com/franco__nelly/)  
-- **Phone/WhatsApp:** [+250 795 207 569](https://wa.me/250795207569)
-
-
-
-## 📧 Contact & Links for Back-End Developer
-
-For collaboration or inquiries, feel free to reach out:
-
-- **Developer:** RWEMA ISINGIZWE Norbert
-- **Email:** [rwema916@gmail.com](mailto:rwema916@gmail.com)  
-- **GitHub:** [@rwema](https://github.com/RWEMAISINGIZWENorbert)  
-- **Instagram:** [@rwema__1](https://www.instagram.com/rwema__1/)  
-- **Phone/WhatsApp:** N/A
