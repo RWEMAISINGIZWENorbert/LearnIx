@@ -66,21 +66,40 @@ Make sure you have the following installed:
 
 ---
 
+### 🔑 Environment Variables
+
+Before running the app, create a `.env` file in the root of the project and add the following variable:
+
+```dotenv
+VITE_API_BASE_URL = 'https://backend-orpin-alpha-75.vercel.app'
+```
+
+| Variable | Description |
+|----------|--------------|
+| `VITE_API_BASE_URL` | Base URL of the backend API that the frontend communicates with |
+
+> ⚠️ Since this project uses **Vite**, all environment variables exposed to the frontend must be prefixed with `VITE_`.
+
+---
+
 School registration form link: https://forms.gle/CPgHMBFAKN21GSep6
 
 ### ⚙️ Installation
 
 1. **Clone the repository**
-   ```bash
-   git clone https://github.com/RWEMAISINGIZWENorbert/learnix.git
+```bash
+   git clone https://github.com/franco-nelly/learnix.git
    cd learnix
+```
 2. **Install dependencies**
-   ```bash
+```bash
    npm install
+```
 3. **Start the frontend development server**
    Open a new terminal and run:
-   ```bash
+```bash
    npm run dev
+```
 ✅ By default, your frontend will be served at [http://localhost:5173](http://localhost:5173)
 
 ---
