@@ -103,3 +103,12 @@ School registration form link: https://forms.gle/CPgHMBFAKN21GSep6
 ✅ By default, your frontend will be served at [http://localhost:5173](http://localhost:5173)
 
 ---
+# 📧 Contact & Links 
+
+For collaboration or live demo, feel free to reach out:
+
+- **Name:** RWEMA ISINGIZWE Norbert
+- **Email:** [rwema916@gmail.com](mailto:rwema916@gmail.com)  
+- **GitHub:** [@rwema](https://github.com/RWEMAISINGIZWENorbert)  
+- **Instagram:** [@rwema__1](https://www.instagram.com/rwema__1/)  
+- **Phone/WhatsApp:** [0793622719](https://wa.me/0793622719)
