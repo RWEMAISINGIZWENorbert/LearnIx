@@ -88,7 +88,7 @@ School registration form link: https://forms.gle/CPgHMBFAKN21GSep6
 
 1. **Clone the repository**
 ```bash
-   git clone https://github.com/franco-nelly/learnix.git
+   git clone <repository-url>
    cd learnix
 ```
 2. **Install dependencies**
